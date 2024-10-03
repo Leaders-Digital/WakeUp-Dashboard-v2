@@ -47,6 +47,8 @@ const routes = [
       { path: "/produit/liste", element: <Productlist /> },
       { path: "/produit/ajouter", element: <Addproduct /> },
       { path: "/produit/modifier", element: <UpdateProduct /> },
+      { path: "/produit/details", element: <DetailProduct /> },
+      
 
       // commande pages route
       { path: "/commande/liste", element: <Orderlist /> },
