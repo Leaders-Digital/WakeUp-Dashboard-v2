@@ -17,6 +17,8 @@ import AddinternUser from "./Pages/Utilisateurinterne/AddinternUser";
 import Reclamation from "./Pages/Reclamation/Reclamation";
 import Banners from "./Pages/Banners/Banners";
 import UpdateProduct from "./Pages/Products/UpdateProduct";
+import DetailOrder from "./Pages/Orders/DetailOrder";
+import DetailProduct from "./Pages/Products/DetailProduct";
 
 // SESSION PAGES
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
@@ -46,9 +48,11 @@ const routes = [
       { path: "/produit/liste", element: <Productlist /> },
       { path: "/produit/ajouter", element: <Addproduct /> },
       { path: "/produit/modifier", element: <UpdateProduct /> },
+      { path: "/produit/details", element: <DetailProduct /> },
 
       // commande pages route
       { path: "/commande/liste", element: <Orderlist /> },
+      { path: "/commande/details/*", element: <DetailOrder /> },
 
       // Blog pages route
       { path: "/blog", element: <AddBlog /> },

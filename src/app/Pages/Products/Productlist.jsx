@@ -287,7 +287,7 @@ const ProductList = () => {
             icon={<EditOutlined />}
             onClick={() => {
               setProductId(product._id);
-              navigate("/produit/modifier", { state: product._id});
+              navigate("/produit/modifier", { state: product._id });
               // <UpdateProduct
               //   setView={changeView}
               //   productId={productId}
