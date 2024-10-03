@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 import useAuth from "app/hooks/useAuth";
 import { Paragraph } from "app/components/Typography";
+import axios from "axios";
 
 // STYLED COMPONENTS
 const FlexBox = styled(Box)(() => ({
@@ -47,17 +48,15 @@ const StyledRoot = styled("div")(() => ({
 
 // initial login credentials
 const initialValues = {
-  email: "jason@ui-lib.com",
-  password: "dummyPass",
+  username: "",
+  password: "",
   remember: true
 };
 
 // form field validation schema
 const validationSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(6, "Password must be 6 character length")
-    .required("Password is required!"),
-  email: Yup.string().email("Invalid Email address").required("Email is required!")
+  username: Yup.string().required("Username is required"),
+  password: Yup.string().required("Password is required")
 });
 
 export default function JwtLogin() {
@@ -68,11 +67,21 @@ export default function JwtLogin() {
   const { login } = useAuth();
 
   const handleFormSubmit = async (values) => {
+    console.log(values);
+
     setLoading(true);
     try {
-      await login(values.email, values.password);
+      const res = await axios.post(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/login`, {
+        username: values.username,
+        password: values.password
+      });
+      console.log(res.data.token);
+      localStorage.setItem("token", res.data.token);
+      setLoading(false);
       navigate("/");
     } catch (e) {
+      console.log(e);
+
       setLoading(false);
     }
   };
@@ -92,21 +101,22 @@ export default function JwtLogin() {
               <Formik
                 onSubmit={handleFormSubmit}
                 initialValues={initialValues}
-                validationSchema={validationSchema}>
+                validationSchema={validationSchema}
+              >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                   <form onSubmit={handleSubmit}>
                     <TextField
                       fullWidth
                       size="small"
-                      type="email"
-                      name="email"
-                      label="Email"
+                      type="text"
+                      name="username"
+                      label="Nom d'utilisateur"
                       variant="outlined"
                       onBlur={handleBlur}
-                      value={values.email}
+                      value={values.username}
                       onChange={handleChange}
-                      helperText={touched.email && errors.email}
-                      error={Boolean(errors.email && touched.email)}
+                      helperText={touched.username && errors.username}
+                      error={Boolean(errors.username && touched.username)}
                       sx={{ mb: 3 }}
                     />
 
@@ -140,7 +150,8 @@ export default function JwtLogin() {
 
                       <NavLink
                         to="/session/forgot-password"
-                        style={{ color: theme.palette.primary.main }}>
+                        style={{ color: theme.palette.primary.main }}
+                      >
                         Forgot password?
                       </NavLink>
                     </FlexBox>
@@ -150,7 +161,8 @@ export default function JwtLogin() {
                       color="primary"
                       loading={loading}
                       variant="contained"
-                      sx={{ my: 2 }}>
+                      sx={{ my: 2 }}
+                    >
                       Login
                     </LoadingButton>
 
@@ -158,7 +170,8 @@ export default function JwtLogin() {
                       Don't have an account?
                       <NavLink
                         to="/session/signup"
-                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}>
+                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}
+                      >
                         Register
                       </NavLink>
                     </Paragraph>

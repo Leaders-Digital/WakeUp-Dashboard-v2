@@ -2,6 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 // CUSTOM COMPONENT
 import { MatxLoading } from "app/components";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   user: null,
@@ -59,8 +60,10 @@ export const AuthProvider = ({ children }) => {
 
     dispatch({ type: "REGISTER", payload: { user } });
   };
-
+  const navigate = useNavigate();
   const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/session/signin");
     dispatch({ type: "LOGOUT" });
   };
 
