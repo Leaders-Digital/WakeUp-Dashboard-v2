@@ -15,8 +15,8 @@ export const navigations = [
     name: "Commandes",
     icon: "shopping_cart",
     children: [
-      { name: "Liste Commandes", iconText: "SI", path: "/commande/liste" },
-      { name: "Commandes Details", iconText: "SU", path: "/commande/details" }
+      { name: "Liste Commandes", iconText: "SI", path: "/commande/liste" }
+      // { name: "Commandes Details", iconText: "SU", path: "/commande/details" }
     ]
   },
 
