@@ -23,7 +23,9 @@ export const navigations = [
   { name: "Blog", path: "/blog", icon: "font_download" },
   { name: "Utilisateurs Internes", path: "/internuser", icon: "contacts" },
   { name: "Les Réclamations", path: "/reclamation", icon: "question_answer" },
-  { name: "Banners", path: "/banners", icon: "visibility" }
+  { name: "Banners", path: "/banners", icon: "visibility" },
+  { name: "Users", path: "/users", icon: "visibility" }
+
 
   // { label: "Components", type: "label" },
   // {

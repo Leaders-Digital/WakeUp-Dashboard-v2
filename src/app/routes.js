@@ -19,6 +19,7 @@ import Banners from "./Pages/Banners/Banners";
 import UpdateProduct from "./Pages/Products/UpdateProduct";
 import DetailOrder from "./Pages/Orders/DetailOrder";
 import DetailProduct from "./Pages/Products/DetailProduct";
+import Users from "./Pages/Users/Users";
 
 // SESSION PAGES
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
@@ -64,7 +65,10 @@ const routes = [
       { path: "/reclamation", element: <Reclamation /> },
 
       // Banners pages route
-      { path: "/banners", element: <Banners /> }
+      { path: "/banners", element: <Banners /> },
+
+       // users pages route
+       { path: "/users", element: <Users /> }
     ]
   },
 
@@ -73,6 +77,7 @@ const routes = [
   { path: "/session/signin", element: <JwtLogin /> },
   { path: "/session/signup", element: <JwtRegister /> },
   { path: "/session/forgot-password", element: <ForgotPassword /> },
+
 
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
