@@ -34,6 +34,9 @@ import {
   StarOutline,
   PowerSettingsNew
 } from "@mui/icons-material";
+import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
 
 // STYLED COMPONENTS
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -93,7 +96,7 @@ const Layout1Topbar = () => {
   const { settings, updateSettings } = useSettings();
   const { logout } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const [username, setUsername] = useState("");
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
@@ -109,6 +112,23 @@ const Layout1Topbar = () => {
     updateSidebarMode({ mode });
   };
 
+  const getUserInfo = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/me`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Include token in the Authorization header
+        }
+      });
+      setUsername(response.data.user.username);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
   return (
     <TopbarRoot>
       <TopbarContainer>
@@ -146,7 +166,7 @@ const Layout1Topbar = () => {
               <UserMenu>
                 <Hidden xsDown>
                   <Span>
-                    Hi <strong>{"test "}</strong>
+                    Hi <strong>{username}</strong>
                   </Span>
                 </Hidden>
                 <Avatar src={"test"} sx={{ cursor: "pointer" }} />
