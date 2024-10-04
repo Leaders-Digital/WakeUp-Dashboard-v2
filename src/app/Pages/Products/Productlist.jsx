@@ -1,3 +1,4 @@
+// src/app/Pages/Products/ProductList.jsx
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -24,7 +25,6 @@ import {
   PlusOutlined
 } from "@ant-design/icons";
 import { Box } from "@mui/material";
-import UpdateProduct from "./UpdateProduct";
 import { useNavigate } from "react-router-dom";
 
 const { confirm } = Modal;
@@ -48,7 +48,8 @@ const Filters = ({
   setPriceFilter,
   isSale,
   setIsSale,
-  resetFilters
+  resetFilters,
+  onAddProduct // Navigation handler for adding a product
 }) => (
   <Row gutter={[16, 16]} style={{ marginTop: "10px" }}>
     <Col xs={24} sm={12} md={6} lg={6}>
@@ -69,7 +70,7 @@ const Filters = ({
         <Option value="Tous les catégories">Tous les catégories</Option>
         {categories.map((v) => (
           <Option key={v._id} value={v._id}>
-            {v._id}
+            {v.nom} {/* Assuming 'nom' is the category name */}
           </Option>
         ))}
       </Select>
@@ -99,11 +100,7 @@ const Filters = ({
       <Button
         type="primary"
         icon={<PlusOutlined />}
-        onClick={() => {
-          // Placeholder for navigating to Add Product view
-          // Implement navigation logic as per your routing setup
-          message.info("Navigating to Add Product view...");
-        }}
+        onClick={onAddProduct} // Use the passed navigation handler
         block
       >
         Ajouter
@@ -114,9 +111,7 @@ const Filters = ({
 
 const ProductList = () => {
   // State Variables
-  const [productId, setProductId] = useState("");
   const [products, setProducts] = useState([]);
-  const [view, setView] = useState("list"); // Renamed for clarity
   const [categories, setCategories] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState("Tous les catégories");
   const [search, setSearch] = useState("");
@@ -124,6 +119,8 @@ const ProductList = () => {
   const [priceFilter, setPriceFilter] = useState("asc");
   const [fullResponse, setFullResponse] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // Initialize useNavigate inside the component
 
   // Fetch Products
   const getProducts = async () => {
@@ -183,12 +180,6 @@ const ProductList = () => {
     return categories.filter((cat) => cat._id !== "Tous les catégories").length;
   };
 
-  // Handle View Change (Placeholder)
-  const changeView = (newView) => {
-    setView(newView);
-    // Implement actual view change logic based on your routing or state management
-  };
-
   // Delete Product
   const deleteProduct = async (productId) => {
     try {
@@ -219,13 +210,10 @@ const ProductList = () => {
     });
   };
 
-  const navigate = useNavigate();
-
   // Table Columns Configuration
   const columns = [
     {
       key: "id",
-
       render: (_, __, index) => index + 1,
       width: 50,
       align: "center"
@@ -253,7 +241,11 @@ const ProductList = () => {
       title: "Catégorie",
       dataIndex: "categorie",
       sorter: (a, b) => a.categorie.localeCompare(b.categorie),
-      ellipsis: true
+      ellipsis: true,
+      render: (categorieId) => {
+        const category = categories.find((cat) => cat._id === categorieId);
+        return category ? category.nom : categorieId;
+      }
     },
     {
       title: "Prix",
@@ -285,15 +277,7 @@ const ProductList = () => {
           <Button
             type="link"
             icon={<EditOutlined />}
-            onClick={() => {
-              setProductId(product._id);
-              navigate("/produit/modifier", { state: product._id });
-              // <UpdateProduct
-              //   setView={changeView}
-              //   productId={productId}
-              //   getProducts={getProducts}
-              // />;
-            }}
+            onClick={() => navigate(`/produit/details/`, { state: { productId: product._id } })} // Navigate to DetailProduct with product ID
           />
           <Button
             type="link"
@@ -316,29 +300,11 @@ const ProductList = () => {
     setPriceFilter("asc");
   };
 
-  // Render Different Views
-  if (view === "add") {
-    // Placeholder for Add Product View
-    return (
-      <div>
-        <h2>Ajouter un Produit</h2>
-        {/* Implement Add Product form here */}
-        <Button onClick={() => changeView("list")}>Retour à la liste</Button>
-      </div>
-    );
-  }
+  // Navigation Handlers
+  const handleAddProduct = () => {
+    navigate("/produit/ajouter"); // Adjust the path as per your routing setup
+  };
 
-  if (view === "edit") {
-    // Placeholder for Edit Product View
-    return (
-      <div>
-        {/* <UpdateProduct setView={changeView} productId={productId} getProducts={getProducts} /> */}
-        {/* <Button onClick={() => changeView("list")}>Retour à la liste</Button> */}
-      </div>
-    );
-  }
-
-  // Main List View
   return (
     <div style={{ padding: "20px" }}>
       <div style={{ paddingBottom: "25px" }}>
@@ -384,6 +350,7 @@ const ProductList = () => {
         isSale={isSale}
         setIsSale={setIsSale}
         resetFilters={resetFilters}
+        onAddProduct={handleAddProduct} // Pass the navigation handler
       />
 
       {/* Products Table */}
