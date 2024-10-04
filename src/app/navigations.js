@@ -24,8 +24,7 @@ export const navigations = [
   { name: "Utilisateurs Internes", path: "/internuser", icon: "contacts" },
   { name: "Les Réclamations", path: "/reclamation", icon: "question_answer" },
   { name: "Banners", path: "/banners", icon: "visibility" },
-  { name: "Users", path: "/users", icon: "visibility" }
-
+  { name: "les Utilisateur", path: "/users", icon: "visibility" }
 
   // { label: "Components", type: "label" },
   // {
