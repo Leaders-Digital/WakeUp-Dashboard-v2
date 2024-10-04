@@ -25,6 +25,7 @@ import { Breadcrumb } from "app/components";
 import { render } from "react-dom";
 import { DownloadOutlined, VerifiedUserOutlined } from "@mui/icons-material";
 import { Option } from "antd/es/mentions";
+import { set } from "lodash";
 
 const { Search } = Input;
 
@@ -39,11 +40,8 @@ const Users = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // For create modal
 
   // Create form states
-  const [newNom, setNewNom] = useState("");
-  const [newPrenom, setNewPrenom] = useState("");
-  const [newTelephone, setNewTelephone] = useState("");
-  const [newEmail, setNewEmail] = useState("");
-  const [newCodePromo, setNewCodePromo] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const showCreateModal = () => {
     setIsCreateModalOpen(true);
@@ -91,12 +89,10 @@ const Users = () => {
   const createUser = async () => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/internUser/create`,
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/user/signup`,
         {
-          nom: newNom,
-          prenom: newPrenom,
-          telephone: newTelephone,
-          codePromo: newCodePromo
+          username,
+          password
         }
       );
 
@@ -111,11 +107,22 @@ const Users = () => {
     }
   };
 
+  const changeRole = async (id, role) => {
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/changeRole`, {
+        id,
+        newRole: role
+      });
+      message.success("role changer avec succès");
+    } catch (error) {
+      message.error("Failed to delete User");
+      console.error(error);
+    }
+  };
+
   const resetCreateForm = () => {
-    setNewNom("");
-    setNewPrenom("");
-    setNewTelephone("");
-    setNewCodePromo("");
+    setUsername("");
+    setPassword("");
   };
 
   const showDeleteConfirm = (user) => {
@@ -146,25 +153,19 @@ const Users = () => {
       title: "role",
       dataIndex: "role",
       key: "role",
-      render: (role) => (
+      render: (role, record) => (
         <Select
           defaultValue={role}
           style={{ width: 100 }}
-          // onChange={(newStatus) => handleStatusChange(record.orderId, newStatus)}
+          onChange={(newStatus) => changeRole(record._id, newStatus)}
         >
-          <Option value="En Cours">Admin</Option>
-          <Option value="Validé">Editor</Option>
-          <Option value="Livré">Viewer</Option>
+          <Option value="admin">Admin</Option>
+          <Option value="editor">Editor</Option>
+          <Option value="viewer">Viewer</Option>
         </Select>
       )
     },
-    {
-      title: "status",
-      dataIndex: "isActive",
-      key: "isActive",
-      render: (isActive) =>
-        isActive ? <Tag color="green">Activer</Tag> : <Tag color="red">Desactiver</Tag>
-    },
+
     {
       title: "Dernière connexion",
       dataIndex: "lastLogin",
@@ -179,6 +180,13 @@ const Users = () => {
               minute: "2-digit"
             })
           : "Jamais connecté"
+    },
+    {
+      title: "status",
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (isActive) =>
+        isActive ? <Tag color="green">Activer</Tag> : <Tag color="red">Desactiver</Tag>
     },
     {
       title: "Action",
@@ -200,14 +208,14 @@ const Users = () => {
         <Box className="breadcrumb">
           <Breadcrumb
             routeSegments={[
-              { name: "Liste des Utilisateur", path: "/internuser" },
+              { name: "Liste des Utilisateurs", path: "/users" },
               { name: "Utilisateur" }
             ]}
           />
         </Box>
       </div>
       <Divider orientation="left" style={{ fontWeight: "700" }}>
-        Utilisateurs Internes
+        Utilisateurs
       </Divider>
       <div
         style={{
@@ -234,7 +242,7 @@ const Users = () => {
           onClick={showCreateModal}
           style={{ marginBottom: "20px" }}
         >
-          Create User
+          Ajouter un utilisateur
         </Button>
       </div>
       <Table columns={columns} dataSource={internUsers} />
@@ -255,22 +263,11 @@ const Users = () => {
             gap: "5px"
           }}
         >
-          <label style={{ fontWeight: "700" }}>Nom :</label>
-          <Input value={newNom} onChange={(e) => setNewNom(e.target.value)} placeholder="Nom" />
-        </div>
-        <div
-          style={{
-            marginBottom: "10px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "5px"
-          }}
-        >
-          <label style={{ fontWeight: "700" }}>Prenom :</label>
+          <label style={{ fontWeight: "700" }}>nom d'utilisateur :</label>
           <Input
-            value={newPrenom}
-            onChange={(e) => setNewPrenom(e.target.value)}
-            placeholder="Prenom"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="nom d'utilisateur"
           />
         </div>
         <div
@@ -281,13 +278,21 @@ const Users = () => {
             gap: "5px"
           }}
         >
-          <label style={{ fontWeight: "700" }}>Telephone :</label>
+          <label style={{ fontWeight: "700" }}>Mot de Passe :</label>
           <Input
-            value={newTelephone}
-            onChange={(e) => setNewTelephone(e.target.value)}
-            placeholder="Telephone"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="mot de passe"
           />
         </div>
+        <div
+          style={{
+            marginBottom: "10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "5px"
+          }}
+        ></div>
       </Modal>
     </div>
   );

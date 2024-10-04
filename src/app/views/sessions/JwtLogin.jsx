@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import useAuth from "app/hooks/useAuth";
 import { Paragraph } from "app/components/Typography";
 import axios from "axios";
+import { toast, Toaster } from "sonner";
 
 // STYLED COMPONENTS
 const FlexBox = styled(Box)(() => ({
@@ -67,8 +68,6 @@ export default function JwtLogin() {
   const { login } = useAuth();
 
   const handleFormSubmit = async (values) => {
-    console.log(values);
-
     setLoading(true);
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/login`, {
@@ -79,15 +78,15 @@ export default function JwtLogin() {
       localStorage.setItem("token", res.data.token);
       setLoading(false);
       navigate("/");
-    } catch (e) {
-      console.log(e);
-
+    } catch (error) {
+      toast.error(error.response.data.message);
       setLoading(false);
     }
   };
 
   return (
     <StyledRoot>
+      <Toaster richColors />
       <Card className="card">
         <Grid container>
           <Grid item sm={6} xs={12}>
