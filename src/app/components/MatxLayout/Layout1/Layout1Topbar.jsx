@@ -117,7 +117,7 @@ const Layout1Topbar = () => {
             <Menu />
           </StyledIconButton>
 
-          <IconBox>
+          {/* <IconBox>
             <StyledIconButton>
               <MailOutline />
             </StyledIconButton>
@@ -129,31 +129,31 @@ const Layout1Topbar = () => {
             <StyledIconButton>
               <StarOutline />
             </StyledIconButton>
-          </IconBox>
+          </IconBox> */}
         </Box>
 
         <Box display="flex" alignItems="center">
-          <MatxSearchBox />
+          {/* <MatxSearchBox /> */}
 
-          <NotificationProvider>
+          {/* <NotificationProvider>
             <NotificationBar />
-          </NotificationProvider>
+          </NotificationProvider> */}
 
-          <ShoppingCart />
+          {/* <ShoppingCart /> */}
 
           <MatxMenu
             menuButton={
               <UserMenu>
                 <Hidden xsDown>
                   <Span>
-                    Hi <strong>{"test "}</strong>
+                    Bonjour <strong>{"test "}</strong>
                   </Span>
                 </Hidden>
                 <Avatar src={"test"} sx={{ cursor: "pointer" }} />
               </UserMenu>
             }
           >
-            <StyledItem>
+            {/* <StyledItem>
               <Link to="/">
                 <Home />
                 <Span>Home</Span>
@@ -170,11 +170,11 @@ const Layout1Topbar = () => {
             <StyledItem>
               <Settings />
               <Span>Settings</Span>
-            </StyledItem>
+            </StyledItem> */}
 
             <StyledItem onClick={logout}>
               <PowerSettingsNew />
-              <Span>Logout</Span>
+              <Span>Se déconnecter</Span>
             </StyledItem>
           </MatxMenu>
         </Box>

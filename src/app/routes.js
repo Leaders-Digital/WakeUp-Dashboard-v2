@@ -67,8 +67,8 @@ const routes = [
       // Banners pages route
       { path: "/banners", element: <Banners /> },
 
-       // users pages route
-       { path: "/users", element: <Users /> }
+      // users pages route
+      { path: "/users", element: <Users /> }
     ]
   },
 
@@ -77,7 +77,6 @@ const routes = [
   { path: "/session/signin", element: <JwtLogin /> },
   { path: "/session/signup", element: <JwtRegister /> },
   { path: "/session/forgot-password", element: <ForgotPassword /> },
-
 
   { path: "/", element: <Navigate to="dashboard/default" /> },
   { path: "*", element: <NotFound /> }
