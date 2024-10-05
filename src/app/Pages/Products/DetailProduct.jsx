@@ -277,10 +277,10 @@ const DetailProduct = () => {
         <Space size="middle">
           <Button type="link" icon={<EditOutlined />} onClick={() => showUpdateModal(variant)} />
           <Popconfirm
-            title="Are you sure to delete this variant?"
+            title="Êtes-vous sûr de supprimer cette variante ?"
             onConfirm={() => handleDeleteVariant(variant._id)} // Use variant instead of record
-            okText="Yes"
-            cancelText="No"
+            okText="Oui"
+            cancelText="Non"
           >
             <DeleteOutlined style={{ color: "red", cursor: "pointer" }} />
           </Popconfirm>
