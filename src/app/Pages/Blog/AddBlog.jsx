@@ -1,9 +1,48 @@
-import React from 'react'
-
+import React, { useEffect, useState } from "react";
+import OneBlog from "./OneBlog";
+import axios from "axios";
+import { Button } from "antd";
+import CreerBlog from "./CreerBlog";
+import BlogDetails from "./BlogDetails";
 const AddBlog = () => {
-  return (
-    <div>AddBlog</div>
-  )
-}
+  const [blog, setBlog] = useState([]);
+  const getBlog = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/blog/get`);
+      // console.log(response);
+      setBlog(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(blog);
 
-export default AddBlog
+  useEffect(() => {
+    getBlog();
+  }, []);
+  return (
+    <div style={{ padding: "20px" }}>
+      <div
+        style={{ display: "flex", width: "100%", justifyContent: "right", marginBottom: "20px" }}
+      >
+        <CreerBlog getBlog={getBlog} />{" "}
+      </div>
+      {/* <BlogDetails/> */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: "20px",
+          justifyContent: "center"
+        }}
+      >
+        {blog.map((item) => (
+          <OneBlog item={item} getBlog={getBlog} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default AddBlog;
