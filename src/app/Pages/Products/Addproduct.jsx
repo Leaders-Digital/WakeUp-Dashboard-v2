@@ -1,18 +1,33 @@
+// src/components/AddProduct.js
+
 import React, { useState } from "react";
-import { Form, Input, InputNumber, Select, Checkbox, Upload, Button, message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Breadcrumb } from "app/components"; // Adjust the import path as needed
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  InputNumber,
+  Checkbox,
+  Upload,
+  message,
+  Spin,
+  Select
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 
-const { TextArea } = Input;
 const { Option } = Select;
 
+// Category and Subcategory Options
 const categoryOptions = [
   { value: "FACE", label: "Visage" },
   { value: "EYES", label: "Yeux" },
   { value: "LIPS", label: "Lévres" },
   { value: "Produits de soin", label: "Produits de soin" },
   { value: "Brush", label: "Brushes" },
-  { value: "PACK", label: "Pack" }, // Added PACK category for condition
+  { value: "PACK", label: "Pack" } // Added PACK category for condition
 ];
 
 const subCategoryOptions = {
@@ -50,185 +65,244 @@ const subCategoryOptions = {
     { value: "PINCEAUX DES YEUX", label: "Pinceaux des yeux" },
     { value: "PINCEAUX DES LÈVRES", label: "Pinceaux des lèvres" },
     { value: "BRUSH CLEANSER", label: "Brush Cleaner" }
+  ],
+  PACK: [
+    { value: "PACK BASIC", label: "Pack Basic" },
+    { value: "PACK PREMIUM", label: "Pack Premium" }
+    // Add more PACK subcategories as needed
   ]
 };
 
 const AddProduct = () => {
-  const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [subCategories, setSubCategories] = useState([]);
-  const [imageUrl, setImageUrl] = useState("");
+  const [form] = Form.useForm();
 
-  // Handle category change to update subcategories
-  const handleCategoryChange = (value) => {
-    form.setFieldsValue({ subCategorie: undefined });
-    if (subCategoryOptions[value]) {
-      setSubCategories(subCategoryOptions[value]);
-    } else {
-      setSubCategories([]);
-    }
-  };
+  // State to manage subcategories based on selected category
+  const [availableSubCategories, setAvailableSubCategories] = useState([]);
 
-  // Handle image upload
-  const beforeUpload = (file) => {
-    const isImage = file.type.startsWith("image/");
-    if (!isImage) {
-      message.error("You can only upload image files!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must be smaller than 2MB!");
-    }
-    return isImage && isLt2M;
-  };
-
-  const onFinish = async (values) => {
-    setLoading(true);
+  // Function to handle form submission
+  const handleSubmit = async (values) => {
     const formData = new FormData();
     formData.append("nom", values.nom);
     formData.append("description", values.description);
-    formData.append("prix", values.prix.toString());
+    formData.append("prix", values.prix);
     formData.append("categorie", values.categorie);
     formData.append("subCategorie", values.subCategorie);
     formData.append("solde", values.solde);
-    formData.append(
-      "soldePourcentage",
-      values.solde ? values.soldePourcentage.toString() : "0"
-    );
 
-    // Append image if uploaded
-    if (values.mainPicture && values.mainPicture.file) {
-      formData.append("mainPicture", values.mainPicture.file.originFileObj);
+    // Append soldePourcentage only if solde is true
+    if (values.solde) {
+      formData.append("soldePourcentage", values.soldePourcentage || 0);
+    } else {
+      formData.append("soldePourcentage", 0); // or omit it if backend can handle missing value
     }
 
+    // Handle image upload
+    if (values.mainPicture && values.mainPicture.length > 0) {
+      const file = values.mainPicture[0].originFileObj;
+      if (file) {
+        formData.append("mainPicture", file);
+      }
+    }
+
+    setLoading(true);
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}/api/product/create`,
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/create`,
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            "Content-Type": "multipart/form-data"
+          }
         }
       );
-
-      if (response.status === 201) {
-        message.success("Product created successfully!");
-        form.resetFields(); // Clear the form
-      } else {
-        message.error("Error creating product.");
-      }
+      message.success("Produit créé avec succès!");
+      navigate("/produit/liste");
     } catch (error) {
-      message.error("Network error while creating product.");
+      // Enhanced error handling
+      if (error.response && error.response.data && error.response.data.message) {
+        message.error(error.response.data.message);
+      } else {
+        message.error("Erreur lors de la création du produit.");
+      }
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
+  // Function to normalize file input for Upload component
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
+  // Handle category change to update subcategories
+  const handleCategoryChange = (value) => {
+    if (value === "PACK") {
+      // If PACK has predefined subcategories, allow user to select
+      setAvailableSubCategories(subCategoryOptions[value] || []);
+      form.setFieldsValue({ subCategorie: undefined }); // Let user select subcategory
+    } else {
+      setAvailableSubCategories(subCategoryOptions[value] || []);
+      form.setFieldsValue({ subCategorie: undefined });
+    }
+  };
+
+  // Handle solde checkbox change
+  const handleSoldeChange = (e) => {
+    if (!e.target.checked) {
+      form.setFieldsValue({ soldePourcentage: undefined });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div style={{ padding: "20px", textAlign: "center" }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
-    <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-      <h2>Add New Product</h2>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        initialValues={{
-          nom: "",
-          description: "",
-          prix: 0,
-          categorie: undefined,
-          subCategorie: undefined,
-          solde: false,
-          soldePourcentage: 0,
-        }}
-      >
-        <Form.Item
-          label="Product Name"
-          name="nom"
-          rules={[{ required: true, message: "Please enter the product name." }]}
+    <div style={{ padding: "20px" }}>
+      <div style={{ paddingBottom: "25px" }}>
+        <Breadcrumb
+          routeSegments={[
+            { name: "Liste Produits", path: "/produit/liste" },
+            { name: "Ajouter Produit" }
+          ]}
+        />
+      </div>
+
+      <Card title="Ajouter Nouveau Produit">
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{
+            solde: false
+          }}
         >
-          <Input placeholder="Product Name" />
-        </Form.Item>
-
-        <Form.Item
-          label="Product Description"
-          name="description"
-          rules={[{ required: true, message: "Please enter the product description." }]}
-        >
-          <TextArea rows={4} placeholder="Product Description" />
-        </Form.Item>
-
-        <Form.Item
-          label="Product Price (€)"
-          name="prix"
-          rules={[{ required: true, message: "Please enter the product price." }]}
-        >
-          <InputNumber min={0} style={{ width: "100%" }} placeholder="Product Price" />
-        </Form.Item>
-
-        <Form.Item
-          label="Category"
-          name="categorie"
-          rules={[{ required: true, message: "Please select a category." }]}
-        >
-          <Select placeholder="Select a category" onChange={handleCategoryChange} allowClear>
-            {categoryOptions.map((cat) => (
-              <Option key={cat.value} value={cat.value}>
-                {cat.label}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          label="Sub-Category"
-          name="subCategorie"
-          rules={[{ required: true, message: "Please select a sub-category." }]}
-        >
-          <Select placeholder="Select a sub-category" allowClear>
-            {subCategories.map((subCat) => (
-              <Option key={subCat.value} value={subCat.value}>
-                {subCat.label}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-
-        <Form.Item label="On Sale" name="solde" valuePropName="checked">
-          <Checkbox>On Sale</Checkbox>
-        </Form.Item>
-
-        {form.getFieldValue("solde") && (
           <Form.Item
-            label="Sale Percentage (%)"
-            name="soldePourcentage"
-            rules={[
-              { required: true, message: "Please enter the sale percentage." },
-              { type: "number", min: 0, max: 100, message: "Percentage must be between 0 and 100." },
-            ]}
+            label="Nom"
+            name="nom"
+            rules={[{ required: true, message: "Le nom est requis!" }]}
           >
-            <InputNumber min={0} max={100} style={{ width: "100%" }} />
+            <Input />
           </Form.Item>
-        )}
 
-        <Form.Item label="Main Image" name="mainPicture">
-          <Upload
-            name="mainPicture"
-            listType="picture"
-            beforeUpload={beforeUpload}
-            showUploadList={false}
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[{ required: true, message: "La description est requise!" }]}
           >
-            <Button icon={<UploadOutlined />}>Click to upload</Button>
-          </Upload>
-        </Form.Item>
+            <Input.TextArea rows={4} />
+          </Form.Item>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Add Product
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item
+            label="Prix (TND)"
+            name="prix"
+            rules={[{ required: true, message: "Le prix est requis!" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} />
+          </Form.Item>
+
+          <Form.Item
+            label="Catégorie"
+            name="categorie"
+            rules={[{ required: true, message: "La catégorie est requise!" }]}
+          >
+            <Select
+              placeholder="Sélectionnez une catégorie"
+              onChange={handleCategoryChange}
+              allowClear
+            >
+              {categoryOptions.map((cat) => (
+                <Option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Sous-Catégorie"
+            name="subCategorie"
+            rules={[{ required: true, message: "La sous-catégorie est requise!" }]}
+          >
+            <Select
+              placeholder="Sélectionnez une sous-catégorie"
+              disabled={!form.getFieldValue("categorie")}
+              allowClear
+            >
+              {availableSubCategories.map((subCat) => (
+                <Option key={subCat.value} value={subCat.value}>
+                  {subCat.label}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item name="solde" valuePropName="checked" wrapperCol={{ offset: 0 }}>
+            <Checkbox onChange={handleSoldeChange}>Solde</Checkbox>
+          </Form.Item>
+
+          {/* Conditional Form Item for Solde Pourcentage */}
+          <Form.Item
+            shouldUpdate={(prevValues, currentValues) => prevValues.solde !== currentValues.solde}
+          >
+            {() => (
+              <Form.Item
+                label="Pourcentage de Solde (%)"
+                name="soldePourcentage"
+                rules={[
+                  {
+                    required: form.getFieldValue("solde"),
+                    message: "Le pourcentage de solde est requis!"
+                  }
+                ]}
+              >
+                <InputNumber
+                  min={0}
+                  max={100}
+                  style={{ width: "100%" }}
+                  disabled={!form.getFieldValue("solde")} // Disable when 'solde' is unchecked
+                />
+              </Form.Item>
+            )}
+          </Form.Item>
+
+          <Form.Item
+            label="Image Principale"
+            name="mainPicture"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+            extra="Formats acceptés: .png, .jpeg, .jpg"
+          >
+            <Upload
+              name="mainPicture"
+              listType="picture"
+              beforeUpload={() => false} // Prevent automatic upload
+              maxCount={1}
+            >
+              <Button icon={<UploadOutlined />}>Cliquez pour télécharger</Button>
+            </Upload>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Ajouter le produit
+            </Button>
+            <Button style={{ marginLeft: "10px" }} onClick={() => navigate("/produit/liste")}>
+              Annuler
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </div>
   );
 };

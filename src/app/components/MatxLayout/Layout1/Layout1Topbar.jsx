@@ -34,9 +34,6 @@ import {
   StarOutline,
   PowerSettingsNew
 } from "@mui/icons-material";
-import axios from "axios";
-import { useEffect } from "react";
-import { useState } from "react";
 
 // STYLED COMPONENTS
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -96,7 +93,7 @@ const Layout1Topbar = () => {
   const { settings, updateSettings } = useSettings();
   const { logout } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [username, setUsername] = useState("");
+
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
@@ -112,23 +109,6 @@ const Layout1Topbar = () => {
     updateSidebarMode({ mode });
   };
 
-  const getUserInfo = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}` // Include token in the Authorization header
-        }
-      });
-      setUsername(response.data.user.username);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
   return (
     <TopbarRoot>
       <TopbarContainer>
@@ -137,7 +117,7 @@ const Layout1Topbar = () => {
             <Menu />
           </StyledIconButton>
 
-          <IconBox>
+          {/* <IconBox>
             <StyledIconButton>
               <MailOutline />
             </StyledIconButton>
@@ -149,31 +129,31 @@ const Layout1Topbar = () => {
             <StyledIconButton>
               <StarOutline />
             </StyledIconButton>
-          </IconBox>
+          </IconBox> */}
         </Box>
 
         <Box display="flex" alignItems="center">
-          <MatxSearchBox />
+          {/* <MatxSearchBox /> */}
 
-          <NotificationProvider>
+          {/* <NotificationProvider>
             <NotificationBar />
-          </NotificationProvider>
+          </NotificationProvider> */}
 
-          <ShoppingCart />
+          {/* <ShoppingCart /> */}
 
           <MatxMenu
             menuButton={
               <UserMenu>
                 <Hidden xsDown>
                   <Span>
-                    Hi <strong>{username}</strong>
+                    Bonjour <strong>{"test "}</strong>
                   </Span>
                 </Hidden>
                 <Avatar src={"test"} sx={{ cursor: "pointer" }} />
               </UserMenu>
             }
           >
-            <StyledItem>
+            {/* <StyledItem>
               <Link to="/">
                 <Home />
                 <Span>Home</Span>
@@ -190,11 +170,11 @@ const Layout1Topbar = () => {
             <StyledItem>
               <Settings />
               <Span>Settings</Span>
-            </StyledItem>
+            </StyledItem> */}
 
             <StyledItem onClick={logout}>
               <PowerSettingsNew />
-              <Span>Logout</Span>
+              <Span>Se déconnecter</Span>
             </StyledItem>
           </MatxMenu>
         </Box>

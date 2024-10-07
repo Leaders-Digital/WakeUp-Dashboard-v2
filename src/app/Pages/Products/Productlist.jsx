@@ -212,12 +212,12 @@ const ProductList = () => {
 
   // Table Columns Configuration
   const columns = [
-    {
-      key: "id",
-      render: (_, __, index) => index + 1,
-      width: 50,
-      align: "center"
-    },
+    // {
+    //   key: "id",
+    //   render: (_, __, index) => index + 1,
+    //   width: 50,
+    //   align: "center"
+    // },
     {
       title: "Photo",
       dataIndex: "mainPicture",
@@ -238,20 +238,19 @@ const ProductList = () => {
       ellipsis: true
     },
     {
-      title: "Catégorie",
+      title: "Categorie",
       dataIndex: "categorie",
-      sorter: (a, b) => a.categorie.localeCompare(b.categorie),
-      ellipsis: true,
-      render: (categorieId) => {
-        const category = categories.find((cat) => cat._id === categorieId);
-        return category ? category.nom : categorieId;
-      }
+    },
+    {
+      title: "Nombre de variants",
+      dataIndex: "variants",
+      render: (variant) => variant.length,
     },
     {
       title: "Prix",
       dataIndex: "prix",
       sorter: (a, b) => a.prix - b.prix,
-      render: (prix) => `${prix} €`,
+      render: (prix) => `${prix} TND`,
       align: "right",
       width: 100
     },
