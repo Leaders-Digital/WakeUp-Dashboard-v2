@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 
 const Banners = () => {
   const [banners, setBanners] = useState([]);
+
   const getBanners = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/banner/get`);
@@ -20,6 +21,7 @@ const Banners = () => {
   useEffect(() => {
     getBanners();
   }, []);
+  
   return (
     <div>
       <Toaster richColors />
