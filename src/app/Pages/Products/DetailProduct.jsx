@@ -206,7 +206,13 @@ const DetailProduct = () => {
     console.log("Failed:", errorInfo);
     message.error("Veuillez corriger les erreurs du formulaire.");
   };
-
+  const quantity = () => {
+    let quantity = 0;
+    product.variants.map((variant) => {
+      quantity += variant.quantity;
+    });
+    return quantity;
+  };
   // Define Columns for Variants Table
   const columns = [
     {
@@ -361,7 +367,7 @@ const DetailProduct = () => {
                 <Tag color={product.solde ? "green" : "red"}>
                   {product.solde ? "Soldé" : "Non Soldé"}
                 </Tag>{" "}
-                Quantité : {product.quantite}
+                Quantité : {quantity()}
                 <h4>Catégorie : {product.categorie}</h4>
                 <h4>Sous-Catégorie : {product.subCategorie}</h4>
               </Col>
