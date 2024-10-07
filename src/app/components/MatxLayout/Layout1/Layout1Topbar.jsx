@@ -154,14 +154,6 @@ const Layout1Topbar = () => {
         </Box>
 
         <Box display="flex" alignItems="center">
-          <MatxSearchBox />
-
-          <NotificationProvider>
-            <NotificationBar />
-          </NotificationProvider>
-
-          <ShoppingCart />
-
           <MatxMenu
             menuButton={
               <UserMenu>
