@@ -27,7 +27,7 @@ export default function Brand({ children }) {
     <BrandRoot>
       <Box display="flex" alignItems="center">
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-          <img src={MatxLogo} alt="" width={130} height={100} />{" "}
+          <img src={MatxLogo} alt="" />{" "}
         </div>
         <StyledSpan mode={mode} className="sidenavHoverShow"></StyledSpan>
       </Box>
