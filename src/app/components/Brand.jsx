@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 
 import { Span } from "./Typography";
-import { MatxLogo } from "app/components";
+import MatxLogo from "../../assets/logo.png";
 import useSettings from "app/hooks/useSettings";
 
 // STYLED COMPONENTS
@@ -26,10 +26,10 @@ export default function Brand({ children }) {
   return (
     <BrandRoot>
       <Box display="flex" alignItems="center">
-        <MatxLogo />
-        <StyledSpan mode={mode} className="sidenavHoverShow">
-          Matx
-        </StyledSpan>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+          <img src={MatxLogo} alt="" width={130} height={100} />{" "}
+        </div>
+        <StyledSpan mode={mode} className="sidenavHoverShow"></StyledSpan>
       </Box>
 
       <Box className="sidenavHoverShow" sx={{ display: mode === "compact" ? "none" : "block" }}>

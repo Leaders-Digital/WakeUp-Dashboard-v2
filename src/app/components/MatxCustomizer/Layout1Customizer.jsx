@@ -66,7 +66,8 @@ export default function Layout1Customizer({ settings, handleChange, handleContro
             <Tooltip key={i} title={color} placement="top">
               <ToolbarContent
                 color={color}
-                onClick={() => handleChange("layout1Settings.leftSidebar.theme", color)}>
+                onClick={() => handleChange("layout1Settings.leftSidebar.theme", color)}
+              >
                 {settings.layout1Settings.leftSidebar.theme === color && <Icon>done</Icon>}
                 <div className={settings.themes[color].palette.type}></div>
               </ToolbarContent>
@@ -82,7 +83,8 @@ export default function Layout1Customizer({ settings, handleChange, handleContro
             <Tooltip key={i} title={color} placement="top">
               <ToolbarContent
                 color={color}
-                onClick={() => handleChange("layout1Settings.topbar.theme", color)}>
+                onClick={() => handleChange("layout1Settings.topbar.theme", color)}
+              >
                 {settings.layout1Settings.topbar.theme === color && <Icon>done</Icon>}
                 <div className={settings.themes[color].palette.type}></div>
               </ToolbarContent>
@@ -98,7 +100,8 @@ export default function Layout1Customizer({ settings, handleChange, handleContro
             aria-label="Sidebar"
             name="leftSidebar"
             value={settings.layout1Settings.leftSidebar.mode}
-            onChange={handleControlChange("layout1Settings.leftSidebar.mode")}>
+            onChange={handleControlChange("layout1Settings.leftSidebar.mode")}
+          >
             <FormControlLabel value="full" control={<Radio />} label="Full" />
             <FormControlLabel value="close" control={<Radio />} label="Close" />
             <FormControlLabel value="compact" control={<Radio />} label="Compact" />
@@ -116,7 +119,8 @@ export default function Layout1Customizer({ settings, handleChange, handleContro
                   color="primary"
                   badgeContent={<Icon>done</Icon>}
                   invisible={settings.layout1Settings.leftSidebar.bgImgURL !== bg}
-                  sx={{ width: "100%", height: "100%", cursor: "pointer" }}>
+                  sx={{ width: "100%", height: "100%", cursor: "pointer" }}
+                >
                   <Paper onClick={() => handleChange("layout1Settings.leftSidebar.bgImgURL", bg)}>
                     <IMG src={bg} alt="" />
                   </Paper>
