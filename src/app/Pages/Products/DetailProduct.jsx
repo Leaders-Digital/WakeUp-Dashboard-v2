@@ -38,7 +38,6 @@ const DetailProduct = () => {
   const [variant, setVariant] = useState([]); // Assuming you have this state set up
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false); // Your modal state if needed
 
-
   // Ant Design Form instance
   const [form] = Form.useForm();
 
@@ -134,15 +133,10 @@ const DetailProduct = () => {
           }
         }
       );
-
-      if (response.data.success) {
-        message.success("Variant ajouté avec succès !");
-        getProductDetails();
-        form.resetFields();
-        setIsModalOpen(false);
-      } else {
-        message.error(response.data.message || "Échec de l'ajout du variant.");
-      }
+      message.success("Variant ajouté avec succès !");
+      setIsModalOpen(false);
+      getProductDetails();
+      form.resetFields();
     } catch (error) {
       console.error("Erreur:", error);
       message.error("Une erreur est survenue lors de l'ajout du variant.");
@@ -181,16 +175,11 @@ const DetailProduct = () => {
           }
         }
       );
-
-      if (response.data.success) {
-        message.success("Variant mis à jour avec succès !");
-        getProductDetails(); // Refresh the variants list
-        form.resetFields();
-        setIsUpdateModalOpen(false);
-        setCurrentVariant(null);
-      } else {
-        message.error(response.data.message || "Échec de la mise à jour du variant.");
-      }
+      message.success("Variant mis à jour avec succès !");
+      getProductDetails(); // Refresh the variants list
+      form.resetFields();
+      setIsUpdateModalOpen(false);
+      setCurrentVariant(null);
     } catch (error) {
       console.error("Erreur:", error);
       message.error("Une erreur est survenue lors de la mise à jour du variant.");
@@ -205,12 +194,12 @@ const DetailProduct = () => {
       message.success("Variant deleted successfully!");
       setVariant((prevVariants) => prevVariants.filter((v) => v._id !== variantId)); // Update the state
       setIsDeleteModalVisible(false); // Close the confirmation modal if it’s open
+      getProductDetails();
     } catch (error) {
       message.error("Error deleting variant.");
       console.error("Error deleting variant:", error);
     }
   };
-  
 
   // Function to handle form submission failure
   const handleFinishFailed = (errorInfo) => {
@@ -273,7 +262,10 @@ const DetailProduct = () => {
     {
       title: "Action",
       key: "action",
-      render: (text, variant) => ( // Change here: text, variant instead of _, variant
+      render: (
+        text,
+        variant // Change here: text, variant instead of _, variant
+      ) => (
         <Space size="middle">
           <Button type="link" icon={<EditOutlined />} onClick={() => showUpdateModal(variant)} />
           <Popconfirm
