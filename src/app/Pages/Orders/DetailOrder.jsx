@@ -6,10 +6,13 @@ import jsPDF from "jspdf";
 import "jspdf-autotable"; // Importation pour l'ajout de tableaux stylisés
 import { Box } from "@mui/material";
 import { Breadcrumb } from "app/components";
+import logo from "../../../assets/WhatsApp.jpeg";
 
 const { Title, Text } = Typography;
 const DetailOrder = () => {
   const [order, setOrder] = useState(null);
+  console.log(order);
+
   const [loading, setLoading] = useState(true);
   const [disabledCards, setDisabledCards] = useState([]);
   const location = useLocation();
@@ -37,29 +40,57 @@ const DetailOrder = () => {
   }, [orderId]);
 
   if (loading) return <div>Loading...</div>;
-
   const handleDownloadInvoice = () => {
     const doc = new jsPDF();
 
-    // Ajouter un logo (doit être en base64 ou accessible via URL)
-    // const logoUrl = 'http://localhost:3000/assets/img/logo-wakeup.png';
-    // doc.addImag(logoUrl, 'PNG', 10, 10, 50, 20); // Position et taille du logo
+    // Add Company Logo (Must be a base64 image or URL)
+    doc.addImage(logo, "jpeg", 8, 8, 50, 15);
 
-    // Titre de la facture
+    // Title "Facture" in Bold
     doc.setFontSize(22);
-    doc.text("Facture", 105, 40, null, null, "center"); // Aligné au centre
+    doc.setFont("helvetica", "bold"); // Bold for title
+    doc.text("FACTURE", 105, 30, { align: "center" });
+
+    // Add a border under the title
+    doc.setLineWidth(0.5);
+    doc.line(10, 35, 200, 35);
+
+    // Format Date
+    const formattedDateTime = new Date(order.createdAt).toLocaleString("fr-FR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    // Set Font to Regular for the rest of the text
     doc.setFontSize(12);
+    doc.setFont("helvetica", "normal"); // Regular font for details
 
-    // Infos sur le client
-    doc.text(`Commande ID: ${orderId}`, 10, 50);
+    // Order Information Section
+    doc.text(`Commande ID: ${order.orderCode}`, 10, 50);
     doc.text(`Nom: ${order.nom} ${order.prenom}`, 10, 60);
-    doc.text(`Adresse: ${order.adresse}, ${order.ville}, ${order.gouvernorat}`, 10, 70);
-    doc.text(`Code Postal: ${order.codePostal}`, 10, 80);
+    doc.text(`Adresse: ${order.adresse}`, 10, 70);
+    doc.text(`Gouvernorat: ${order.gouvernorat}`, 10, 80);
+    doc.text(`Ville: ${order.ville}`, 10, 90);
+    doc.text(`Code Postal: ${order.codePostal}`, 10, 100);
+    doc.text(`Date de Commande: ${formattedDateTime}`, 10, 110);
 
-    // Ligne de séparation
-    doc.line(10, 85, 200, 85);
+    // Section Divider
+    doc.line(10, 115, 200, 115);
 
-    // Tableau des produits
+    // Calculate Total Quantity and Price without Livraison
+    const totalQuantity = order.listeDesProduits.reduce(
+      (sum, product) => sum + product.quantite,
+      0
+    );
+    const totalPriceWithoutLivraison = order.listeDesProduits.reduce(
+      (sum, product) => sum + (product.variant.product.prix * product.quantite || 0),
+      0
+    );
+
+    // Prepare Product Data for Table
     const productRows = order.listeDesProduits.map((product, index) => [
       index + 1,
       product?.variant?.reference,
@@ -67,33 +98,47 @@ const DetailOrder = () => {
       `${product.variant.product.prix || 0} TND`
     ]);
 
+    // Add Total Row at the End
+    productRows.push([
+      "", // Empty cell for the index column
+      "Total", // Label in the reference column
+      totalQuantity, // Total Quantity
+      `${totalPriceWithoutLivraison.toFixed(2)} TND` // Total Price (TND)
+    ]);
+
+    // Product Table Heading
     doc.autoTable({
-      head: [["#", "Référence", "Quantité", "Prix"]],
-      body: productRows,
-      startY: 90,
-      styles: { cellPadding: 3, fontSize: 10 },
-      headStyles: { fillColor: [0, 123, 255] }
+      head: [["#", "Référence", "Quantité", "Prix (TND)"]],
+      body: productRows, // Include the total row
+      startY: 120,
+      styles: { fontSize: 10, cellPadding: 3 },
+      headStyles: {
+        fillColor: [222, 140, 6], // Blue header
+        textColor: [255, 255, 255], // White text
+        fontStyle: "bold"
+      },
+      bodyStyles: {
+        lineColor: [44, 62, 80], // Dark grey lines
+        lineWidth: 0.2
+      },
+      columnStyles: {
+        0: { halign: "center" }, // Center alignment for index
+        3: { halign: "right" } // Right align the prices
+      }
     });
 
-    // Align prices to the right in total section
-    const pageWidth = doc.internal.pageSize.getWidth(); // Get the width of the page
+    // Define pageWidth for right-align calculations
+    const pageWidth = doc.internal.pageSize.getWidth();
 
-    // Ajouter le total et le prix de livraison
-    const prixTotalAvecLivraison = order.prixTotal + 8; // Ajout du prix de livraison de 8 TND
-
+    // Add Total Section (Total Price and Delivery Fee)
+    const prixTotalAvecLivraison = totalPriceWithoutLivraison + 8; // Assuming a fixed delivery fee of 8 TND
     doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
 
-    // Use 'textWidth' to calculate the position to align to the right
-    const prixTotalText = `Total Produits: ${order.prixTotal} TND`;
     const livraisonText = `Livraison: 8 TND`;
-    const totalGeneralText = `Total Général: ${prixTotalAvecLivraison} TND`;
+    const totalGeneralText = `Total à payer: ${prixTotalAvecLivraison.toFixed(2)} TND`;
 
-    // Align the text to the right
-    doc.text(
-      prixTotalText,
-      pageWidth - doc.getTextWidth(prixTotalText) - 10,
-      doc.lastAutoTable.finalY + 10
-    );
+    // Right align total, delivery fee, and grand total
     doc.text(
       livraisonText,
       pageWidth - doc.getTextWidth(livraisonText) - 10,
@@ -105,8 +150,22 @@ const DetailOrder = () => {
       doc.lastAutoTable.finalY + 30
     );
 
-    // Enregistrer le PDF
-    doc.save(`Facture-${orderId}.pdf`);
+    // Footer (Optional): Add any company policies, disclaimers, or thank you notes
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal"); // Regular font for footer
+    doc.setTextColor(150);
+    doc.text("Merci pour votre achat!", 105, 285, { align: "center" });
+    doc.text(
+      "Pour toute question, veuillez nous contacter au contact@leaders-makeup.com",
+      105,
+      290,
+      {
+        align: "center"
+      }
+    );
+
+    // Save the PDF with the filename containing the order ID
+    doc.save(`Facture-${order.orderCode}.pdf`);
   };
 
   const handleCardToggle = (index) => {

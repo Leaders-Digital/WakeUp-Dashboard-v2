@@ -379,6 +379,21 @@ const AddinternUser = () => {
             placeholder="Telephone"
           />
         </div>
+        <div
+          style={{
+            marginBottom: "10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "5px"
+          }}
+        >
+          <label style={{ fontWeight: "700" }}>Identifiant :</label>
+          <Input
+            value={newCodePromo}
+            onChange={(e) => setNewCodePromo(e.target.value)}
+            placeholder="Telephone"
+          />
+        </div>
       </Modal>
     </div>
   );
