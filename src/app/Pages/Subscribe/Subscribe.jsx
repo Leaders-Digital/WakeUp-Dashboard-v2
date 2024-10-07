@@ -89,7 +89,7 @@ const SubscriptionList = () => {
                 </Col>
                 <Col xs={24} xl={24}>
                     <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-                        <Col xs={24} sm={12} md={8}>
+                        <Col span={12}>
                             <Search
                                 placeholder="Rechercher par e-mail"
                                 allowClear
@@ -98,7 +98,7 @@ const SubscriptionList = () => {
                                 onChange={(e) => setSearchText(e.target.value)}
                             />
                         </Col>
-                        <Col xs={24} sm={12} md={8}>
+                        <Col span={6} offset={6}>
                             <Button
                                 type="primary"
                                 onClick={exportToExcel}

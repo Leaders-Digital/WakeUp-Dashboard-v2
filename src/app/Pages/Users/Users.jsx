@@ -119,7 +119,19 @@ const Users = () => {
       console.error(error);
     }
   };
-
+  const changeStatus = async (id, status) => {
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/status`, {
+        id,
+        status: status
+      });
+      getUsers();
+      message.success("status changer avec succès");
+    } catch (error) {
+      message.error("Failed to delete User");
+      console.error(error);
+    }
+  };
   const resetCreateForm = () => {
     setUsername("");
     setPassword("");
@@ -185,8 +197,28 @@ const Users = () => {
       title: "status",
       dataIndex: "isActive",
       key: "isActive",
-      render: (isActive) =>
-        isActive ? <Tag color="green">Activer</Tag> : <Tag color="red">Desactiver</Tag>
+      render: (isActive, record) =>
+        isActive ? (
+          <Tag
+            style={{ cursor: "pointer" }}
+            color="green"
+            onClick={() => {
+              changeStatus(record._id, false);
+            }}
+          >
+            Activer
+          </Tag>
+        ) : (
+          <Tag
+            color="red"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              changeStatus(record._id, true);
+            }}
+          >
+            Desactiver
+          </Tag>
+        )
     },
     {
       title: "Action",
