@@ -7,9 +7,11 @@ import {
     Divider,
     Tag,
     Input,
+    Button, // Import Button from Ant Design
 } from "antd";
 import axios from "axios";
 import { message } from "antd";
+import * as XLSX from "xlsx"; // Import xlsx library
 
 const { Search } = Input;
 
@@ -47,7 +49,6 @@ const SubscriptionList = () => {
             dataIndex: "email",
             key: "email",
             sorter: (a, b) => a.email.localeCompare(b.email),
-            render: (text) => <a href={`mailto:${text}`}>{text}</a>,
         },
         {
             title: "Date d'abonnement",
@@ -58,10 +59,20 @@ const SubscriptionList = () => {
         },
     ];
 
+    // Function to export data to Excel
+    const exportToExcel = () => {
+        const worksheet = XLSX.utils.json_to_sheet(filteredSubscriptions);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Subscriptions");
+
+        // Generate buffer and create a link to download
+        XLSX.writeFile(workbook, "subscriptions.xlsx");
+    };
+
     return (
         <div style={{ padding: "20px" }}>
             <Row gutter={16}>
-                <Col xs={24} xl={12} style={{paddingBottom:"20px"}}>
+                <Col xs={24} xl={12} style={{ paddingBottom: "20px" }}>
                     <Card title="Nombre des Abonnés">{subscriptions.length}</Card>
                 </Col>
                 <Col xs={24} xl={12}>
@@ -87,12 +98,21 @@ const SubscriptionList = () => {
                                 onChange={(e) => setSearchText(e.target.value)}
                             />
                         </Col>
+                        <Col xs={24} sm={12} md={8}>
+                            <Button
+                                type="primary"
+                                onClick={exportToExcel}
+                                style={{ marginLeft: 8 }}
+                            >
+                                Exporter vers Excel
+                            </Button>
+                        </Col>
                     </Row>
                 </Col>
                 <Col xs={24} xl={24}>
                     <Table
                         columns={columns}
-                        dataSource={filteredSubscriptions} // Use filtered subscriptions here
+                        dataSource={filteredSubscriptions}
                         rowKey="_id"
                         pagination={{ pageSize: 10 }}
                         loading={loading}
