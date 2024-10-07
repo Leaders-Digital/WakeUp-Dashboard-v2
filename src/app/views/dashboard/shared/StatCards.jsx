@@ -1,6 +1,8 @@
-import { Box, Card, Grid, IconButton, styled, Tooltip } from "@mui/material";
+import { Box, Card, Grid, IconButton, styled, Tooltip, useScrollTrigger } from "@mui/material";
 import { AttachMoney, Group, ShoppingCart, Store, ArrowRightAlt } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 import { Small } from "app/components/Typography";
+import axios from "axios";
 
 // STYLED COMPONENTS
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -30,11 +32,35 @@ const Heading = styled("h6")(({ theme }) => ({
 }));
 
 export default function StatCards() {
+  const [orderPending, setOrdersPending] = useState([]);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(process.env.REACT_APP_API_URL_PRODUCTION + "api/order/");
+        setOrdersPending(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const calculatePendingOrder = () => {
+    let pending = 0;
+    orderPending.forEach((order) => {
+      if (order.statut === "En Cours" || order.statut === "en cours") {
+        pending += 1;
+      }
+    });
+    return pending;
+  };
+
   const cardList = [
     { name: "New Leads", amount: 3050, Icon: Group },
-    { name: "This week Sales", amount: "$80,500", Icon: AttachMoney },
-    { name: "Inventory Status", amount: "8.5% Stock Surplus", Icon: Store },
-    { name: "Orders to deliver", amount: "305 Orders", Icon: ShoppingCart }
+    { name: "This week Sales", amount: "80,500 DT", Icon: AttachMoney },
+    { name: "Inventory Status", amount: "8.5% Stock ", Icon: Store },
+    { name: "Orders to deliver", amount: calculatePendingOrder(), Icon: ShoppingCart }
   ];
 
   return (
