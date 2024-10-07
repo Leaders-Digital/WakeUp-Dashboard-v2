@@ -21,10 +21,12 @@ export const navigations = [
   },
 
   { name: "Blog", path: "/blog", icon: "font_download" },
-  { name: "Utilisateurs Internes", path: "/internuser", icon: "contacts" },
-  { name: "Les Réclamations", path: "/reclamation", icon: "question_answer" },
-  { name: "Banners", path: "/banners", icon: "visibility" },
-  { name: "les Utilisateur", path: "/users", icon: "visibility" }
+  { name: "Utilisateurs internes", path: "/internuser", icon: "contacts" },
+  { name: "Les réclamations", path: "/reclamation", icon: "question_answer" },
+  { name: "Banners", path: "/banners", icon: "panorama" },
+  { name: "Les utilisateur", path: "/users", icon: "group" },
+  { name: "Liste des abonnés", path: "/SubscriptionList", icon: "local_post_office" }
+
 
   // { label: "Components", type: "label" },
   // {
