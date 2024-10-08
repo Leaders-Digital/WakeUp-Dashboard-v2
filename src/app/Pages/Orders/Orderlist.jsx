@@ -170,8 +170,8 @@ const Orderlist = () => {
         />
       </Box>
       {/* calculating box  */}
-      <div style={{ marginTop: "20px" }}>
-        <Row gutter={16}>
+      <div style={{ marginTop: "20px", justifyContent: "center", alignItems: "center" }}>
+        <Row gutter={16} style={{ display: "flex", justifyContent: "space-evenly" }}>
           <Col xs={24} xl={6}>
             <Card title="Total Commandes" bordered={false}>
               <h2 style={{ textAlign: "center" }}>{orders.length}</h2>
@@ -184,13 +184,13 @@ const Orderlist = () => {
               </h2>
             </Card>
           </Col>
-          <Col xs={24} xl={6}>
+          {/* <Col xs={24} xl={6}>
             <Card title="Commandes Livrées" bordered={false}>
               <h2 style={{ textAlign: "center" }}>
                 {orders.filter((order) => order.status === "Livré").length}
               </h2>
             </Card>
-          </Col>
+          </Col> */}
           <Col xs={24} xl={6}>
             <Card title="Commandes Annulées" bordered={false}>
               <h2 style={{ textAlign: "center" }}>
