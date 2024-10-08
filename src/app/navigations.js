@@ -15,7 +15,8 @@ export const navigations = [
     name: "Commandes",
     icon: "shopping_cart",
     children: [
-      { name: "Liste Commandes", iconText: "SI", path: "/commande/liste" }
+      { name: "Liste Commandes", iconText: "SI", path: "/commande/liste" },
+      { name: "Commandes Livrés", iconText: "SI", path: "/commande/livre" }
       // { name: "Commandes Details", iconText: "SU", path: "/commande/details" }
     ]
   },
@@ -26,7 +27,6 @@ export const navigations = [
   { name: "Banners", path: "/banners", icon: "panorama" },
   { name: "Les utilisateur", path: "/users", icon: "group" },
   { name: "Liste des abonnés", path: "/SubscriptionList", icon: "local_post_office" }
-
 
   // { label: "Components", type: "label" },
   // {

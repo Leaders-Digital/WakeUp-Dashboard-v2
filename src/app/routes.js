@@ -21,6 +21,7 @@ import DetailOrder from "./Pages/Orders/DetailOrder";
 import DetailProduct from "./Pages/Products/DetailProduct";
 import Users from "./Pages/Users/Users";
 import SubscriptionList from "./Pages/Subscribe/Subscribe";
+import OrdersLivre from "./Pages/Orders/OrdersLivre";
 
 // SESSION PAGES
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
@@ -54,6 +55,7 @@ const routes = [
 
       // commande pages route
       { path: "/commande/liste", element: <Orderlist /> },
+      { path: "/commande/livre", element: <OrdersLivre /> },
       { path: "/commande/details/*", element: <DetailOrder /> },
 
       // Blog pages route
@@ -73,7 +75,6 @@ const routes = [
 
       // subscribe pages route
       { path: "/SubscriptionList", element: <SubscriptionList /> }
-
     ]
   },
 
