@@ -25,7 +25,8 @@ export const navigations = [
   { name: "Les réclamations", path: "/reclamation", icon: "question_answer" },
   { name: "Banners", path: "/banners", icon: "panorama" },
   { name: "Les utilisateur", path: "/users", icon: "group" },
-  { name: "Liste des abonnés", path: "/SubscriptionList", icon: "local_post_office" }
+  { name: "Liste des abonnés", path: "/SubscriptionList", icon: "local_post_office" },
+  { name: "Liste Des Avis", path: "/avis", icon: "sms" }
 
 
   // { label: "Components", type: "label" },
