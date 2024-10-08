@@ -1,9 +1,15 @@
-import { Col, Table, Tag, message, Select, Divider, Row, Card, Statistic } from 'antd';
-import axios from 'axios';
+import { Col, Table, Tag, message, Select, Divider, Row, Card, Statistic, Rate } from "antd";
+import axios from "axios";
 import { Box } from "@mui/material";
 import React, { useEffect, useState, useMemo } from "react";
-import { EyeOutlined, CheckCircleOutlined, CloseCircleOutlined, FileTextOutlined } from "@ant-design/icons"; // Updated import
+import {
+  EyeOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  FileTextOutlined
+} from "@ant-design/icons"; // Updated import
 import { Breadcrumb } from "app/components";
+import dayjs from "dayjs"; // Import dayjs for date formatting
 
 const { Option } = Select;
 
@@ -18,7 +24,8 @@ const Avis = () => {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/review/getReview`
       );
-      setAvis(response.data.response);
+
+      setAvis(response.data.response.reverse());
       setLoading(false);
     } catch (error) {
       console.error("Échec de la récupération des Avis:", error);
@@ -48,15 +55,18 @@ const Avis = () => {
   // Calculate counts using useMemo for optimization
   const totalReviews = useMemo(() => avis.length, [avis]);
 
-  const acceptedReviews = useMemo(() => avis.filter(review => review.accepted).length, [avis]);
+  const acceptedReviews = useMemo(() => avis.filter((review) => review.accepted).length, [avis]);
 
-  const nonAcceptedReviews = useMemo(() => avis.filter(review => !review.accepted).length, [avis]);
+  const nonAcceptedReviews = useMemo(
+    () => avis.filter((review) => !review.accepted).length,
+    [avis]
+  );
 
   // Filtered data based on filterStatus
   const filteredAvis = useMemo(() => {
     if (filterStatus === null) return avis;
-    if (filterStatus === true) return avis.filter(review => review.accepted);
-    if (filterStatus === false) return avis.filter(review => !review.accepted);
+    if (filterStatus === true) return avis.filter((review) => review.accepted);
+    if (filterStatus === false) return avis.filter((review) => !review.accepted);
     return avis;
   }, [avis, filterStatus]);
 
@@ -72,14 +82,21 @@ const Avis = () => {
       key: "email"
     },
     {
+      title: "Date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (createdAt) => dayjs(createdAt).format("DD/MM/YYYY") // Format the date
+    },
+    {
       title: "Rating",
       dataIndex: "rating",
       key: "rating",
+      render: (rating) => <Rate disabled defaultValue={rating} /> // Display stars for the rating
     },
     {
       title: "Commentaire",
       dataIndex: "comment",
-      key: "comment",
+      key: "comment"
     },
     {
       title: "Accepté",
@@ -94,19 +111,6 @@ const Avis = () => {
           <Option value="Oui">Oui</Option>
           <Option value="Non">Non</Option>
         </Select>
-      )
-    },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (text, record) => (
-        <div style={{ display: "flex", gap: "10px" }}>
-          <EyeOutlined
-            onClick={() => handleViewClick(record)}
-            style={{ cursor: "pointer", color: "#1890ff" }}
-          />
-          {/* Add other action icons here if needed */}
-        </div>
       )
     }
   ];
@@ -126,51 +130,40 @@ const Avis = () => {
       <div style={{ marginBottom: "10px" }}>
         <Box className="breadcrumb">
           <Breadcrumb
-            routeSegments={[
-              { name: "Liste des avis", path: "/avis" },
-              { name: "Avis" }
-            ]}
+            routeSegments={[{ name: "Liste des avis", path: "/avis" }, { name: "Avis" }]}
           />
         </Box>
       </div>
 
       <Row gutter={16} style={{ marginBottom: "20px" }}>
-        <Col xs={24} xl={8}>
+        <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
           <Card
             title="Nombre des avis"
             bordered={false}
             onClick={() => handleFilter(null)}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
           >
-            <Statistic
-              value={totalReviews}
-            />
+            <Statistic value={totalReviews} />
           </Card>
         </Col>
-        <Col xs={24} xl={8}>
+        <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
           <Card
             title="Avis Acceptés"
             bordered={false}
             onClick={() => handleFilter(true)}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
           >
-            <Statistic
-              value={acceptedReviews}
-              valueStyle={{ color: '#3f8600' }}
-            />
+            <Statistic value={acceptedReviews} valueStyle={{ color: "#3f8600" }} />
           </Card>
         </Col>
-        <Col xs={24} xl={8}>
+        <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
           <Card
             title="Avis Non Acceptés"
             bordered={false}
             onClick={() => handleFilter(false)}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
           >
-            <Statistic
-              value={nonAcceptedReviews}
-              valueStyle={{ color: '#cf1322' }}
-            />
+            <Statistic value={nonAcceptedReviews} valueStyle={{ color: "#cf1322" }} />
           </Card>
         </Col>
       </Row>
