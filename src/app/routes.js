@@ -77,10 +77,8 @@ const routes = [
       // subscribe pages route
       { path: "/SubscriptionList", element: <SubscriptionList /> },
 
-       // Avis pages route
-       { path: "/avis", element: <Avis /> }
-
-
+      // Avis pages route
+      { path: "/avis", element: <Avis /> }
     ]
   },
 
