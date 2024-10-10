@@ -7,6 +7,8 @@ import StatCards2 from "./shared/StatCards2";
 import DoughnutChart from "./shared/Doughnut";
 import UpgradeCard from "./shared/UpgradeCard";
 import TopSellingTable from "./shared/TopSellingTable";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 // STYLED COMPONENTS
 const ContentBox = styled("div")(({ theme }) => ({
@@ -36,19 +38,38 @@ const H4 = styled("h4")(({ theme }) => ({
 
 export default function Analytics() {
   const { palette } = useTheme();
+  const [allData, setData] = useState({});
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(
+          process.env.REACT_APP_API_URL_PRODUCTION + "api/dashboard/"
+        );
+        setLoading(false);
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
 
-  return (
+    fetchOrders();
+  }, []);
+
+  return loading ? (
+    <div>chargement...</div>
+  ) : (
     <Fragment>
-      
       <ContentBox className="analytics">
         <Grid container spacing={3}>
           <Grid item lg={8} md={8} sm={12} xs={12}>
-            <StatCards />
-            <TopSellingTable />
-            <StatCards2 />
+            <StatCards allData={allData} />
+            <TopSellingTable allData={allData} />
+            {/* <StatCards2 /> */}
 
             <H4>Ongoing Projects</H4>
-            <RowCards />
+            <RowCards allData={allData} />
           </Grid>
 
           <Grid item lg={4} md={4} sm={12} xs={12}>

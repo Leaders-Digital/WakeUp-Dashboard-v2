@@ -31,36 +31,24 @@ const Heading = styled("h6")(({ theme }) => ({
   color: theme.palette.primary.main
 }));
 
-export default function StatCards() {
-  const [orderPending, setOrdersPending] = useState([]);
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get(process.env.REACT_APP_API_URL_PRODUCTION + "api/order/");
-        setOrdersPending(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchOrders();
-  }, []);
-
-  const calculatePendingOrder = () => {
-    let pending = 0;
-    orderPending.forEach((order) => {
-      if (order.statut === "En Cours" || order.statut === "en cours") {
-        pending += 1;
-      }
-    });
-    return pending;
-  };
-
+export default function StatCards({ allData }) {
   const cardList = [
-    { name: "New Leads", amount: 3050, Icon: Group },
-    { name: "This week Sales", amount: "80,500 DT", Icon: AttachMoney },
-    { name: "Inventory Status", amount: "8.5% Stock ", Icon: Store },
-    { name: "Orders to deliver", amount: calculatePendingOrder(), Icon: ShoppingCart }
+    {
+      name: "Vente par mois",
+      amount: allData?.monthlyStats?.totalPrice + " DT",
+      Icon: AttachMoney
+    },
+    {
+      name: "Vente par semaines",
+      amount: allData?.weeklyStats?.totalPrice + " DT",
+      Icon: AttachMoney
+    },
+    {
+      name: "Inventory Status",
+      amount: allData.variantsWithLessThan3Quantity?.length,
+      Icon: Store
+    },
+    { name: "Orders to deliver", amount: allData.enCoursOrdersCount, Icon: ShoppingCart }
   ];
 
   return (

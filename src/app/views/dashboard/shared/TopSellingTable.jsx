@@ -56,7 +56,9 @@ const Small = styled("small")(({ bgcolor }) => ({
   boxShadow: "0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24)"
 }));
 
-export default function TopSellingTable() {
+export default function TopSellingTable({ allData }) {
+  console.log(allData, "here");
+
   const { palette } = useTheme();
   const bgError = palette.error.main;
   const bgPrimary = palette.primary.main;
@@ -65,65 +67,49 @@ export default function TopSellingTable() {
   return (
     <Card elevation={3} sx={{ pt: "20px", mb: 3 }}>
       <CardHeader>
-        <Title>top selling products</Title>
-        <Select size="small" defaultValue="this_month">
-          <MenuItem value="this_month">This Month</MenuItem>
-          <MenuItem value="last_month">Last Month</MenuItem>
-        </Select>
+        <Title>Produit à faible disponibilité</Title>
       </CardHeader>
 
       <Box overflow="auto">
         <ProductTable>
           <TableHead>
             <TableRow>
-              <TableCell colSpan={4} sx={{ px: 3 }}>
-                Name
+              <TableCell
+                colSpan={4}
+                align="left"
+                style={{ marginLeft: "10px" }}
+                sx={{ px: 0, textTransform: "capitalize" }}
+              >
+                Picture
               </TableCell>
 
-              <TableCell colSpan={2} sx={{ px: 0 }}>
-                Revenue
+              <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
+                Reference
               </TableCell>
 
-              <TableCell colSpan={2} sx={{ px: 0 }}>
-                Stock Status
-              </TableCell>
-
-              <TableCell colSpan={1} sx={{ px: 0 }}>
-                Action
+              <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
+                Nom du produit
               </TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {productList.map((product, index) => (
+            {allData.variantsWithLessThan3Quantity?.map((product, index) => (
               <TableRow key={index} hover>
                 <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
                   <Box display="flex" alignItems="center" gap={4}>
-                    <Avatar src={product.imgUrl} />
+                    <Avatar src={`${process.env.REACT_APP_API_URL_PRODUCTION}` + product.picture} />
                     <Paragraph>{product.name}</Paragraph>
                   </Box>
                 </TableCell>
 
-                <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: "capitalize" }}>
-                  ${product.price > 999 ? (product.price / 1000).toFixed(1) + "k" : product.price}
+                <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
+                  {product?.reference}
                 </TableCell>
 
-                <TableCell sx={{ px: 0 }} align="left" colSpan={2}>
-                  {product.available ? (
-                    product.available < 20 ? (
-                      <Small bgcolor={bgSecondary}>{product.available} available</Small>
-                    ) : (
-                      <Small bgcolor={bgPrimary}>in stock</Small>
-                    )
-                  ) : (
-                    <Small bgcolor={bgError}>out of stock</Small>
-                  )}
-                </TableCell>
-
-                <TableCell sx={{ px: 0 }} colSpan={1}>
-                  <IconButton>
-                    <Edit color="primary" />
-                  </IconButton>
+                <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
+                  {" "}
+                  {product.product.nom}
                 </TableCell>
               </TableRow>
             ))}
