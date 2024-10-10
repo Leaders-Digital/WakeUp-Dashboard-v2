@@ -242,10 +242,14 @@ const ProductList = () => {
       dataIndex: "categorie",
     },
     {
-      title: "Nombre de variants",
-      dataIndex: "variants",
-      render: (variant) => variant.length,
+      title: "subCategorie",
+      dataIndex: "subCategorie",
     },
+    // {
+    //   title: "Nombre de variants",
+    //   dataIndex: "variants",
+    //   render: (variant) => variant.length,
+    // },
     {
       title: "Prix",
       dataIndex: "prix",
