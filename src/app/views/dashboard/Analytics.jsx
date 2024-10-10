@@ -66,9 +66,7 @@ export default function Analytics() {
           <Grid item lg={8} md={8} sm={12} xs={12}>
             <StatCards allData={allData} />
             <TopSellingTable allData={allData} />
-            {/* <StatCards2 /> */}
-
-            <H4>Ongoing Projects</H4>
+            <H4>Commandes récentes</H4>
             <RowCards allData={allData} />
           </Grid>
 

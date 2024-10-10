@@ -1,5 +1,7 @@
 import { Box, Card, Grid, IconButton, styled, Tooltip, useScrollTrigger } from "@mui/material";
 import { AttachMoney, Group, ShoppingCart, Store, ArrowRightAlt } from "@mui/icons-material";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import { useEffect, useState } from "react";
 import { Small } from "app/components/Typography";
 import axios from "axios";
@@ -44,11 +46,11 @@ export default function StatCards({ allData }) {
       Icon: AttachMoney
     },
     {
-      name: "Inventory Status",
+      name: "Produit en repture de stock",
       amount: allData.variantsWithLessThan3Quantity?.length,
-      Icon: Store
+      Icon: ProductionQuantityLimitsIcon
     },
-    { name: "Orders to deliver", amount: allData.enCoursOrdersCount, Icon: ShoppingCart }
+    { name: "Commandes en cours", amount: allData.enCoursOrdersCount, Icon: LocalShippingIcon }
   ];
 
   return (
@@ -58,13 +60,11 @@ export default function StatCards({ allData }) {
           <StyledCard elevation={6}>
             <ContentBox>
               <Icon className="icon" />
-
               <Box ml="12px">
                 <Small>{name}</Small>
                 <Heading>{amount}</Heading>
               </Box>
             </ContentBox>
-
             <Tooltip title="View Details" placement="top">
               <IconButton>
                 <ArrowRightAlt />

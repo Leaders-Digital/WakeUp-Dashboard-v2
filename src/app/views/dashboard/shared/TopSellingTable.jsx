@@ -15,6 +15,8 @@ import {
   IconButton
 } from "@mui/material";
 import { Paragraph } from "app/components/Typography";
+// import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // STYLED COMPONENTS
 const CardHeader = styled(Box)(() => ({
@@ -63,7 +65,7 @@ export default function TopSellingTable({ allData }) {
   const bgError = palette.error.main;
   const bgPrimary = palette.primary.main;
   const bgSecondary = palette.secondary.main;
-
+  const navigate = useNavigate();
   return (
     <Card elevation={3} sx={{ pt: "20px", mb: 3 }}>
       <CardHeader>
@@ -78,38 +80,55 @@ export default function TopSellingTable({ allData }) {
                 colSpan={4}
                 align="left"
                 style={{ marginLeft: "10px" }}
-                sx={{ px: 0, textTransform: "capitalize" }}
+                sx={{ px: 5, textTransform: "capitalize" }}
               >
                 Picture
               </TableCell>
 
-              <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
+              <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                 Reference
               </TableCell>
-
-              <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
+              <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                 Nom du produit
+              </TableCell>
+              <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
+                Quantité
               </TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
             {allData.variantsWithLessThan3Quantity?.map((product, index) => (
-              <TableRow key={index} hover>
-                <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
-                  <Box display="flex" alignItems="center" gap={4}>
-                    <Avatar src={`${process.env.REACT_APP_API_URL_PRODUCTION}` + product.picture} />
-                    <Paragraph>{product.name}</Paragraph>
-                  </Box>
+              <TableRow
+                key={index}
+                hover
+                onClick={() =>
+                  navigate(`/produit/details/`, { state: { productId: product.product._id } })
+                }
+              >
+                <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
+                  <img
+                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}` + product.picture}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      borderRadius: "50%",
+                      objectFit: "cover"
+                    }}
+                  />
                 </TableCell>
 
-                <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
+                <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                   {product?.reference}
                 </TableCell>
 
-                <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: "capitalize" }}>
+                <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                   {" "}
                   {product.product.nom}
+                </TableCell>
+                <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
+                  {" "}
+                  {product.quantity}
                 </TableCell>
               </TableRow>
             ))}

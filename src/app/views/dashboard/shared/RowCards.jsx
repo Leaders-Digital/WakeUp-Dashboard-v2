@@ -3,13 +3,20 @@ import { Box, Fab, Card, Grid, styled, Avatar, Checkbox, IconButton } from "@mui
 import { DateRange, MoreVert, StarOutline } from "@mui/icons-material";
 import format from "date-fns/format";
 import { Span } from "app/components/Typography";
-
+import { useNavigate } from "react-router-dom";
+import { EyeOutlined } from "@ant-design/icons";
+import "../../../../styles/dashboard.css";
 export default function RowCards({ allData }) {
-  console.log(allData.lastFiveEnCoursOrders, "here");
-
+  const navigate = useNavigate();
   return allData.lastFiveEnCoursOrders?.map((oneElement) => (
     <Fragment key={oneElement._id}>
-      <Card sx={{ py: 1, px: 2 }} className="project-card">
+      <Card
+        sx={{ py: 1, px: 2 }}
+        className="project-card"
+        onClick={() => {
+          navigate("/commande/details", { state: { orderId: oneElement._id } });
+        }}
+      >
         <Grid container alignItems="center">
           <Grid item md={5} xs={7}>
             {oneElement.nom + " " + oneElement.prenom}
@@ -26,15 +33,21 @@ export default function RowCards({ allData }) {
             </Box>
           </Grid>
 
-          <Grid item xs={1}>
+          <Grid item xs={1} style={{ display: "flex", alignItems: "center", gap: "5px" }}>
             <Box display="flex" justifyContent="flex-end">
-              {oneElement.listeDesPack.length + oneElement.listeDesProduits.length} produit
+              {oneElement.listeDesPack.length + oneElement.listeDesProduits.length}
+              <span style={{ marginLeft: "10px" }}>produit</span>
             </Box>
+            <Grid item md={5} xs={7}>
+              <Box display="flex" justifyContent="flex-end">
+                <EyeOutlined style={{ fontSize: "18px", cursor: "pointer" }} />
+              </Box>
+            </Grid>
           </Grid>
         </Grid>
       </Card>
 
-      <Box py={1} />
+      <Box py={0.5} />
     </Fragment>
   ));
 }

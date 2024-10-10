@@ -149,10 +149,10 @@ const Orderlist = () => {
           style={{ width: 120 }}
           onChange={(newStatus) => handleStatusChange(record.orderId, newStatus)}
         >
-          <Option value="En Cours">En Cours</Option>
-          <Option value="Validé">Validé</Option>
-          <Option value="Annulé">Annulé</Option>
-          <Option value="Livré">Livré</Option>
+          <Option value="en cours">En Cours</Option>
+          <Option value="validé">Validé</Option>
+          <Option value="annulé">Annulé</Option>
+          <Option value="livré">Livré</Option>
         </Select>
       )
     }
