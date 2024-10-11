@@ -12,6 +12,9 @@ import {
 import axios from "axios";
 import { message } from "antd";
 import * as XLSX from "xlsx"; // Import xlsx library
+import { Box } from "@mui/material";
+import { Breadcrumb } from "app/components";
+
 
 const { Search } = Input;
 
@@ -60,11 +63,11 @@ const SubscriptionList = () => {
     ];
 
     // Function to export data to Excel
-    const exportToExcel = () => { 
+    const exportToExcel = () => {
         const worksheet = XLSX.utils.json_to_sheet(filteredSubscriptions);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Subscriptions");
-    
+
         // Set column widths
         const columnWidths = [
             { wch: 20 }, // Set width for the first column (change the value as needed)
@@ -72,20 +75,27 @@ const SubscriptionList = () => {
             // Add more widths as necessary for your data
         ];
         worksheet['!cols'] = columnWidths;
-    
+
         // Adjust row height (you may want to set a height for all rows)
         for (let rowIndex = 0; rowIndex < filteredSubscriptions.length; rowIndex++) {
             worksheet['!rows'] = worksheet['!rows'] || [];
             worksheet['!rows'][rowIndex] = { hpt: 30 }; // Set height for each row (change the value as needed)
         }
-    
+
         // Generate buffer and create a link to download
         XLSX.writeFile(workbook, "subscriptions.xlsx");
     };
-    
+
 
     return (
         <div style={{ padding: "20px" }}>
+            <div style={{ marginBottom: "10px" }}>
+                <Box className="breadcrumb">
+                    <Breadcrumb
+                        routeSegments={[{ name: "Liste des abonnés", path: "/SubscriptionList" }, { name: "Les abonnés" }]}
+                    />
+                </Box>
+            </div>
             <Row gutter={16}>
                 <Col xs={24} xl={12} style={{ paddingBottom: "20px" }}>
                     <Card title="Nombre des Abonnés">{subscriptions.length}</Card>

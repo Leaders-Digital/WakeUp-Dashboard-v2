@@ -3,6 +3,9 @@ import { Card, Col, Row, Table, Select, message, Divider, Tag, Input, Modal, For
 import axios from "axios";
 import { EyeOutlined, DeleteOutlined } from "@ant-design/icons"; // Updated import
 // Removed import from '@mui/icons-material'
+import { Box } from "@mui/material";
+import { Breadcrumb } from "app/components";
+
 
 const { Option } = Select;
 const { Search } = Input;
@@ -180,6 +183,13 @@ const Reclamation = () => {
 
   return (
     <div style={{ padding: "20px" }}>
+      <div style={{ marginBottom: "10px" }}>
+        <Box className="breadcrumb">
+          <Breadcrumb
+            routeSegments={[{ name: "Gestion des réclamations", path: "/reclamation" }, { name: "Les Réclamations" }]}
+          />
+        </Box>
+      </div>
       <Row gutter={16}>
         <Col xs={24} xl={8}>
           <Card title="Nombre des  Tickets">{reclamations.length}</Card>

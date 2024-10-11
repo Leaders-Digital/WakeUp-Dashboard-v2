@@ -1,6 +1,9 @@
 import { Card, Tabs } from "antd";
 import Meta from "antd/es/card/Meta";
 import axios from "axios";
+import { Box } from "@mui/material";
+import { Breadcrumb } from "app/components";
+
 import React, { useState, useEffect } from "react";
 import OneBanner from "./OneBanner";
 import { Toaster } from "sonner";
@@ -35,7 +38,14 @@ const Banners = () => {
   console.log(items);
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
+      <div style={{ marginBottom: "10px" }}>
+        <Box className="breadcrumb">
+          <Breadcrumb
+            routeSegments={[{ name: "Gestion des bannières", path: "/banners" }, { name: "Banners" }]}
+          />
+        </Box>
+      </div>
       <Toaster richColors />
       <div style={{ padding: "20px" }}>
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
