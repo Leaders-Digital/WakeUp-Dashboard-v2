@@ -134,6 +134,9 @@ const ProductList = () => {
             categorie: categoryFilter,
             solde: isSale,
             search: search
+          },
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
           }
         }
       );
@@ -151,7 +154,12 @@ const ProductList = () => {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/get-category`
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/get-category`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
       setCategories(response.data.categoryCounts);
     } catch (error) {
@@ -183,7 +191,11 @@ const ProductList = () => {
   // Delete Product
   const deleteProduct = async (productId) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL_PRODUCTION}api/product/${productId}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL_PRODUCTION}api/product/${productId}`, {
+        headers: {
+          "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+        }
+      });
       message.success("Produit supprimé avec succès !");
       getProducts(); // Refresh the product list after deletion
     } catch (error) {
@@ -239,11 +251,11 @@ const ProductList = () => {
     },
     {
       title: "Categorie",
-      dataIndex: "categorie",
+      dataIndex: "categorie"
     },
     {
       title: "subCategorie",
-      dataIndex: "subCategorie",
+      dataIndex: "subCategorie"
     },
     // {
     //   title: "Nombre de variants",

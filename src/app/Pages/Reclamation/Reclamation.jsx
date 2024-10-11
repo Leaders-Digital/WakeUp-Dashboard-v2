@@ -21,7 +21,12 @@ const Reclamation = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/reclamation/get`
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/reclamation/get`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
       setReclamations(response.data.data);
       setLoading(false);
@@ -49,7 +54,12 @@ const Reclamation = () => {
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/reclamation/update/${id}`,
-        { etat: newStatus }
+        { etat: newStatus },
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
       message.success(response.data.message);
 
@@ -72,7 +82,12 @@ const Reclamation = () => {
       onOk: async () => {
         try {
           await axios.delete(
-            `${process.env.REACT_APP_API_URL_PRODUCTION}api/reclamation/delete/${id}`
+            `${process.env.REACT_APP_API_URL_PRODUCTION}api/reclamation/delete/${id}`,
+            {
+              headers: {
+                "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+              }
+            }
           );
           message.success("Réclamation supprimée avec succès.");
 

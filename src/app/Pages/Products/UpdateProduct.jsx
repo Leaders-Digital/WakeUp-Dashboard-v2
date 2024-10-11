@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Breadcrumb } from "app/components";
-import { Button, Card, Form, Input, InputNumber, Checkbox, Upload, message, Spin, Select } from "antd";
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  InputNumber,
+  Checkbox,
+  Upload,
+  message,
+  Spin,
+  Select
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 
@@ -24,7 +35,7 @@ const UpdateProduct = () => {
     { value: "LIPS", label: "Lévres" },
     { value: "Produits de soin", label: "Produits de soin" },
     { value: "Brush", label: "Brushes" },
-    { value: "PACK", label: "Pack" }, // Added PACK category for condition
+    { value: "PACK", label: "Pack" } // Added PACK category for condition
   ];
 
   const subCategoryOptions = {
@@ -35,7 +46,7 @@ const UpdateProduct = () => {
       { value: "HIGHLIGHTER", label: "Highlighter" },
       { value: "BRONZER & POWDER", label: "Bronzer & Powder" },
       { value: "PRIMER", label: "Primer" },
-      { value: "FIXER", label: "Fixer" },
+      { value: "FIXER", label: "Fixer" }
     ],
     EYES: [
       { value: "MASCARA", label: "Mascara" },
@@ -43,31 +54,31 @@ const UpdateProduct = () => {
       { value: "EYESHADOW", label: "Eyeshadow" },
       { value: "EYELINER", label: "Eyeliner" },
       { value: "EYE PENCILS", label: "Eye pencils" },
-      { value: "EYE BROW", label: "Eye Brow" },
+      { value: "EYE BROW", label: "Eye Brow" }
     ],
     LIPS: [
       { value: "LIPSTICK", label: "LipStick" },
       { value: "LIPGLOSS", label: "LipGloss" },
       { value: "LIPLINER", label: "LipLiner" },
-      { value: "BAUMES", label: "Baumes" },
+      { value: "BAUMES", label: "Baumes" }
     ],
     "Produits de soin": [
       { value: "Nettoyants", label: "Nettoyants" },
       { value: "SOIN DE VISAGE", label: "Soin de visage" },
       { value: "SOIN DE CORPS", label: "Soin de corps" },
-      { value: "SOIN DE CHEVEUX", label: "Soin de cheveux" },
+      { value: "SOIN DE CHEVEUX", label: "Soin de cheveux" }
     ],
     Brush: [
       { value: "PINCEAUX DE VISAGE", label: "Pinceaux de Visage" },
       { value: "PINCEAUX DES YEUX", label: "Pinceaux des yeux" },
       { value: "PINCEAUX DES LÈVRES", label: "Pinceaux des lèvres" },
-      { value: "BRUSH CLEANSER", label: "Brush Cleaner" },
+      { value: "BRUSH CLEANSER", label: "Brush Cleaner" }
     ],
     PACK: [
       { value: "PACK BASIC", label: "Pack Basic" },
-      { value: "PACK PREMIUM", label: "Pack Premium" },
+      { value: "PACK PREMIUM", label: "Pack Premium" }
       // Add more PACK subcategories as needed
-    ],
+    ]
   };
 
   // Function to fetch product details
@@ -75,7 +86,12 @@ const UpdateProduct = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/${productId}`
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/${productId}`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
 
       setProduct(response.data);
@@ -96,10 +112,10 @@ const UpdateProduct = () => {
                 uid: "-1",
                 name: "Current Image",
                 status: "done",
-                url: `${process.env.REACT_APP_API_URL_PRODUCTION}${response.data.mainPicture}`,
-              },
+                url: `${process.env.REACT_APP_API_URL_PRODUCTION}${response.data.mainPicture}`
+              }
             ]
-          : [],
+          : []
       });
 
       // Set selected category and available subcategories
@@ -158,7 +174,8 @@ const UpdateProduct = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-          },
+            "x-api-key": process.env.REACT_APP_API_KEY
+          }
         }
       );
       message.success("Produit mis à jour avec succès!");
@@ -193,7 +210,7 @@ const UpdateProduct = () => {
         <Breadcrumb
           routeSegments={[
             { name: "Liste Produits", path: "/produit/liste" },
-            { name: "Modifier Produit" },
+            { name: "Modifier Produit" }
           ]}
         />
       </div>
@@ -204,7 +221,7 @@ const UpdateProduct = () => {
           layout="vertical"
           onFinish={handleSubmit}
           initialValues={{
-            solde: false,
+            solde: false
           }}
         >
           <Form.Item
@@ -284,8 +301,8 @@ const UpdateProduct = () => {
                 rules={[
                   {
                     required: form.getFieldValue("solde"),
-                    message: "Le pourcentage de solde est requis!",
-                  },
+                    message: "Le pourcentage de solde est requis!"
+                  }
                 ]}
               >
                 <InputNumber
@@ -319,10 +336,7 @@ const UpdateProduct = () => {
             <Button type="primary" htmlType="submit">
               Mettre à jour le produit
             </Button>
-            <Button
-              style={{ marginLeft: "10px" }}
-              onClick={() => navigate("/produit/liste")}
-            >
+            <Button style={{ marginLeft: "10px" }} onClick={() => navigate("/produit/liste")}>
               Annuler
             </Button>
           </Form.Item>

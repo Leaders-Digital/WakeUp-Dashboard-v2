@@ -23,7 +23,12 @@ const DetailOrder = () => {
     const fetchOrderDetails = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL_PRODUCTION}api/order/${orderId}`
+          `${process.env.REACT_APP_API_URL_PRODUCTION}api/order/${orderId}`,
+          {
+            headers: {
+              "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+            }
+          }
         );
         console.log(response.data);
 

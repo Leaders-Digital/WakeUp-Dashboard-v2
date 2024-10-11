@@ -70,10 +70,18 @@ export default function JwtLogin() {
   const handleFormSubmit = async (values) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/login`, {
-        username: values.username,
-        password: values.password
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/user/login`,
+        {
+          username: values.username,
+          password: values.password
+        },
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
+      );
       console.log(res.data.token);
       localStorage.setItem("token", res.data.token);
       setLoading(false);

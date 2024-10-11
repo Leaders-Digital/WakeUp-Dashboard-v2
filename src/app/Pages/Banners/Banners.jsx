@@ -10,7 +10,14 @@ const Banners = () => {
 
   const getBanners = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/banner/get`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/banner/get`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
+      );
       setBanners(response.data.data);
     } catch (error) {
       console.error(error);

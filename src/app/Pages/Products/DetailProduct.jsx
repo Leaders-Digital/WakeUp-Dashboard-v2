@@ -46,7 +46,12 @@ const DetailProduct = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/${id}`
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/${id}`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
 
       setProduct(response.data);
@@ -129,7 +134,8 @@ const DetailProduct = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data",
+            "x-api-key": process.env.REACT_APP_API_KEY
           }
         }
       );
@@ -171,7 +177,8 @@ const DetailProduct = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data",
+            "x-api-key": process.env.REACT_APP_API_KEY
           }
         }
       );
@@ -189,7 +196,12 @@ const DetailProduct = () => {
   const handleDeleteVariant = async (variantId) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/variant/${variantId}`
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/variant/${variantId}`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
       message.success("Variant deleted successfully!");
       setVariant((prevVariants) => prevVariants.filter((v) => v._id !== variantId)); // Update the state

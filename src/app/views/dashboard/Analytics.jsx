@@ -44,7 +44,12 @@ export default function Analytics() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          process.env.REACT_APP_API_URL_PRODUCTION + "api/dashboard/"
+          process.env.REACT_APP_API_URL_PRODUCTION + "api/dashboard/",
+          {
+            headers: {
+              "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+            }
+          }
         );
         setLoading(false);
         setData(response.data);
@@ -63,26 +68,11 @@ export default function Analytics() {
     <Fragment>
       <ContentBox className="analytics">
         <Grid container spacing={3}>
-          <Grid item lg={8} md={8} sm={12} xs={12}>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
             <StatCards allData={allData} />
             <TopSellingTable allData={allData} />
             <H4>Commandes récentes</H4>
             <RowCards allData={allData} />
-          </Grid>
-
-          <Grid item lg={4} md={4} sm={12} xs={12}>
-            <Card sx={{ px: 3, py: 2, mb: 3 }}>
-              <Title>Traffic Sources</Title>
-              <SubTitle>Last 30 days</SubTitle>
-
-              <DoughnutChart
-                height="300px"
-                color={[palette.primary.dark, palette.primary.main, palette.primary.light]}
-              />
-            </Card>
-
-            <UpgradeCard />
-            <Campaigns />
           </Grid>
         </Grid>
       </ContentBox>

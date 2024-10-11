@@ -58,7 +58,11 @@ const CreerBlog = ({ getBlog }) => {
       }
 
       // Send POST request
-      await axios.post(`${process.env.REACT_APP_API_URL_PRODUCTION}api/blog/create`, formData);
+      await axios.post(`${process.env.REACT_APP_API_URL_PRODUCTION}api/blog/create`, formData, {
+        headers: {
+          "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+        }
+      });
       message.success("Blog créé avec succès!");
       getBlog(); // Fetch updated list after creation
 

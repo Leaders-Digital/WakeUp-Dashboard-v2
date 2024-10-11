@@ -8,7 +8,11 @@ const AddBlog = () => {
   const [blog, setBlog] = useState([]);
   const getBlog = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/blog/get`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/blog/get`, {
+        headers: {
+          "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+        }
+      });
       // console.log(response);
       setBlog(response.data.data);
     } catch (error) {

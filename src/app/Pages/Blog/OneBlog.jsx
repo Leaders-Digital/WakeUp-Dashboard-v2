@@ -10,7 +10,11 @@ const OneBlog = ({ item, getBlog }) => {
   // Function to delete a blog
   const deleteBlog = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL_PRODUCTION}api/blog/delete/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL_PRODUCTION}api/blog/delete/${id}`, {
+        headers: {
+          "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+        }
+      });
       getBlog(); // Refresh the blog list
     } catch (error) {
       console.error("Error deleting the blog:", error);

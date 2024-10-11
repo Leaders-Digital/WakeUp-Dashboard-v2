@@ -66,7 +66,10 @@ const AddinternUser = () => {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/internUser/getInternUser`,
         {
-          params: { search } // Send search as a general query parameter
+          params: { search }, // Send search as a general query parameter
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
         }
       );
       setInternUsers(response.data.data);

@@ -117,7 +117,8 @@ const Layout1Topbar = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/me`, {
         headers: {
-          Authorization: `Bearer ${token}` // Include token in the Authorization header
+          Authorization: `Bearer ${token}`, // Include token in the Authorization header
+          "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
         }
       });
       setUsername(response.data.user.username);

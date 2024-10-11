@@ -22,7 +22,12 @@ const Avis = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/review/getReview`
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/review/getReview`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
 
       setAvis(response.data.response.reverse());
@@ -42,7 +47,12 @@ const Avis = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/review/updateAcceptedStatus`,
-        { reviewId, accepted }
+        { reviewId, accepted },
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
       message.success(response.data.message);
       fetchAvis(); // Refresh the reviews

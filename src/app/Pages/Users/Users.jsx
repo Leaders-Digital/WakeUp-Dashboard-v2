@@ -58,7 +58,12 @@ const Users = () => {
   const getUsers = async (search = "") => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/user/getAll`
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/user/getAll`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
       console.log(response.data.data);
 
@@ -75,7 +80,11 @@ const Users = () => {
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/${id}`, {
+        headers: {
+          "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+        }
+      });
       message.success("User deleted successfully!");
       console.log("User deleted successfully!");
 
@@ -93,6 +102,11 @@ const Users = () => {
         {
           username,
           password
+        },
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
         }
       );
 
@@ -109,10 +123,18 @@ const Users = () => {
 
   const changeRole = async (id, role) => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/changeRole`, {
-        id,
-        newRole: role
-      });
+      await axios.put(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/user/changeRole`,
+        {
+          id,
+          newRole: role
+        },
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
+      );
       message.success("role changer avec succès");
     } catch (error) {
       message.error("Failed to delete User");
@@ -121,10 +143,18 @@ const Users = () => {
   };
   const changeStatus = async (id, status) => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/status`, {
-        id,
-        status: status
-      });
+      await axios.put(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/user/status`,
+        {
+          id,
+          status: status
+        },
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
+      );
       getUsers();
       message.success("status changer avec succès");
     } catch (error) {

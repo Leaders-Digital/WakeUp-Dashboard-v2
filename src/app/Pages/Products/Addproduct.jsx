@@ -113,7 +113,8 @@ const AddProduct = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data",
+            "x-api-key": process.env.REACT_APP_API_KEY
           }
         }
       );

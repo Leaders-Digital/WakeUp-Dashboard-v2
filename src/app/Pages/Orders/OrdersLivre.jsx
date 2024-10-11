@@ -20,7 +20,12 @@ const OrdersLivre = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_PRODUCTION}api/order/livre`
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/order/livre`,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
       );
       const fetchedOrders = response.data.data;
       const formattedOrders = fetchedOrders.reverse().map((order) => ({
@@ -51,9 +56,17 @@ const OrdersLivre = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await axios.patch(`${process.env.REACT_APP_API_URL_PRODUCTION}api/order/${orderId}/status`, {
-        statut: newStatus // Send the updated status to the backend
-      });
+      await axios.patch(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/order/${orderId}/status`,
+        {
+          statut: newStatus // Send the updated status to the backend
+        },
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
+      );
       message.success("Statut de la commande mis à jour avec succès");
 
       // Update the orders state after successful status change

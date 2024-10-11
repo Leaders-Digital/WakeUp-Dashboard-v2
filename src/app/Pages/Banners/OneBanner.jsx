@@ -29,7 +29,12 @@ const OneBanner = ({ banner }) => {
       try {
         const res = await axios.put(
           `${process.env.REACT_APP_API_URL_PRODUCTION}api/banner/${banner._id}`,
-          formData
+          formData,
+          {
+            headers: {
+              "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+            }
+          }
         );
         toast.success("Bannière mise à jour avec succès");
         console.log(res);
