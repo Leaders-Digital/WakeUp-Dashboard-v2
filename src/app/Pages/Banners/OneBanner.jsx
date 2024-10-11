@@ -10,20 +10,20 @@ const OneBanner = ({ banner }) => {
     `${process.env.REACT_APP_API_URL_PRODUCTION}` + banner.picture
   );
 
-  // Handle file input change
+  // Gérer le changement d'image
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setSelectedFile(file);
-      setPreview(URL.createObjectURL(file)); // Update preview with the selected image
+      setPreview(URL.createObjectURL(file)); // Mettre à jour l'aperçu avec l'image sélectionnée
     }
   };
 
-  // Handle the save operation (can include an API call to upload the file)
+  // Gérer l'opération d'enregistrement (peut inclure un appel API pour télécharger l'image)
   const handleSave = async () => {
     if (selectedFile) {
-      // You can now send the selectedFile to your server via an API call
-      console.log("File to be saved:", selectedFile);
+      // Vous pouvez maintenant envoyer l'image sélectionnée à votre serveur via un appel API
+      console.log("Fichier à enregistrer:", selectedFile);
       const formData = new FormData();
       formData.append("picture", selectedFile);
       try {
@@ -31,10 +31,10 @@ const OneBanner = ({ banner }) => {
           `${process.env.REACT_APP_API_URL_PRODUCTION}api/banner/${banner._id}`,
           formData
         );
-        toast.success("Banner updated successfully");
+        toast.success("Bannière mise à jour avec succès");
         console.log(res);
       } catch (error) {
-        toast.error("Error updating banner");
+        toast.error("Erreur lors de la mise à jour de la bannière");
       }
     }
   };
@@ -45,7 +45,7 @@ const OneBanner = ({ banner }) => {
       style={{ margin: "30px" }}
       cover={
         <img
-          alt="Banner"
+          alt="Bannière"
           style={{ width: "100%", height: "300px", objectFit: "cover" }}
           src={preview}
         />
@@ -54,7 +54,7 @@ const OneBanner = ({ banner }) => {
       <Meta title={banner.name} />
       <input type="file" onChange={handleFileChange} />
       <Button type="primary" onClick={handleSave} style={{ marginTop: "10px" }}>
-        Save
+        Enregistrer
       </Button>
     </Card>
   );
