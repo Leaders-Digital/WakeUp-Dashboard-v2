@@ -12,6 +12,8 @@ import {
 import axios from "axios";
 import { message } from "antd";
 import * as XLSX from "xlsx"; // Import xlsx library
+import { Box } from "@mui/material";
+import { Breadcrumb } from "app/components";
 
 const { Search } = Input;
 
@@ -88,6 +90,65 @@ const SubscriptionList = () => {
     XLSX.writeFile(workbook, "subscriptions.xlsx");
   };
 
+  return (
+    <div style={{ padding: "20px" }}>
+      <div style={{ marginBottom: "10px" }}>
+        <Box className="breadcrumb">
+          <Breadcrumb
+            routeSegments={[
+              { name: "Liste des abonnés", path: "/SubscriptionList" },
+              { name: "Les abonnés" }
+            ]}
+          />
+        </Box>
+      </div>
+      <Row gutter={16}>
+        <Col xs={24} xl={12} style={{ paddingBottom: "20px" }}>
+          <Card title="Nombre des Abonnés">{subscriptions.length}</Card>
+        </Col>
+        <Col xs={24} xl={12}>
+          <Card title="Abonnés Récents">
+            {subscriptions.slice(0, 1).map((sub) => (
+              <Tag key={sub._id} color="#DE8C06" style={{ marginBottom: "5px" }}>
+                {sub.email}
+              </Tag>
+            ))}
+          </Card>
+        </Col>
+        <Col span={24}>
+          <Divider orientation="left">Liste des Abonnements</Divider>
+        </Col>
+        <Col xs={24} xl={24}>
+          <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+            <Col span={12}>
+              <Search
+                placeholder="Rechercher par e-mail"
+                allowClear
+                size="middle"
+                onSearch={(value) => setSearchText(value)}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </Col>
+            <Col span={6} offset={6}>
+              <Button type="primary" onClick={exportToExcel} style={{ marginLeft: 8 }}>
+                Exporter vers Excel
+              </Button>
+            </Col>
+          </Row>
+        </Col>
+        <Col xs={24} xl={24}>
+          <Table
+            columns={columns}
+            dataSource={filteredSubscriptions}
+            rowKey="_id"
+            pagination={{ pageSize: 10 }}
+            loading={loading}
+            bordered
+          />
+        </Col>
+      </Row>
+    </div>
+  );
   return (
     <div style={{ padding: "20px" }}>
       <Row gutter={16}>
