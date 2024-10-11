@@ -1,3 +1,12 @@
+.project-card {
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  transform: scale(1); /* Initial scale */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Initial subtle shadow */
+  cursor: pointer;
+}
+
 .project-card:hover {
-  transform: scale(1);
+  transform: scale(1.05); /* Slightly increase the scale on hover */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Increase shadow intensity */
+  background-color: #f5f5f5; /* Optional: change background color on hover */
 }
