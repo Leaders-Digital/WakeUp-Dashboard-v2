@@ -62,7 +62,7 @@ export default function StatCards({ allData }) {
               <Icon className="icon" />
               <Box ml="12px">
                 <Small>{name}</Small>
-                <Heading>{amount}</Heading>+
+                <Heading>{amount}</Heading>
               </Box>
             </ContentBox>
             <Tooltip title="View Details" placement="top">
