@@ -67,10 +67,10 @@ const Filters = ({
         style={{ width: "100%" }}
         placeholder="Filtrer par catégorie"
       >
-        <Option value="Tous les catégories">Tous les catégories</Option>
         {categories.map((v) => (
           <Option key={v._id} value={v._id}>
-            {v.nom} {/* Assuming 'nom' is the category name */}
+            {console.log(v, "hetee")}
+            {v._id} {/* Assuming 'nom' is the category name */}
           </Option>
         ))}
       </Select>
@@ -161,6 +161,7 @@ const ProductList = () => {
           }
         }
       );
+
       setCategories(response.data.categoryCounts);
     } catch (error) {
       message.error("Erreur lors de la récupération des catégories.");
@@ -374,7 +375,7 @@ const ProductList = () => {
           {products.length > 0 ? (
             <Table
               columns={columns}
-              dataSource={products}
+              dataSource={products.reverse()}
               rowKey="_id"
               pagination={{ pageSize: 10 }}
               bordered
