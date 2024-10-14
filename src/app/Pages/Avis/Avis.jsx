@@ -1,4 +1,18 @@
-import { Col, Table, Tag, message, Select, Divider, Row, Card, Statistic, Rate } from "antd";
+import {
+  Col,
+  Table,
+  Tag,
+  message,
+  Select,
+  Divider,
+  Row,
+  Card,
+  Statistic,
+  Rate,
+  Button,
+  Modal,
+  Space
+} from "antd";
 import axios from "axios";
 import { Box } from "@mui/material";
 import React, { useEffect, useState, useMemo } from "react";
@@ -6,18 +20,20 @@ import {
   EyeOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
-  FileTextOutlined
-} from "@ant-design/icons"; // Updated import
+  FileTextOutlined,
+  DeleteOutlined
+} from "@ant-design/icons";
 import { Breadcrumb } from "app/components";
-import dayjs from "dayjs"; // Import dayjs for date formatting
+import dayjs from "dayjs";
 
 const { Option } = Select;
 
 const Avis = () => {
   const [avis, setAvis] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [filterStatus, setFilterStatus] = useState(null); // New state for filtering
-
+  const [filterStatus, setFilterStatus] = useState(null);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [selectedReview, setSelectedReview] = useState({});
   const fetchAvis = async () => {
     setLoading(true);
     try {
@@ -25,7 +41,7 @@ const Avis = () => {
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/review/getReview`,
         {
           headers: {
-            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+            "x-api-key": process.env.REACT_APP_API_KEY
           }
         }
       );
@@ -43,6 +59,29 @@ const Avis = () => {
     fetchAvis();
   }, []);
 
+  const handleDeleteReviews = async (review) => {
+    setDeleteModalVisible(false);
+    console.log("review  func", review);
+
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/review/deleteReview/`, // Correct URL
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Ensure the API key is sent in headers
+          },
+          data: { reviewIds: review._id, productId: review.productId._id } // Move data here
+        }
+      );
+
+      message.success("Avis supprimés avec succès!");
+      fetchAvis();
+    } catch (error) {
+      console.error("Échec de la suppression des avis:", error);
+      message.error("Échec de la suppression des avis.");
+    }
+  };
+
   const handleStatusChange = async (reviewId, accepted) => {
     try {
       const response = await axios.post(
@@ -50,19 +89,31 @@ const Avis = () => {
         { reviewId, accepted },
         {
           headers: {
-            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+            "x-api-key": process.env.REACT_APP_API_KEY
           }
         }
       );
       message.success(response.data.message);
-      fetchAvis(); // Refresh the reviews
+      fetchAvis();
     } catch (error) {
       console.error("Échec de la mise à jour du statut:", error);
       message.error("Échec de la mise à jour du statut.");
     }
   };
 
-  // Calculate counts using useMemo for optimization
+  const showDeleteConfirm = (review) => {
+    Modal.confirm({
+      title: "Confirmer la suppression",
+      // content: `Êtes-vous sûr de vouloir supprimer ${selectedReviewIds.length} avis?`,
+      okText: "Oui",
+      okType: "danger",
+      cancelText: "Non",
+      onOk: () => {
+        handleDeleteReviews(review);
+      }
+    });
+  };
+
   const totalReviews = useMemo(() => avis.length, [avis]);
 
   const acceptedReviews = useMemo(() => avis.filter((review) => review.accepted).length, [avis]);
@@ -72,7 +123,6 @@ const Avis = () => {
     [avis]
   );
 
-  // Filtered data based on filterStatus
   const filteredAvis = useMemo(() => {
     if (filterStatus === null) return avis;
     if (filterStatus === true) return avis.filter((review) => review.accepted);
@@ -95,13 +145,13 @@ const Avis = () => {
       title: "Date",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (createdAt) => dayjs(createdAt).format("DD/MM/YYYY") // Format the date
+      render: (createdAt) => dayjs(createdAt).format("DD/MM/YYYY")
     },
     {
       title: "Rating",
       dataIndex: "rating",
       key: "rating",
-      render: (rating) => <Rate disabled defaultValue={rating} /> // Display stars for the rating
+      render: (rating) => <Rate disabled defaultValue={rating} />
     },
     {
       title: "Commentaire",
@@ -122,15 +172,30 @@ const Avis = () => {
           <Option value="Non">Non</Option>
         </Select>
       )
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: (_, review) => (
+        <Space size="middle">
+          <Button
+            type="link"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => {
+              showDeleteConfirm(review);
+            }}
+          />
+        </Space>
+      ),
+      align: "center",
+      width: 100
     }
   ];
 
-  const handleViewClick = (avis) => {
-    // Implement your view logic here
-    console.log("View Avis:", avis);
+  const handleClick = (review) => {
+    setSelectedReview({ ...review });
   };
-
-  // Handlers for filtering
   const handleFilter = (status) => {
     setFilterStatus(status);
   };

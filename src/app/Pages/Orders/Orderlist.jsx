@@ -86,7 +86,7 @@ const Orderlist = () => {
   const statusColors = {
     Annulé: "red",
     Validé: "blue",
-    Livré: "green",
+    livré: "green",
     "en cours": "orange"
   };
   const handleStatusChange = async (orderId, newStatus) => {
