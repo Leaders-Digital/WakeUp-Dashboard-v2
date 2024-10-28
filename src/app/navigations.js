@@ -1,5 +1,10 @@
 export const navigations = [
-  { name: "Dashboard", path: "/dashboard/default", icon: "dashboard" },
+  {
+    name: "Dashboard",
+    path: "/dashboard/default",
+    icon: "dashboard",
+    users: ["admin", "editor", "viewer"]
+  },
   // { name: "Dashboard", path: "/dashboard/default", icon: "dashboard" },
   // { label: "Produit", type: "label" },
   {
@@ -8,7 +13,8 @@ export const navigations = [
     children: [
       { name: "Liste Produits", iconText: "SI", path: "/produit/liste" },
       { name: "Ajouter Produit", iconText: "SU", path: "/produit/ajouter" }
-    ]
+    ],
+    users: ["admin", "editor", "viewer"]
   },
 
   {
@@ -18,48 +24,30 @@ export const navigations = [
       { name: "Liste Commandes", iconText: "SI", path: "/commande/liste" },
       { name: "Commandes Livrés", iconText: "SI", path: "/commande/livre" }
       // { name: "Commandes Details", iconText: "SU", path: "/commande/details" }
-    ]
+    ],
+    users: ["admin", "editor", "viewer"]
   },
 
-  { name: "Blog", path: "/blog", icon: "font_download" },
-  { name: "Utilisateurs internes", path: "/internuser", icon: "contacts" },
-  { name: "Les réclamations", path: "/reclamation", icon: "question_answer" },
-  { name: "Banners", path: "/banners", icon: "panorama" },
-  { name: "Les utilisateur", path: "/users", icon: "group" },
-  { name: "Liste des abonnés", path: "/SubscriptionList", icon: "local_post_office" },
-  { name: "Liste Des Avis", path: "/avis", icon: "sms" }
-
-  // { label: "Components", type: "label" },
-  // {
-  //   name: "Components",
-  //   icon: "favorite",
-  //   badge: { value: "30+", color: "secondary" },
-  //   children: [
-  //     { name: "Auto Complete", path: "/material/autocomplete", iconText: "A" },
-  //     { name: "Buttons", path: "/material/buttons", iconText: "B" },
-  //     { name: "Checkbox", path: "/material/checkbox", iconText: "C" },
-  //     { name: "Dialog", path: "/material/dialog", iconText: "D" },
-  //     { name: "Expansion Panel", path: "/material/expansion-panel", iconText: "E" },
-  //     { name: "Form", path: "/material/form", iconText: "F" },
-  //     { name: "Icons", path: "/material/icons", iconText: "I" },
-  //     { name: "Menu", path: "/material/menu", iconText: "M" },
-  //     { name: "Progress", path: "/material/progress", iconText: "P" },
-  //     { name: "Radio", path: "/material/radio", iconText: "R" },
-  //     { name: "Switch", path: "/material/switch", iconText: "S" },
-  //     { name: "Slider", path: "/material/slider", iconText: "S" },
-  //     { name: "Snackbar", path: "/material/snackbar", iconText: "S" },
-  //     { name: "Table", path: "/material/table", iconText: "T" }
-  //   ]
-  // },
-  // {
-  //   name: "Charts",
-  //   icon: "trending_up",
-  //   children: [{ name: "Echarts", path: "/charts/echarts", iconText: "E" }]
-  // },
-  // {
-  //   name: "Documentation",
-  //   icon: "launch",
-  //   type: "extLink",
-  //   path: "http://demos.ui-lib.com/matx-react-doc/"
-  // }
+  { name: "Blog", path: "/blog", icon: "font_download", users: ["admin", "editor"] },
+  {
+    name: "Utilisateurs internes",
+    path: "/internuser",
+    icon: "contacts",
+    users: ["admin", "editor"]
+  },
+  {
+    name: "Les réclamations",
+    path: "/reclamation",
+    icon: "question_answer",
+    users: ["admin", "editor", "viewer"]
+  },
+  { name: "Banners", path: "/banners", icon: "panorama", users: ["admin", "editor"] },
+  { name: "Les utilisateur", path: "/users", icon: "group", users: ["admin"] },
+  {
+    name: "Liste des abonnés",
+    path: "/SubscriptionList",
+    icon: "local_post_office",
+    users: ["admin", "editor"]
+  },
+  { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] }
 ];

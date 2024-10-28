@@ -5,6 +5,9 @@ import { Box, ButtonBase, Icon, styled } from "@mui/material";
 import useSettings from "app/hooks/useSettings";
 import { Paragraph, Span } from "../Typography";
 import MatxVerticalNavExpansionPanel from "./MatxVerticalNavExpansionPanel";
+import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
 
 // STYLED COMPONENTS
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
@@ -78,9 +81,31 @@ const BadgeValue = styled("div")(() => ({
 export default function MatxVerticalNav({ items }) {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
+  const [user, setUser] = useState({});
+
+  const getUserInfo = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/user/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in the Authorization header
+          "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+        }
+      });
+      setUser(response.data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(user);
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const renderLevels = (data) => {
     return data.map((item, index) => {
+      if (item.users && !item.users.includes(user.role)) return null;
       if (item.type === "label")
         return (
           <ListLabel key={index} mode={mode} className="sidenavHoverShow">
@@ -101,7 +126,8 @@ export default function MatxVerticalNav({ items }) {
             href={item.path}
             className={`${mode === "compact" && "compactNavItem"}`}
             rel="noopener noreferrer"
-            target="_blank">
+            target="_blank"
+          >
             <ButtonBase key={item.name} name="child" sx={{ width: "100%" }}>
               {(() => {
                 if (item.icon) {
@@ -127,7 +153,8 @@ export default function MatxVerticalNav({ items }) {
                 isActive
                   ? `navItemActive ${mode === "compact" && "compactNavItem"}`
                   : `${mode === "compact" && "compactNavItem"}`
-              }>
+              }
+            >
               <ButtonBase key={item.name} name="child" sx={{ width: "100%" }}>
                 {item?.icon ? (
                   <Icon className="icon" sx={{ width: 36 }}>
@@ -145,7 +172,8 @@ export default function MatxVerticalNav({ items }) {
                         ml: "20px",
                         fontSize: "11px",
                         display: mode !== "compact" && "none"
-                      }}>
+                      }}
+                    >
                       {item.iconText}
                     </Box>
                   </Fragment>
