@@ -9,7 +9,6 @@ export default function AuthGuard({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log(token);
 
     // Check for token in localStorage
     if (token) {
@@ -18,7 +17,6 @@ export default function AuthGuard({ children }) {
         const decodedToken = jwtDecode(token);
         // Check token expiration
         if (decodedToken.exp * 1000 > Date.now()) {
-          console.log("Token is still valid");
           setIsAuthenticated(true);
         } else {
           localStorage.removeItem("token");

@@ -95,8 +95,6 @@ const UpdateProduct = () => {
       );
 
       setProduct(response.data);
-      console.log("Fetched Product Data:", response.data); // Add this line
-
       // Populate the form with fetched data
       form.setFieldsValue({
         nom: response.data.nom,
@@ -164,7 +162,6 @@ const UpdateProduct = () => {
         formData.append("mainPicture", file);
       }
     }
-    console.log(productId, "funt");
 
     setLoading(true);
     try {

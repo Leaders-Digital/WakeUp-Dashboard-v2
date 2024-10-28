@@ -59,8 +59,6 @@ const Small = styled("small")(({ bgcolor }) => ({
 }));
 
 export default function TopSellingTable({ allData }) {
-  console.log(allData, "here");
-
   const { palette } = useTheme();
   const bgError = palette.error.main;
   const bgPrimary = palette.primary.main;

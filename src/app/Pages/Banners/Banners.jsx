@@ -27,10 +27,6 @@ const Banners = () => {
     }
   };
 
-  const onChange = (key) => {
-    console.log(key);
-  };
-
   useEffect(() => {
     getBanners();
   }, []);
@@ -42,20 +38,22 @@ const Banners = () => {
       children: <OneBanner banner={banner} />
     };
   });
-  console.log(items);
 
   return (
     <div style={{ padding: "20px" }}>
       <div style={{ marginBottom: "10px" }}>
         <Box className="breadcrumb">
           <Breadcrumb
-            routeSegments={[{ name: "Gestion des bannières", path: "/banners" }, { name: "Banners" }]}
+            routeSegments={[
+              { name: "Gestion des bannières", path: "/banners" },
+              { name: "Banners" }
+            ]}
           />
         </Box>
       </div>
       <Toaster richColors />
       <div style={{ padding: "20px" }}>
-        <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+        <Tabs defaultActiveKey="1" items={items} />
       </div>
     </div>
   );

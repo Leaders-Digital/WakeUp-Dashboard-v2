@@ -23,7 +23,6 @@ const OneBanner = ({ banner }) => {
   const handleSave = async () => {
     if (selectedFile) {
       // Vous pouvez maintenant envoyer l'image sélectionnée à votre serveur via un appel API
-      console.log("Fichier à enregistrer:", selectedFile);
       const formData = new FormData();
       formData.append("picture", selectedFile);
       try {
@@ -37,7 +36,6 @@ const OneBanner = ({ banner }) => {
           }
         );
         toast.success("Bannière mise à jour avec succès");
-        console.log(res);
       } catch (error) {
         toast.error("Erreur lors de la mise à jour de la bannière");
       }

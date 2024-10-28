@@ -11,13 +11,10 @@ import logo from "../../../assets/WhatsApp.jpeg";
 const { Title, Text } = Typography;
 const DetailOrder = () => {
   const [order, setOrder] = useState(null);
-  console.log(order);
-
   const [loading, setLoading] = useState(true);
   const [disabledCards, setDisabledCards] = useState([]);
   const location = useLocation();
   const orderId = location.state.orderId;
-  console.log(orderId);
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -30,8 +27,6 @@ const DetailOrder = () => {
             }
           }
         );
-        console.log(response.data);
-
         setOrder(response.data.data);
         setDisabledCards(new Array(response.data.data.listeDesProduits.length).fill(false));
         setLoading(false);
@@ -201,6 +196,10 @@ const DetailOrder = () => {
         <p>
           <Text style={{ fontWeight: "700", fontSize: "20px" }}>Total Price :</Text>{" "}
           {order?.prixTotal} TND
+        </p>
+        <p>
+          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Telephone :</Text>{" "}
+          {order?.numTelephone}
         </p>
         <p>
           <Text style={{ fontWeight: "700", fontSize: "20px" }}>Address :</Text> {order?.adresse},{" "}

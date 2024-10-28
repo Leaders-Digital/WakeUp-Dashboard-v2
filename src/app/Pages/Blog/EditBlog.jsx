@@ -60,7 +60,6 @@ const EditBlog = ({ item, getBlog, isModalOpen, onClose }) => {
       if (logo) {
         formData.append("blogImage", logo);
       }
-      console.log(formData, "hehahahahaha");
 
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/blog/update/article/${item._id}`,
@@ -71,9 +70,6 @@ const EditBlog = ({ item, getBlog, isModalOpen, onClose }) => {
           }
         }
       );
-
-      console.log("Response:", response); // Log the response for debugging
-
       message.success("Blog modifié avec succès!");
       getBlog();
 

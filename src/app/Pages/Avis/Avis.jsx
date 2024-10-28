@@ -61,7 +61,6 @@ const Avis = () => {
 
   const handleDeleteReviews = async (review) => {
     setDeleteModalVisible(false);
-    console.log("review  func", review);
 
     try {
       await axios.delete(

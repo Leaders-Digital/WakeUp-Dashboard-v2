@@ -69,7 +69,6 @@ const Filters = ({
       >
         {categories.map((v) => (
           <Option key={v._id} value={v._id}>
-            {console.log(v, "hetee")}
             {v._id} {/* Assuming 'nom' is the category name */}
           </Option>
         ))}

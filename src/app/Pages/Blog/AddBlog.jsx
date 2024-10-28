@@ -13,14 +13,11 @@ const AddBlog = () => {
           "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
         }
       });
-      // console.log(response);
       setBlog(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(blog);
-
   useEffect(() => {
     getBlog();
   }, []);

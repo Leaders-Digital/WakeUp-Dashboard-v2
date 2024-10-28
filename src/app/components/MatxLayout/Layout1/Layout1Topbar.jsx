@@ -122,7 +122,6 @@ const Layout1Topbar = () => {
         }
       });
       setUsername(response.data.user.username);
-      console.log(response.data.user.username);
     } catch (error) {
       console.log(error);
     }

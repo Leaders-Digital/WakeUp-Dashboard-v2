@@ -6,7 +6,6 @@ import { EyeOutlined, DeleteOutlined } from "@ant-design/icons"; // Updated impo
 import { Box } from "@mui/material";
 import { Breadcrumb } from "app/components";
 
-
 const { Option } = Select;
 const { Search } = Input;
 const { confirm } = Modal;
@@ -18,7 +17,6 @@ const Reclamation = () => {
   const [filterEtat, setFilterEtat] = useState(null);
   const [selectedReclamation, setSelectedReclamation] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  console.log(filterEtat, "here");
 
   const fetchReclamations = async () => {
     setLoading(true);
@@ -186,8 +184,6 @@ const Reclamation = () => {
 
   const filteredReclamations = useMemo(() => {
     return reclamations.filter((rec) => {
-      console.log(rec);
-
       const matchesSearch =
         rec.nom.toLowerCase().includes(searchText.toLowerCase()) ||
         rec.email.toLowerCase().includes(searchText.toLowerCase());
@@ -201,7 +197,10 @@ const Reclamation = () => {
       <div style={{ marginBottom: "10px" }}>
         <Box className="breadcrumb">
           <Breadcrumb
-            routeSegments={[{ name: "Gestion des réclamations", path: "/reclamation" }, { name: "Les Réclamations" }]}
+            routeSegments={[
+              { name: "Gestion des réclamations", path: "/reclamation" },
+              { name: "Les Réclamations" }
+            ]}
           />
         </Box>
       </div>

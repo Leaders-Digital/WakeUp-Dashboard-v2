@@ -146,7 +146,6 @@ const Orderlist = () => {
           style={{ fontSize: "18px", cursor: "pointer" }}
           onClick={() => {
             navigate("/commande/details", { state: { orderId: record.orderId } });
-            console.log(record.orderId);
           }}
         />
       )

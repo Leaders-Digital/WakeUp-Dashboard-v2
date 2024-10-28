@@ -82,7 +82,7 @@ export default function JwtLogin() {
           }
         }
       );
-      console.log(res.data.token);
+
       localStorage.setItem("token", res.data.token);
       setLoading(false);
       navigate("/");
