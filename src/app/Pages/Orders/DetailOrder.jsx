@@ -75,10 +75,11 @@ const DetailOrder = () => {
     doc.text(`Gouvernorat: ${order.gouvernorat}`, 10, 80);
     doc.text(`Ville: ${order.ville}`, 10, 90);
     doc.text(`Code Postal: ${order.codePostal}`, 10, 100);
-    doc.text(`Date de Commande: ${formattedDateTime}`, 10, 110);
+    doc.text(`Téléphone: ${order.numTelephone}`, 10, 110); // Ajout du numéro de téléphone
+    doc.text(`Date de Commande: ${formattedDateTime}`, 10, 120);
 
     // Section Divider
-    doc.line(10, 115, 200, 115);
+    doc.line(10, 125, 200, 125);
 
     // Calculate Total Quantity and Price without Livraison
     const totalQuantity = order.listeDesProduits.reduce(
@@ -110,7 +111,7 @@ const DetailOrder = () => {
     doc.autoTable({
       head: [["#", "Référence", "Quantité", "Prix (TND)"]],
       body: productRows, // Include the total row
-      startY: 120,
+      startY: 140,
       styles: { fontSize: 10, cellPadding: 3 },
       headStyles: {
         fillColor: [222, 140, 6], // Blue header
