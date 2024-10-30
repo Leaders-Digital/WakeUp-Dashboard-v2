@@ -49,5 +49,6 @@ export const navigations = [
     icon: "local_post_office",
     users: ["admin", "editor"]
   },
-  { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] }
+  { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] },
+  { name: "Partenaire", path: "/partenaire/liste", icon: "sms", users: ["admin", "editor"] }
 ];

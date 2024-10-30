@@ -23,6 +23,7 @@ import Users from "./Pages/Users/Users";
 import SubscriptionList from "./Pages/Subscribe/Subscribe";
 import OrdersLivre from "./Pages/Orders/OrdersLivre";
 import Avis from "./Pages/Avis/Avis";
+import ListePartenaire from "./Pages/Partenaire/ListePartenaire";
 
 // SESSION PAGES
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
@@ -78,7 +79,9 @@ const routes = [
       { path: "/SubscriptionList", element: <SubscriptionList /> },
 
       // Avis pages route
-      { path: "/avis", element: <Avis /> }
+      { path: "/avis", element: <Avis /> },
+      // partenaire pages route
+      { path: "/partenaire/liste", element: <ListePartenaire /> }
     ]
   },
 
