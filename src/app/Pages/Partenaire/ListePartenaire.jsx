@@ -40,6 +40,7 @@ const ListePartenaire = () => {
     formData.append("adresse", values.adresse);
     formData.append("telephone", values.telephone);
     formData.append("status", values.status);
+    formData.append("location", values.location);
 
     if (values.logo) {
       formData.append("logo", values.logo);
@@ -158,6 +159,11 @@ const ListePartenaire = () => {
       key: "adresse"
     },
     {
+      title: "Location",
+      dataIndex: "location",
+      key: "location"
+    },
+    {
       title: "Téléphone",
       dataIndex: "telephone",
       key: "telephone"
@@ -250,6 +256,14 @@ const ListePartenaire = () => {
             rules={[{ required: true, message: "Veuillez entrer le numéro de téléphone." }]}
           >
             <Input placeholder="Téléphone" />
+          </Form.Item>
+
+          <Form.Item
+            name="location"
+            label="Location"
+            rules={[{ required: true, message: "Veuillez entrer la localisation." }]}
+          >
+            <Input placeholder="Location" />
           </Form.Item>
 
           <Form.Item

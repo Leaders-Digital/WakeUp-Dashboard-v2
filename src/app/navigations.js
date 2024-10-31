@@ -50,5 +50,5 @@ export const navigations = [
     users: ["admin", "editor"]
   },
   { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] },
-  { name: "Partenaire", path: "/partenaire/liste", icon: "sms", users: ["admin", "editor"] }
+  { name: "Partenaire", path: "/partenaire/liste", icon: "group", users: ["admin", "editor"] }
 ];

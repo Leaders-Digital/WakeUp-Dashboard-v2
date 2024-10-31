@@ -64,11 +64,18 @@ const DetailOrder = () => {
       minute: "2-digit"
     });
 
+    // Collect product names
+    const productNames = order.listeDesProduits
+      .map((product) => product.variant.product.nom)
+      .join(", ");
+
     // Set Font to Regular for the rest of the text
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal"); // Regular font for details
 
     // Order Information Section
+    console.log(order, "hererererer");
+
     doc.text(`Commande ID: ${order.orderCode}`, 10, 50);
     doc.text(`Nom: ${order.nom} ${order.prenom}`, 10, 60);
     doc.text(`Adresse: ${order.adresse}`, 10, 70);
@@ -77,9 +84,10 @@ const DetailOrder = () => {
     doc.text(`Code Postal: ${order.codePostal}`, 10, 100);
     doc.text(`Téléphone: ${order.numTelephone}`, 10, 110); // Ajout du numéro de téléphone
     doc.text(`Date de Commande: ${formattedDateTime}`, 10, 120);
+    // doc.text(`Nom du Produit: ${productNames}`, 10, 130); // Add product names here
 
     // Section Divider
-    doc.line(10, 125, 200, 125);
+    doc.line(10, 135, 200, 135);
 
     // Calculate Total Quantity and Price without Livraison
     const totalQuantity = order.listeDesProduits.reduce(
@@ -94,6 +102,7 @@ const DetailOrder = () => {
     // Prepare Product Data for Table
     const productRows = order.listeDesProduits.map((product, index) => [
       index + 1,
+      product?.variant?.product?.nom,
       product?.variant?.reference,
       product.quantite,
       `${product.variant.product.prix || 0} TND`
@@ -101,15 +110,16 @@ const DetailOrder = () => {
 
     // Add Total Row at the End
     productRows.push([
-      "", // Empty cell for the index column
       "Total", // Label in the reference column
+      "", // Empty cell for the index column
+      "",
       totalQuantity, // Total Quantity
       `${totalPriceWithoutLivraison.toFixed(2)} TND` // Total Price (TND)
     ]);
 
     // Product Table Heading
     doc.autoTable({
-      head: [["#", "Référence", "Quantité", "Prix (TND)"]],
+      head: [["#", "produit", "Référence", "Quantité", "Prix (TND)"]],
       body: productRows, // Include the total row
       startY: 140,
       styles: { fontSize: 10, cellPadding: 3 },
