@@ -45,8 +45,8 @@ const AddVariantModal = ({ productId, getProduct }) => {
       message.error("La couleur est obligatoire.");
       return false;
     }
-    if (!quantity || quantity <= 0) {
-      message.error("La quantité doit être supérieure à 0.");
+    if (!quantity ) {
+      message.error("La couleur est obligatoire.");
       return false;
     }
     if (!logo) {

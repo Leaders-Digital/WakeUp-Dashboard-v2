@@ -17,6 +17,7 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
+import TextArea from "antd/es/input/TextArea";
 
 const { Option } = Select;
 
@@ -90,6 +91,8 @@ const AddProduct = () => {
     formData.append("categorie", values.categorie);
     formData.append("subCategorie", values.subCategorie);
     formData.append("solde", values.solde);
+    formData.append("metaFields", values.metaFields);
+
 
     // Append soldePourcentage only if solde is true
     if (values.solde) {
@@ -292,6 +295,14 @@ const AddProduct = () => {
             >
               <Button icon={<UploadOutlined />}>Cliquez pour télécharger</Button>
             </Upload>
+          </Form.Item>
+
+          <Form.Item
+            label="Tag"
+            name="metaFields"
+            rules={[{ required: false }]}
+          >
+            <TextArea />
           </Form.Item>
 
           <Form.Item>

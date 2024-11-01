@@ -15,6 +15,7 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
+import TextArea from "antd/es/input/TextArea";
 
 const { Option } = Select;
 
@@ -35,7 +36,7 @@ const UpdateProduct = () => {
     { value: "LIPS", label: "Lévres" },
     { value: "Produits de soin", label: "Produits de soin" },
     { value: "Brush", label: "Brushes" },
-    { value: "PACK", label: "Pack" } // Added PACK category for condition
+    { value: "PACK", label: "Pack" } 
   ];
 
   const subCategoryOptions = {
@@ -104,6 +105,8 @@ const UpdateProduct = () => {
         subCategorie: response.data.subCategorie,
         solde: response.data.solde,
         soldePourcentage: response.data.soldePourcentage,
+        metaFields: response.data.metaFields,
+
         mainPicture: response.data.mainPicture
           ? [
               {
@@ -154,6 +157,8 @@ const UpdateProduct = () => {
     formData.append("subCategorie", values.subCategorie);
     formData.append("solde", values.solde);
     formData.append("soldePourcentage", values.soldePourcentage);
+    formData.append("metaFields", values.metaFields);
+
 
     // Handle image upload
     if (values.mainPicture && values.mainPicture.length > 0) {
@@ -327,6 +332,14 @@ const UpdateProduct = () => {
             >
               <Button icon={<UploadOutlined />}>Cliquez pour télécharger</Button>
             </Upload>
+          </Form.Item>
+
+          <Form.Item
+            label="Tag"
+            name="metaFields"
+            rules={[{ required: false }]}
+          >
+            <TextArea />
           </Form.Item>
 
           <Form.Item>

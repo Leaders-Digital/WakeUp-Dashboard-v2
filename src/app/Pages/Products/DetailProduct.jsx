@@ -458,12 +458,7 @@ const DetailProduct = () => {
             name="quantity"
             rules={[
               { required: true, message: "La quantité est obligatoire." },
-              {
-                type: "number",
-                min: 1,
-                message: "La quantité doit être supérieure à 0.",
-                transform: (value) => Number(value)
-              }
+             
             ]}
           >
             <Input type="number" placeholder="Quantité" />
@@ -567,12 +562,7 @@ const DetailProduct = () => {
             name="quantity"
             rules={[
               { required: true, message: "La quantité est obligatoire." },
-              {
-                type: "number",
-                min: 1,
-                message: "La quantité doit être supérieure à 0.",
-                transform: (value) => Number(value)
-              }
+              
             ]}
           >
             <Input type="number" placeholder="Quantité" />
