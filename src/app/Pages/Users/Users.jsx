@@ -307,7 +307,7 @@ const Users = () => {
           Ajouter un utilisateur
         </Button>
       </div>
-      <Table columns={columns} dataSource={internUsers} />
+      <Table columns={columns} dataSource={internUsers} scroll={{ x: "max-content" }} />
 
       {/* Create Modal */}
       <Modal

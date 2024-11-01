@@ -1,14 +1,14 @@
-import { Table, Modal, message, Button, Form, Input, Select, Upload } from "antd";
+import { Table, Modal, message, Button, Form, Input, Select, Upload, Row, Col, Card, Divider } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Breadcrumb } from "app/components";
+import { Box } from "@mui/material";
 
 const { Option } = Select;
 
 const ListePartenaire = () => {
   const [partenaire, setPartenaire] = useState([]);
-  console.log(partenaire, "here");
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState(null);
@@ -43,11 +43,9 @@ const ListePartenaire = () => {
     formData.append("location", values.location);
 
     if (values.logo) {
-      formData.append("logo", values.logo);
+      formData.append("logo", values.logo.originFileObj || values.logo);
     }
-    if (values.logo.originFileObj) {
-      formData.append("logo", values.logo.originFileObj);
-    }
+    
     try {
       if (editingId) {
         await axios.put(
@@ -87,8 +85,6 @@ const ListePartenaire = () => {
   };
 
   const showEditModal = (record) => {
-    console.log(record.logo, "record");
-
     setEditingId(record._id);
     form.setFieldsValue({
       nom: record.nom,
@@ -100,6 +96,7 @@ const ListePartenaire = () => {
     });
     setIsModalVisible(true);
   };
+
   const deletePartenaire = async (id) => {
     try {
       await axios.delete(
@@ -117,6 +114,7 @@ const ListePartenaire = () => {
       message.error("Échec de la suppression du partenaire.");
     }
   };
+
   const showDeleteConfirm = (id) => {
     Modal.confirm({
       title: "Êtes-vous sûr de vouloir supprimer ce partenaire ?",
@@ -129,6 +127,7 @@ const ListePartenaire = () => {
       }
     });
   };
+
   const columns = [
     {
       title: "Photo",
@@ -172,9 +171,7 @@ const ListePartenaire = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status) => {
-        return status ? "Actif" : "Inactif";
-      }
+      render: (status) => (status ? "Actif" : "Inactif")
     },
     {
       title: "Action",
@@ -195,8 +192,42 @@ const ListePartenaire = () => {
     }
   ];
 
+  // Count active and inactive partners
+  const totalPartenaire = partenaire.length;
+  const activePartenaire = partenaire.filter((p) => p.status).length;
+  const inactivePartenaire = totalPartenaire - activePartenaire;
+
   return (
     <div style={{ padding: "20px" }}>
+      <div style={{ marginBottom: "10px" }}>
+        <Box className="breadcrumb">
+          <Breadcrumb
+            routeSegments={[{ name: "Liste des Partenaire", path: "/partenaire" }, { name: "Partenaire" }]}
+          />
+        </Box>
+      </div>
+
+      <Row gutter={16} style={{ marginBottom: "20px" }}>
+        <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
+          <Card title="Nombre de partenaire">
+            <p>{totalPartenaire}</p>
+          </Card>
+        </Col>
+        <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
+          <Card title="Partenaire Actif">
+            <p>{activePartenaire}</p>
+          </Card>
+        </Col>
+        <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
+          <Card title="Partenaire Inactif">
+            <p>{inactivePartenaire}</p>
+          </Card>
+        </Col>
+      </Row>
+
+      <Divider orientation="left">
+        Liste des Partenaire
+      </Divider>
       <div style={{ width: "100%", display: "flex", justifyContent: "right", padding: "10px" }}>
         <Button
           type="primary"
@@ -206,7 +237,7 @@ const ListePartenaire = () => {
             setIsModalVisible(true);
           }}
         >
-          + Ajouter
+          + Ajouter Partenaire
         </Button>
       </div>
 
@@ -217,6 +248,7 @@ const ListePartenaire = () => {
         }))}
         columns={columns}
         rowClassName={(record) => (record.status ? "" : "inactive-partner")}
+        scroll={{ x: "max-content" }}
       />
 
       <Modal
@@ -253,43 +285,29 @@ const ListePartenaire = () => {
           <Form.Item
             name="telephone"
             label="Téléphone"
-            rules={[{ required: true, message: "Veuillez entrer le numéro de téléphone." }]}
+            rules={[{ required: true, message: "Veuillez entrer le téléphone." }]}
           >
             <Input placeholder="Téléphone" />
           </Form.Item>
 
-          <Form.Item
-            name="location"
-            label="Location"
-            rules={[{ required: true, message: "Veuillez entrer la localisation." }]}
-          >
-            <Input placeholder="Location" />
-          </Form.Item>
-
-          <Form.Item
-            name="status"
-            label="Status"
-            rules={[{ required: true, message: "Veuillez sélectionner le statut." }]}
-          >
-            <Select placeholder="Sélectionnez un statut">
+          <Form.Item name="status" label="Status">
+            <Select placeholder="Sélectionner un status">
               <Option value={true}>Actif</Option>
               <Option value={false}>Inactif</Option>
             </Select>
           </Form.Item>
 
-          <Form.Item
-            name="logo"
-            label="Logo"
-            rules={[{ required: true, message: "Veuillez télécharger le logo." }]}
-          >
+          <Form.Item name="location" label="Location">
+            <Input placeholder="Localisation" />
+          </Form.Item>
+
+          <Form.Item name="logo" label="Logo" valuePropName="file">
             <Upload
+              listType="picture"
               beforeUpload={() => false}
-              accept=".png,.jpg,.jpeg"
-              onChange={({ file }) => {
-                form.setFieldsValue({ logo: { originFileObj: file } });
-              }}
+              maxCount={1}
             >
-              <Button>Upload Logo</Button>
+              <Button>Upload</Button>
             </Upload>
           </Form.Item>
 

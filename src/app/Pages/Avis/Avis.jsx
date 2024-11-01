@@ -242,7 +242,7 @@ const Avis = () => {
         </Col>
       </Row>
 
-      <Divider orientation="left" style={{ fontWeight: "700" }}>
+      <Divider orientation="left">
         Liste des avis
       </Divider>
 

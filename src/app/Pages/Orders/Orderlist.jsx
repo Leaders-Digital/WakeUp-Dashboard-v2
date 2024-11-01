@@ -32,8 +32,8 @@ const Orderlist = () => {
         customerName: `${order.nom} ${order.prenom}`,
         product: order.listeDesProduits.map((item) => item.variant).join(", "),
         quantity: order.listeDesProduits.reduce((acc, item) => acc + item.quantite, 0),
-        status: order.statut // Use the 'statut' field from the backend
-        // date: order.createdAt ? moment(order.createdAt) : null // Assuming you have 'createdAt'
+        status: order.statut ,// Use the 'statut' field from the backend
+        date: moment(order.createdAt).format("YYYY-MM-DD")
       }));
       setOrders(formattedOrders);
       setFilteredOrders(formattedOrders);
@@ -116,16 +116,19 @@ const Orderlist = () => {
     }
   };
   const columns = [
-    {
-      title: "Order ID",
-      dataIndex: "orderId",
-      key: "orderId"
-    },
+
     {
       title: "Nom client",
       dataIndex: "customerName",
       key: "customerName"
     },
+   
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date"
+    },
+   
     {
       title: "Quantity",
       dataIndex: "quantity",
@@ -171,7 +174,7 @@ const Orderlist = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      {/* navigation box */}
+
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
@@ -180,7 +183,7 @@ const Orderlist = () => {
           ]}
         />
       </Box>
-      {/* calculating box  */}
+
       <div style={{ marginTop: "20px", justifyContent: "center", alignItems: "center" }}>
         <Row gutter={16} style={{ display: "flex", justifyContent: "space-evenly" }}>
           <Col xs={24} xl={6}>

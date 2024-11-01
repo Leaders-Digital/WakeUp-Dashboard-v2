@@ -254,6 +254,7 @@ const Reclamation = () => {
             rowKey="_id"
             pagination={{ pageSize: 5 }}
             loading={loading}
+            scroll={{ x: "max-content" }}
           />
         </Col>
       </Row>

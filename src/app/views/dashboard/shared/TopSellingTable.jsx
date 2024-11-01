@@ -12,10 +12,10 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  IconButton
+  IconButton,
+  Pagination,
 } from "@mui/material";
-import { Paragraph } from "app/components/Typography";
-// import { Navigate } from "react-router-dom";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // STYLED COMPONENTS
@@ -47,23 +47,25 @@ const ProductTable = styled(Table)(() => ({
   "& td:first-of-type": { paddingLeft: "16px !important" }
 }));
 
-const Small = styled("small")(({ bgcolor }) => ({
-  width: 50,
-  height: 15,
-  color: "#fff",
-  padding: "2px 8px",
-  borderRadius: "4px",
-  overflow: "hidden",
-  background: bgcolor,
-  boxShadow: "0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24)"
-}));
-
 export default function TopSellingTable({ allData }) {
   const { palette } = useTheme();
-  const bgError = palette.error.main;
-  const bgPrimary = palette.primary.main;
-  const bgSecondary = palette.secondary.main;
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 5;
+
+  // Calculate total pages
+  const totalPages = Math.ceil(allData.variantsWithLessThan3Quantity.length / itemsPerPage);
+
+  // Pagination data
+  const paginatedData = allData.variantsWithLessThan3Quantity.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
   return (
     <Card elevation={3} sx={{ pt: "20px", mb: 3 }}>
       <CardHeader>
@@ -74,15 +76,9 @@ export default function TopSellingTable({ allData }) {
         <ProductTable>
           <TableHead>
             <TableRow>
-              <TableCell
-                colSpan={4}
-                align="left"
-                style={{ marginLeft: "10px" }}
-                sx={{ px: 5, textTransform: "capitalize" }}
-              >
+              <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                 Picture
               </TableCell>
-
               <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                 Reference
               </TableCell>
@@ -96,23 +92,17 @@ export default function TopSellingTable({ allData }) {
           </TableHead>
 
           <TableBody>
-            {allData.variantsWithLessThan3Quantity?.map((product, index) => (
+            {paginatedData.map((product, index) => (
               <TableRow
                 key={index}
                 hover
-                onClick={() =>
-                  navigate(`/produit/details/`, { state: { productId: product.product._id } })
-                }
+                onClick={() => navigate(`/produit/details/`, { state: { productId: product.product._id } })}
               >
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
-                  <img
-                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}` + product.picture}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "50%",
-                      objectFit: "cover"
-                    }}
+                  <Avatar
+                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product.picture}`}
+                    alt={product.product.nom}
+                    sx={{ width: 50, height: 50 }}
                   />
                 </TableCell>
 
@@ -121,11 +111,10 @@ export default function TopSellingTable({ allData }) {
                 </TableCell>
 
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
-                  {" "}
                   {product.product.nom}
                 </TableCell>
+
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
-                  {" "}
                   {product.quantity}
                 </TableCell>
               </TableRow>
@@ -133,39 +122,16 @@ export default function TopSellingTable({ allData }) {
           </TableBody>
         </ProductTable>
       </Box>
+
+      {/* Pagination Control */}
+      <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+        />
+      </Box>
     </Card>
   );
 }
-
-const productList = [
-  {
-    imgUrl: "/assets/images/products/headphone-2.jpg",
-    name: "earphone",
-    price: 100,
-    available: 15
-  },
-  {
-    imgUrl: "/assets/images/products/headphone-3.jpg",
-    name: "earphone",
-    price: 1500,
-    available: 30
-  },
-  {
-    imgUrl: "/assets/images/products/iphone-2.jpg",
-    name: "iPhone x",
-    price: 1900,
-    available: 35
-  },
-  {
-    imgUrl: "/assets/images/products/iphone-1.jpg",
-    name: "iPhone x",
-    price: 100,
-    available: 0
-  },
-  {
-    imgUrl: "/assets/images/products/headphone-3.jpg",
-    name: "Head phone",
-    price: 1190,
-    available: 5
-  }
-];

@@ -281,7 +281,7 @@ const AddinternUser = () => {
           Create User
         </Button>
       </div>
-      <Table columns={columns} dataSource={internUsers} />
+      <Table columns={columns} dataSource={internUsers} scroll={{ x: "max-content" }}/>
 
       {/* Update Modal */}
       <Modal title="Editer User" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

@@ -50,5 +50,7 @@ export const navigations = [
     users: ["admin", "editor"]
   },
   { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] },
-  { name: "Partenaire", path: "/partenaire/liste", icon: "group", users: ["admin", "editor"] }
+  { name: "Partenaire", path: "/partenaire/liste", icon: "account_box", users: ["admin", "editor"] },
+  { name: "Promo", path: "/promo", icon: "shopping_basket", users: ["admin", "editor"] }
+
 ];
