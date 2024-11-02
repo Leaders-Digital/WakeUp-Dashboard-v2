@@ -28,21 +28,10 @@ export const navigations = [
     users: ["admin", "editor", "viewer"]
   },
 
-  { name: "Blog", path: "/blog", icon: "font_download", users: ["admin", "editor"] },
-  {
-    name: "Utilisateurs internes",
-    path: "/internuser",
-    icon: "contacts",
-    users: ["admin", "editor"]
-  },
-  {
-    name: "Les réclamations",
-    path: "/reclamation",
-    icon: "question_answer",
-    users: ["admin", "editor", "viewer"]
-  },
+ 
+  
+  
   { name: "Banners", path: "/banners", icon: "panorama", users: ["admin", "editor"] },
-  { name: "Les utilisateur", path: "/users", icon: "group", users: ["admin"] },
   {
     name: "Liste des abonnés",
     path: "/SubscriptionList",
@@ -51,6 +40,21 @@ export const navigations = [
   },
   { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] },
   { name: "Partenaire", path: "/partenaire/liste", icon: "account_box", users: ["admin", "editor"] },
-  { name: "Promo", path: "/promo", icon: "shopping_basket", users: ["admin", "editor"] }
+  { name: "Promo", path: "/promo", icon: "shopping_basket", users: ["admin", "editor"] },
+  { name: "Blog", path: "/blog", icon: "font_download", users: ["admin", "editor"] },
+  {
+    name: "Utilisateurs internes",
+    path: "/internuser",
+    icon: "contacts",
+    users: ["admin", "editor"]
+  },
+  { name: "Les utilisateur", path: "/users", icon: "group", users: ["admin"] },
+  {
+    name: "Les réclamations",
+    path: "/reclamation",
+    icon: "question_answer",
+    users: ["admin", "editor", "viewer"]
+  },
+
 
 ];
