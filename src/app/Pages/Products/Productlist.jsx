@@ -334,21 +334,21 @@ const ProductList = () => {
       </div>
 
       <Row gutter={16}>
-        <Col xs={24} sm={12} md={6}>
+        <Col xs={24} sm={12} md={8}>
           <StatsCard title="Nombre Total des Produits" value={fullResponse.totalProducts || 0} />
         </Col>
-        <Col xs={24} sm={12} md={6}>
+        <Col xs={24} sm={12} md={8}>
           <StatsCard title="Nombre de Produits Soldés" value={calculateSoldProducts()} />
         </Col>
-        <Col xs={24} sm={12} md={6}>
+        <Col xs={24} sm={12} md={8}>
           <StatsCard title="Nombre de Catégories" value={calculateCategories()} />
         </Col>
-        <Col xs={24} sm={12} md={6}>
+        {/* <Col xs={24} sm={12} md={6}>
           <StatsCard
             title="Nombre de Sous-Catégories"
             value={fullResponse.totalSubCategories || 0}
           />
-        </Col>
+        </Col> */}
       </Row>
 
       <Divider orientation="left">Nos Produits</Divider>
