@@ -7,8 +7,8 @@ import App from "./app/App";
 // third party style
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 // remove all console log from console
-// console.log = () => {};
-// console.error = () => {};
+console.log = () => {};
+console.error = () => {};
 const root = createRoot(document.getElementById("root"));
 
 root.render(
