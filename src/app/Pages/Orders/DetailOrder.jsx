@@ -201,11 +201,11 @@ const DetailOrder = () => {
         <Title level={2}>Détails de la commande pour </Title>
 
         <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Nom Prenom :</Text>{" "}
+          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Nom et Prenom :</Text>{" "}
           {order?.nom?.toUpperCase()} {order?.prenom?.toUpperCase()}{" "}
         </p>
         <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Total Price :</Text>{" "}
+          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Prix Total :</Text>{" "}
           {order?.prixTotal} TND
         </p>
         <p>
@@ -213,9 +213,16 @@ const DetailOrder = () => {
           {order?.numTelephone}
         </p>
         <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Address :</Text> {order?.adresse},{" "}
+          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Addresse :</Text> {order?.adresse},{" "}
           {order?.ville}, {order?.gouvernorat}, {order?.codePostal}
         </p>
+
+        <p>
+          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Code de Suivie :</Text> {order?.orderCode}{" "}
+          
+        </p>
+
+
         <Button type="primary" onClick={handleDownloadInvoice}>
           Télécharger la facture
         </Button>

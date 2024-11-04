@@ -30,7 +30,7 @@ const OrdersLivre = () => {
       const fetchedOrders = response.data.data;
       const formattedOrders = fetchedOrders.reverse().map((order) => ({
         key: order._id,
-        orderId: order._id,
+        orderId: order.orderCode,
         customerName: `${order.nom} ${order.prenom}`,
         product: order.listeDesProduits.map((item) => item.variant).join(", "),
         quantity: order.listeDesProduits.reduce((acc, item) => acc + item.quantite, 0),

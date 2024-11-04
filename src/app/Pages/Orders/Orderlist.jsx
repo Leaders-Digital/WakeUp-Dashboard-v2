@@ -33,7 +33,10 @@ const Orderlist = () => {
         product: order.listeDesProduits.map((item) => item.variant).join(", "),
         quantity: order.listeDesProduits.reduce((acc, item) => acc + item.quantite, 0),
         status: order.statut ,// Use the 'statut' field from the backend
-        date: moment(order.createdAt).format("YYYY-MM-DD")
+        date: moment(order.createdAt).format("YYYY-MM-DD"),
+        prix: order.prixTotal + " TND",
+        payed : order.payed
+
       }));
       setOrders(formattedOrders);
       setFilteredOrders(formattedOrders);
@@ -84,7 +87,7 @@ const Orderlist = () => {
   };
 
   const statusColors = {
-    Annulé: "red",
+    annulé: "red",
     Validé: "blue",
     livré: "green",
     "en cours": "orange"
@@ -128,19 +131,30 @@ const Orderlist = () => {
       dataIndex: "date",
       key: "date"
     },
-   
-    {
-      title: "Quantity",
-      dataIndex: "quantity",
-      key: "quantity"
-    },
+
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       render: (status) => <Tag color={statusColors[status] || "default"}>{status}</Tag>
     },
-
+   
+    {
+      title: "Prix",
+      dataIndex: "prix",
+      key: "prix"
+    },
+    
+    {
+      title: "Paiement",
+      dataIndex: "payed",
+      key: "payed",
+      render: (payed) => (
+        <Tag color={payed ? "green" : "red"}>
+          {payed ? "Payé" : "Non Payé"}
+        </Tag>
+      ),
+    },
     {
       title: "Détails",
       key: "details",
@@ -186,29 +200,22 @@ const Orderlist = () => {
 
       <div style={{ marginTop: "20px", justifyContent: "center", alignItems: "center" }}>
         <Row gutter={16} style={{ display: "flex", justifyContent: "space-evenly" }}>
-          <Col xs={24} xl={6}>
+          <Col xs={24} xl={8}>
             <Card title="Total Commandes" bordered={false}>
               <h2 style={{ textAlign: "center" }}>{orders.length}</h2>
             </Card>
           </Col>
-          <Col xs={24} xl={6}>
+          <Col xs={24} xl={8}>
             <Card title="Commandes En Cours" bordered={false}>
               <h2 style={{ textAlign: "center" }}>
-                {orders.filter((order) => order.status === "En Cours").length}
+                {orders.filter((order) => order.status === "en cours").length}
               </h2>
             </Card>
           </Col>
-          {/* <Col xs={24} xl={6}>
-            <Card title="Commandes Livrées" bordered={false}>
-              <h2 style={{ textAlign: "center" }}>
-                {orders.filter((order) => order.status === "Livré").length}
-              </h2>
-            </Card>
-          </Col> */}
-          <Col xs={24} xl={6}>
+          <Col xs={24} xl={8}>
             <Card title="Commandes Annulées" bordered={false}>
               <h2 style={{ textAlign: "center" }}>
-                {orders.filter((order) => order.status === "Annulé").length}
+                {orders.filter((order) => order.status === "annulé").length}
               </h2>
             </Card>
           </Col>
