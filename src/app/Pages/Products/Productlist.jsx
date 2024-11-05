@@ -38,75 +38,6 @@ const StatsCard = ({ title, value }) => (
 );
 
 // Filters Component
-const Filters = ({
-  search,
-  setSearch,
-  categoryFilter,
-  setCategoryFilter,
-  categories,
-  priceFilter,
-  setPriceFilter,
-  isSale,
-  setIsSale,
-  resetFilters,
-  onAddProduct // Navigation handler for adding a product
-}) => (
-  <Row gutter={[16, 16]} style={{ marginTop: "10px" }}>
-    <Col xs={24} sm={12} md={6} lg={6}>
-      <Input.Search
-        placeholder="Chercher un produit"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        allowClear
-      />
-    </Col>
-    <Col xs={24} sm={12} md={6} lg={6}>
-      <Select
-        value={categoryFilter}
-        onChange={(value) => setCategoryFilter(value)}
-        style={{ width: "100%" }}
-        placeholder="Filtrer par catégorie"
-      >
-        {categories.map((v) => (
-          <Option key={v._id} value={v._id}>
-            {v._id} {/* Assuming 'nom' is the category name */}
-          </Option>
-        ))}
-      </Select>
-    </Col>
-    <Col xs={24} sm={12} md={6} lg={4}>
-      <Select
-        value={priceFilter}
-        onChange={(value) => setPriceFilter(value)}
-        style={{ width: "100%" }}
-        placeholder="Trier par prix"
-      >
-        <Option value="asc">Prix croissant</Option>
-        <Option value="desc">Prix décroissant</Option>
-      </Select>
-    </Col>
-    <Col xs={24} sm={12} md={6} lg={2}>
-      <Checkbox checked={isSale} onChange={(e) => setIsSale(e.target.checked)}>
-        Soldé
-      </Checkbox>
-    </Col>
-    <Col xs={24} sm={12} md={6} lg={4}>
-      <Button onClick={resetFilters} block>
-        Réinitialiser
-      </Button>
-    </Col>
-    <Col xs={24} sm={12} md={6} lg={2}>
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={onAddProduct} // Use the passed navigation handler
-        block
-      >
-        Ajouter
-      </Button>
-    </Col>
-  </Row>
-);
 
 const ProductList = () => {
   // State Variables
@@ -120,6 +51,94 @@ const ProductList = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate(); // Initialize useNavigate inside the component
+  const Filters = ({
+    search,
+    setSearch,
+    categoryFilter,
+    setCategoryFilter,
+    categories,
+    priceFilter,
+    setPriceFilter,
+    isSale,
+    setIsSale,
+    resetFilters,
+    onAddProduct // Navigation handler for adding a product
+  }) => (
+    <Row gutter={[16, 16]} style={{ marginTop: "10px" }}>
+      <Col xs={24} sm={12} md={6} lg={6}>
+        <Input.Search
+          placeholder="Chercher un produit"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          allowClear
+        />
+      </Col>
+      <Col xs={24} sm={12} md={6} lg={6}>
+        <Select
+          value={categoryFilter}
+          onChange={(value) => setCategoryFilter(value)}
+          style={{ width: "100%" }}
+          placeholder="Filtrer par catégorie"
+        >
+          {categories.map((v) => (
+            <Option key={v._id} value={v._id}>
+              {v._id} {/* Assuming 'nom' is the category name */}
+            </Option>
+          ))}
+        </Select>
+      </Col>
+      <Col xs={24} sm={12} md={6} lg={4}>
+        <Select
+          value={priceFilter}
+          onChange={(value) => setPriceFilter(value)}
+          style={{ width: "100%" }}
+          placeholder="Trier par prix"
+        >
+          <Option value="asc">Prix croissant</Option>
+          <Option value="desc">Prix décroissant</Option>
+        </Select>
+      </Col>
+      <Col xs={24} sm={12} md={6} lg={2}>
+        <Checkbox checked={isSale} onChange={(e) => setIsSale(e.target.checked)}>
+          Soldé
+        </Checkbox>
+      </Col>
+      <Col xs={24} sm={12} md={6} lg={4}>
+        <Button onClick={updateStock} block>
+          Mise à jours
+        </Button>
+      </Col>
+      <Col xs={24} sm={12} md={6} lg={2}>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={onAddProduct} // Use the passed navigation handler
+          block
+        >
+          Ajouter
+        </Button>
+      </Col>
+    </Row>
+  );
+
+  const updateStock = async () => {
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/update/all/varients`,
+        {},
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+          }
+        }
+      );
+      message.success("Stock mis à jour avec succès !");
+      getProducts(); // Refresh the product list after updating stock
+    } catch (error) {
+      message.error("Échec de la mise à jour du stock.");
+      console.error(error);
+    }
+  };
 
   // Fetch Products
   const getProducts = async () => {
