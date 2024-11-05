@@ -135,34 +135,38 @@ const DetailOrder = () => {
     const pageWidth = doc.internal.pageSize.getWidth();
 
     // Initialize variables for Livraison and Total
+    // Initialize variables for Livraison and Total
     let livraisonText = "";
     let totalGeneralText = "";
 
     // Conditionally set text based on the 'payed' status
-    if (!order.payed) {
+    if (order.payed) {
+      totalGeneralText = `Total à payer: 0 TND`;
+    } else {
       livraisonText = `Livraison: 8 TND`;
       const prixTotalAvecLivraison = totalPriceWithoutLivraison + 8;
       totalGeneralText = `Total à payer: ${prixTotalAvecLivraison.toFixed(2)} TND`;
     }
 
-    // Display Livraison and Total if order is not paid
-    if (!order.payed) {
-      doc.setFontSize(14);
-      doc.setFont("helvetica", "bold");
+    // Display Livraison and Total
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
 
-      // Right-align text
+    if (!order.payed) {
+      // Right-align Livraison text
       doc.text(
         livraisonText,
         pageWidth - doc.getTextWidth(livraisonText) - 10,
         doc.lastAutoTable.finalY + 20
       );
-      doc.text(
-        totalGeneralText,
-        pageWidth - doc.getTextWidth(totalGeneralText) - 10,
-        doc.lastAutoTable.finalY + 30
-      );
     }
 
+    // Right-align Total text
+    doc.text(
+      totalGeneralText,
+      pageWidth - doc.getTextWidth(totalGeneralText) - 10,
+      doc.lastAutoTable.finalY + (order.payed ? 20 : 30)
+    );
     // Footer (Optional): Add any company policies, disclaimers, or thank you notes
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
