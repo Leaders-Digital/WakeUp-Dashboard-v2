@@ -15,6 +15,7 @@ const DetailOrder = () => {
   const [disabledCards, setDisabledCards] = useState([]);
   const location = useLocation();
   const orderId = location.state.orderId;
+  console.log(order, "oreder is here");
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -43,12 +44,12 @@ const DetailOrder = () => {
   const handleDownloadInvoice = () => {
     const doc = new jsPDF();
 
-    // Add Company Logo (Must be a base64 image or URL)
+    // Add Company Logo
     doc.addImage(logo, "jpeg", 8, 8, 50, 15);
 
     // Title "Facture" in Bold
     doc.setFontSize(22);
-    doc.setFont("helvetica", "bold"); // Bold for title
+    doc.setFont("helvetica", "bold");
     doc.text("FACTURE", 105, 30, { align: "center" });
 
     // Add a border under the title
@@ -64,17 +65,9 @@ const DetailOrder = () => {
       minute: "2-digit"
     });
 
-    // Collect product names
-    const productNames = order.listeDesProduits
-      .map((product) => product.variant.product.nom)
-      .join(", ");
-
-    // Set Font to Regular for the rest of the text
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal"); // Regular font for details
-
     // Order Information Section
-    console.log(order, "hererererer");
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
 
     doc.text(`Commande ID: ${order.orderCode}`, 10, 50);
     doc.text(`Nom: ${order.nom} ${order.prenom}`, 10, 60);
@@ -82,9 +75,8 @@ const DetailOrder = () => {
     doc.text(`Gouvernorat: ${order.gouvernorat}`, 10, 80);
     doc.text(`Ville: ${order.ville}`, 10, 90);
     doc.text(`Code Postal: ${order.codePostal}`, 10, 100);
-    doc.text(`Téléphone: ${order.numTelephone}`, 10, 110); // Ajout du numéro de téléphone
+    doc.text(`Téléphone: ${order.numTelephone}`, 10, 110);
     doc.text(`Date de Commande: ${formattedDateTime}`, 10, 120);
-    // doc.text(`Nom du Produit: ${productNames}`, 10, 130); // Add product names here
 
     // Section Divider
     doc.line(10, 135, 200, 135);
@@ -101,6 +93,7 @@ const DetailOrder = () => {
 
     // Prepare Product Data for Table
     const productRows = order.listeDesProduits.map((product, index) => [
+      console.log(product, "product is here"),
       index + 1,
       product?.variant?.product?.nom,
       product?.variant?.reference,
@@ -110,60 +103,69 @@ const DetailOrder = () => {
 
     // Add Total Row at the End
     productRows.push([
-      "Total", // Label in the reference column
-      "", // Empty cell for the index column
+      "Total",
       "",
-      totalQuantity, // Total Quantity
-      `${totalPriceWithoutLivraison.toFixed(2)} TND` // Total Price (TND)
+      "",
+      totalQuantity,
+      `${totalPriceWithoutLivraison.toFixed(2)} TND`
     ]);
 
     // Product Table Heading
     doc.autoTable({
-      head: [["#", "produit", "Référence", "Quantité", "Prix (TND)"]],
-      body: productRows, // Include the total row
+      head: [["#", "Produit", "Référence", "Quantité", "Prix (TND)"]],
+      body: productRows,
       startY: 140,
       styles: { fontSize: 10, cellPadding: 3 },
       headStyles: {
-        fillColor: [222, 140, 6], // Blue header
-        textColor: [255, 255, 255], // White text
+        fillColor: [222, 140, 6],
+        textColor: [255, 255, 255],
         fontStyle: "bold"
       },
       bodyStyles: {
-        lineColor: [44, 62, 80], // Dark grey lines
+        lineColor: [44, 62, 80],
         lineWidth: 0.2
       },
       columnStyles: {
-        0: { halign: "center" }, // Center alignment for index
-        3: { halign: "right" } // Right align the prices
+        0: { halign: "center" },
+        3: { halign: "right" }
       }
     });
 
     // Define pageWidth for right-align calculations
     const pageWidth = doc.internal.pageSize.getWidth();
 
-    // Add Total Section (Total Price and Delivery Fee)
-    const prixTotalAvecLivraison = totalPriceWithoutLivraison + 8; // Assuming a fixed delivery fee of 8 TND
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
+    // Initialize variables for Livraison and Total
+    let livraisonText = "";
+    let totalGeneralText = "";
 
-    const livraisonText = `Livraison: 8 TND`;
-    const totalGeneralText = `Total à payer: ${prixTotalAvecLivraison.toFixed(2)} TND`;
+    // Conditionally set text based on the 'payed' status
+    if (!order.payed) {
+      livraisonText = `Livraison: 8 TND`;
+      const prixTotalAvecLivraison = totalPriceWithoutLivraison + 8;
+      totalGeneralText = `Total à payer: ${prixTotalAvecLivraison.toFixed(2)} TND`;
+    }
 
-    // Right align total, delivery fee, and grand total
-    doc.text(
-      livraisonText,
-      pageWidth - doc.getTextWidth(livraisonText) - 10,
-      doc.lastAutoTable.finalY + 20
-    );
-    doc.text(
-      totalGeneralText,
-      pageWidth - doc.getTextWidth(totalGeneralText) - 10,
-      doc.lastAutoTable.finalY + 30
-    );
+    // Display Livraison and Total if order is not paid
+    if (!order.payed) {
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+
+      // Right-align text
+      doc.text(
+        livraisonText,
+        pageWidth - doc.getTextWidth(livraisonText) - 10,
+        doc.lastAutoTable.finalY + 20
+      );
+      doc.text(
+        totalGeneralText,
+        pageWidth - doc.getTextWidth(totalGeneralText) - 10,
+        doc.lastAutoTable.finalY + 30
+      );
+    }
 
     // Footer (Optional): Add any company policies, disclaimers, or thank you notes
     doc.setFontSize(10);
-    doc.setFont("helvetica", "normal"); // Regular font for footer
+    doc.setFont("helvetica", "normal");
     doc.setTextColor(150);
     doc.text("Merci pour votre achat!", 105, 285, { align: "center" });
     doc.text(
@@ -218,10 +220,9 @@ const DetailOrder = () => {
         </p>
 
         <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Code de Suivie :</Text> {order?.orderCode}{" "}
-          
+          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Code de Suivie :</Text>{" "}
+          {order?.orderCode}{" "}
         </p>
-
 
         <Button type="primary" onClick={handleDownloadInvoice}>
           Télécharger la facture
