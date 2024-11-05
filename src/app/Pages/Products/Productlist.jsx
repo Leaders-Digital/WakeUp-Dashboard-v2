@@ -49,6 +49,8 @@ const ProductList = () => {
   const [priceFilter, setPriceFilter] = useState("asc");
   const [fullResponse, setFullResponse] = useState({});
   const [loading, setLoading] = useState(false);
+  const [loadingStock, setLoadingStock] = useState(false); // Nouvelle variable d'état
+
 
   const navigate = useNavigate(); // Initialize useNavigate inside the component
   const Filters = ({
@@ -104,8 +106,8 @@ const ProductList = () => {
         </Checkbox>
       </Col>
       <Col xs={24} sm={12} md={6} lg={4}>
-        <Button onClick={updateStock} block>
-          Mise à jours
+        <Button onClick={updateStock} loading={loadingStock} block>
+          Mise à jours du Stock
         </Button>
       </Col>
       <Col xs={24} sm={12} md={6} lg={2}>
@@ -122,23 +124,27 @@ const ProductList = () => {
   );
 
   const updateStock = async () => {
+    setLoadingStock(true); // Activer le chargement
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/update/all/varients`,
         {},
         {
           headers: {
-            "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
+            "x-api-key": process.env.REACT_APP_API_KEY
           }
         }
       );
       message.success("Stock mis à jour avec succès !");
-      getProducts(); // Refresh the product list after updating stock
+      getProducts();
     } catch (error) {
       message.error("Échec de la mise à jour du stock.");
       console.error(error);
+    } finally {
+      setLoadingStock(false); // Désactiver le chargement
     }
   };
+
 
   // Fetch Products
   const getProducts = async () => {
