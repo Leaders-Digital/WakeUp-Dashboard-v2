@@ -123,7 +123,7 @@ const ProductList = () => {
 
   const updateStock = async () => {
     try {
-      await axios.put(
+      const response = await axios.put(
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/update/all/varients`,
         {},
         {
@@ -134,7 +134,6 @@ const ProductList = () => {
       );
       message.success("Stock mis à jour avec succès !");
       getProducts(); // Refresh the product list after updating stock
-      message.success("Stock mis à jour avec succès !");
     } catch (error) {
       message.error("Échec de la mise à jour du stock.");
       console.error(error);
