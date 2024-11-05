@@ -93,7 +93,6 @@ const DetailOrder = () => {
 
     // Prepare Product Data for Table
     const productRows = order.listeDesProduits.map((product, index) => [
-      console.log(product, "product is here"),
       index + 1,
       product?.variant?.product?.nom,
       product?.variant?.reference,
