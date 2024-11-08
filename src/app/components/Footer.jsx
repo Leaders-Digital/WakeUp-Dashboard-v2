@@ -44,7 +44,7 @@ export default function Footer() {
             <Span m="auto"></Span>
 
             <Paragraph m={0}>
-              Design and Developed by Leaders Digital
+             Designed and Developed by Leaders Digital
             </Paragraph>
           </FooterContent>
         </AppFooter>

@@ -28,12 +28,15 @@ const OrdersLivre = () => {
         }
       );
       const fetchedOrders = response.data.data;
-      const formattedOrders = fetchedOrders.reverse().map((order) => ({
+      console.log(fetchedOrders,"hamma");
+      
+      const formattedOrders = fetchedOrders.reverse().map((order) => ({  
+
         key: order._id,
         orderId: order.orderCode,
         customerName: `${order.nom} ${order.prenom}`,
         product: order.listeDesProduits.map((item) => item.variant).join(", "),
-        quantity: order.listeDesProduits.reduce((acc, item) => acc + item.quantite, 0),
+        quantity: order.listeDesProduits.reduce((acc, item) => acc + item.quantite, 0),        
         status: order.statut
       }));
       setOrders(formattedOrders);
@@ -110,20 +113,20 @@ const OrdersLivre = () => {
       key: "status",
       render: (status) => <Tag color={statusColors[status] || "default"}>{status}</Tag>
     },
-    {
-      title: "Détails",
-      key: "details",
-      render: (_, record) => (
-        <EyeOutlined
-          style={{ fontSize: "18px", cursor: "pointer" }}
-          onClick={() => {
-            navigate("/commande/details", {
-              state: { orderId: record.orderId }
-            });
-          }}
-        />
-      )
-    },
+    // {
+    //   title: "Détails",
+    //   key: "details",
+    //   render: (_, record) => (
+    //     <EyeOutlined
+    //       style={{ fontSize: "18px", cursor: "pointer" }}
+    //       onClick={() => {
+    //         navigate("/commande/details", {
+    //           state: { orderId: record.orderId }
+    //         });
+    //       }}
+    //     />
+    //   )
+    // },
     {
       title: "Changer le Statut",
       dataIndex: "status",

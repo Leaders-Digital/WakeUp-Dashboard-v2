@@ -34,6 +34,8 @@ const ListePartenaire = () => {
   }, []);
 
   const handleAddOrUpdatePartenaire = async (values) => {
+    console.log(values.logo);
+    
     const formData = new FormData();
     formData.append("nom", values.nom);
     formData.append("lien", values.lien);
@@ -41,25 +43,23 @@ const ListePartenaire = () => {
     formData.append("telephone", values.telephone);
     formData.append("status", values.status);
     formData.append("location", values.location);
-
-    if (values.logo) {
-      formData.append("logo", values.logo.originFileObj || values.logo);
-    }
-    
+    formData.append("logo", values.logo);
     try {
-      if (editingId) {
-        await axios.put(
-          `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/updatePartenaire/${editingId}`,
-          formData,
-          {
-            headers: {
-              "x-api-key": process.env.REACT_APP_API_KEY,
-              "Content-Type": "multipart/form-data"
-            }
-          }
-        );
-        message.success("Partenaire mis à jour avec succès !");
-      } else {
+      // if (editingId) {
+      //   await axios.put(
+      //     `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/updatePartenaire/${editingId}`,
+      //     formData,
+      //     {
+      //       headers: {
+      //         "x-api-key": process.env.REACT_APP_API_KEY,
+      //         "Content-Type": "multipart/form-data"
+      //       }
+      //     }
+      //   );
+      //   message.success("Partenaire mis à jour avec succès !");
+      // } else {
+        console.log(formData,"alooo");
+        
         await axios.post(
           `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/addPartenaire`,
           formData,
@@ -71,7 +71,7 @@ const ListePartenaire = () => {
           }
         );
         message.success("Partenaire ajouté avec succès !");
-      }
+      
       setIsModalVisible(false);
       form.resetFields();
       setEditingId(null);
