@@ -63,6 +63,7 @@ const CreerBlog = ({ getBlog }) => {
           "x-api-key": process.env.REACT_APP_API_KEY // Include API key in the headers
         }
       });
+      
       message.success("Blog créé avec succès!");
       getBlog(); // Fetch updated list after creation
 

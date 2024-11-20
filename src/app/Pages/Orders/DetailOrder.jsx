@@ -50,7 +50,7 @@ const DetailOrder = () => {
     // Title "Facture" in Bold
     doc.setFontSize(22);
     doc.setFont("helvetica", "bold");
-    doc.text("FACTURE", 105, 30, { align: "center" });
+    doc.text("Bon de livraison", 105, 30, { align: "center" });
 
     // Add a border under the title
     doc.setLineWidth(0.5);

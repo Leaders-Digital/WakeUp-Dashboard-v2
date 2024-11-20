@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { Card, Col, DatePicker, Divider, Input, message, Row, Select, Table, Tag } from "antd";
+import { Button, Card, Col, DatePicker, Divider, Input, message, Row, Select, Table, Tag } from "antd";
 import { EyeOutlined } from "@ant-design/icons"; // Add the Eye Icon
 import { Option } from "antd/es/mentions";
 import { Breadcrumb } from "app/components";
@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import AddOrderModel from "./AddOrderModel";
 const Orderlist = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -16,6 +17,17 @@ const Orderlist = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("Tous"); // Initialize with "Tous"
   const [dateRange, setDateRange] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setIsModalVisible(false);
+  };
+
+
   const { RangePicker } = DatePicker;
   const navigate = useNavigate();
   const fetchOrders = async () => {
@@ -222,7 +234,8 @@ const Orderlist = () => {
         </Row>
       </div>
 
-      <Divider orientation="left">Nos Commandes</Divider>
+      <Divider orientation="right"><Button type="primary" onClick={showModal}>Ajouter Commande</Button></Divider>
+
 
       <Row gutter={[16, 16]} style={{ marginBottom: "16px" }}>
         <Col span={8}>
@@ -247,12 +260,14 @@ const Orderlist = () => {
         </Col>
       </Row>
 
+    
       <Table
         columns={columns}
         dataSource={filteredOrders}
         loading={loading}
         scroll={{ x: "max-content" }}
       />
+      <AddOrderModel visible={isModalVisible} onClose={hideModal} />
     </div>
   );
 };
