@@ -16,21 +16,33 @@ export const navigations = [
     ],
     users: ["admin", "editor", "viewer"]
   },
-
   {
     name: "Commandes",
     icon: "shopping_cart",
     children: [
       { name: "Liste Commandes", iconText: "SI", path: "/commande/liste" },
       { name: "Commandes Livrés", iconText: "SI", path: "/commande/livre" }
-      // { name: "Commandes Details", iconText: "SU", path: "/commande/details" }
     ],
     users: ["admin", "editor", "viewer"]
   },
-
- 
-  
-  
+  {
+    name: "Achat",
+    icon: "storefronttwotoneicon",
+    children: [
+      { name: "Nouveau Achat", iconText: "SI", path: "/achat/add" },
+      { name: "List des Achat", iconText: "SI", path: "/achat/list" }
+    ],
+    users: ["admin", "editor", "viewer"]
+  },
+  {
+    name: "Vente",
+    icon: "selltwotone",
+    children: [
+      { name: "Nouveau Vente", iconText: "SI", path: "/vente/add" },
+      { name: "List des Vente", iconText: "SI", path: "/vente/list" }
+    ],
+    users: ["admin", "editor", "viewer"]
+  },
   { name: "Banners", path: "/banners", icon: "panorama", users: ["admin", "editor"] },
   {
     name: "Liste des abonnés",
@@ -39,7 +51,12 @@ export const navigations = [
     users: ["admin", "editor"]
   },
   { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] },
-  { name: "Partenaire", path: "/partenaire/liste", icon: "account_box", users: ["admin", "editor"] },
+  {
+    name: "Partenaire",
+    path: "/partenaire/liste",
+    icon: "account_box",
+    users: ["admin", "editor"]
+  },
   { name: "Promo", path: "/promo", icon: "shopping_basket", users: ["admin", "editor"] },
   { name: "Blog", path: "/blog", icon: "font_download", users: ["admin", "editor"] },
   {
@@ -54,7 +71,5 @@ export const navigations = [
     path: "/reclamation",
     icon: "question_answer",
     users: ["admin", "editor", "viewer"]
-  },
-
-
+  }
 ];

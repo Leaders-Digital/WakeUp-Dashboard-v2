@@ -92,6 +92,7 @@ const AddProduct = () => {
     formData.append("subCategorie", values.subCategorie);
     formData.append("solde", values.solde);
     formData.append("metaFields", values.metaFields);
+    formData.append("prixAchat", values.prixAchat);
 
 
     // Append soldePourcentage only if solde is true
@@ -206,9 +207,15 @@ const AddProduct = () => {
           >
             <Input.TextArea rows={4} />
           </Form.Item>
-
           <Form.Item
-            label="Prix (TND)"
+            label="Prix d'achat (EURO)"
+            name="prixAchat"
+            rules={[{ required: true, message: "Le prix est requis!" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item
+            label="Prix Vente (TND)"
             name="prix"
             rules={[{ required: true, message: "Le prix est requis!" }]}
           >
@@ -296,6 +303,8 @@ const AddProduct = () => {
               <Button icon={<UploadOutlined />}>Cliquez pour télécharger</Button>
             </Upload>
           </Form.Item>
+
+
 
           <Form.Item
             label="Tag"

@@ -25,7 +25,11 @@ import OrdersLivre from "./Pages/Orders/OrdersLivre";
 import Avis from "./Pages/Avis/Avis";
 import ListePartenaire from "./Pages/Partenaire/ListePartenaire";
 import Promo from "./Pages/Promo/Promo";
-
+import Achat from "./Pages/Achat/Achat";
+import Vente from "./Pages/Vente/Vente";
+import ListAchat from "./Pages/Achat/ListAchat";
+import ListeVente from "./Pages/Vente/ListeVente";
+import EditAchat from "./Pages/Achat/EditAchat";
 
 // SESSION PAGES
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
@@ -73,6 +77,15 @@ const routes = [
 
       // Banners pages route
       { path: "/banners", element: <Banners /> },
+
+      // Achat pages route
+      { path: "/achat/add", element: <Achat /> },
+      { path: "/achat/list", element: <ListAchat /> },
+      { path: "/achat/edit/:id", element: <EditAchat /> },
+
+      //vente pages route
+      { path: "/vente/add", element: <Vente /> },
+      { path: "/vente/list", element: <ListeVente /> },
 
       // users pages route
       { path: "/users", element: <Users /> },

@@ -36,7 +36,7 @@ const UpdateProduct = () => {
     { value: "LIPS", label: "Lévres" },
     { value: "Produits de soin", label: "Produits de soin" },
     { value: "Brush", label: "Brushes" },
-    { value: "PACK", label: "Pack" } 
+    { value: "PACK", label: "Pack" }
   ];
 
   const subCategoryOptions = {
@@ -106,16 +106,16 @@ const UpdateProduct = () => {
         solde: response.data.solde,
         soldePourcentage: response.data.soldePourcentage,
         metaFields: response.data.metaFields,
-
+        prixAchat: response.data.prixAchat,
         mainPicture: response.data.mainPicture
           ? [
-              {
-                uid: "-1",
-                name: "Current Image",
-                status: "done",
-                url: `${process.env.REACT_APP_API_URL_PRODUCTION}${response.data.mainPicture}`
-              }
-            ]
+            {
+              uid: "-1",
+              name: "Current Image",
+              status: "done",
+              url: `${process.env.REACT_APP_API_URL_PRODUCTION}${response.data.mainPicture}`
+            }
+          ]
           : []
       });
 
@@ -158,6 +158,7 @@ const UpdateProduct = () => {
     formData.append("solde", values.solde);
     formData.append("soldePourcentage", values.soldePourcentage);
     formData.append("metaFields", values.metaFields);
+    formData.append("prixAchat", values.prixAchat);
 
 
     // Handle image upload
@@ -241,7 +242,13 @@ const UpdateProduct = () => {
           >
             <Input.TextArea rows={4} />
           </Form.Item>
-
+          <Form.Item
+            label="Prix d'achat (EURO)"
+            name="prixAchat"
+            rules={[{ required: true, message: "Le prix est requis!" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} />
+          </Form.Item>
           <Form.Item
             label="Prix (TND)"
             name="prix"
