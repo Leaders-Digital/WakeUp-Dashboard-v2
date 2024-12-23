@@ -57,6 +57,12 @@ export const navigations = [
     icon: "account_box",
     users: ["admin", "editor"]
   },
+  {
+    name: "Nos Clients",
+    path: "/clients/liste",
+    icon: "account_box",
+    users: ["admin", "editor"]
+  },
   { name: "Promo", path: "/promo", icon: "shopping_basket", users: ["admin", "editor"] },
   { name: "Blog", path: "/blog", icon: "font_download", users: ["admin", "editor"] },
   {

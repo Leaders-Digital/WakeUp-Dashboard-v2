@@ -30,6 +30,7 @@ import Vente from "./Pages/Vente/Vente";
 import ListAchat from "./Pages/Achat/ListAchat";
 import ListeVente from "./Pages/Vente/ListeVente";
 import EditAchat from "./Pages/Achat/EditAchat";
+import Clients from "./Pages/Clients/ListeClients";
 
 // SESSION PAGES
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
@@ -97,6 +98,7 @@ const routes = [
       { path: "/avis", element: <Avis /> },
       // partenaire pages route
       { path: "/partenaire/liste", element: <ListePartenaire /> },
+      { path: "/clients/liste", element: <Clients /> },
 
       // partenaire pages route
       { path: "/promo", element: <Promo /> }
