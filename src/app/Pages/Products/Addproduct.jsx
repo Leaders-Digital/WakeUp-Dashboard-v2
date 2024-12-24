@@ -93,6 +93,7 @@ const AddProduct = () => {
     formData.append("solde", values.solde);
     formData.append("metaFields", values.metaFields);
     formData.append("prixAchat", values.prixAchat);
+    formData.append("prixGros", values.prixGros);
 
 
     // Append soldePourcentage only if solde is true
@@ -217,6 +218,13 @@ const AddProduct = () => {
           <Form.Item
             label="Prix Vente (TND)"
             name="prix"
+            rules={[{ required: true, message: "Le prix est requis!" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item
+            label="Prix Gros (TND)"
+            name="prixGros"
             rules={[{ required: true, message: "Le prix est requis!" }]}
           >
             <InputNumber min={0} style={{ width: "100%" }} />

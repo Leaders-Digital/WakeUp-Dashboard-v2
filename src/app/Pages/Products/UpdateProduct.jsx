@@ -107,6 +107,7 @@ const UpdateProduct = () => {
         soldePourcentage: response.data.soldePourcentage,
         metaFields: response.data.metaFields,
         prixAchat: response.data.prixAchat,
+        prixGros: response.data.prixGros,
         mainPicture: response.data.mainPicture
           ? [
             {
@@ -159,6 +160,7 @@ const UpdateProduct = () => {
     formData.append("soldePourcentage", values.soldePourcentage);
     formData.append("metaFields", values.metaFields);
     formData.append("prixAchat", values.prixAchat);
+    formData.append("prixGros", values.prixGros);
 
 
     // Handle image upload
@@ -252,6 +254,13 @@ const UpdateProduct = () => {
           <Form.Item
             label="Prix (TND)"
             name="prix"
+            rules={[{ required: true, message: "Le prix est requis!" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item
+            label="Prix Gros (TND)"
+            name="prixGros"
             rules={[{ required: true, message: "Le prix est requis!" }]}
           >
             <InputNumber min={0} style={{ width: "100%" }} />
