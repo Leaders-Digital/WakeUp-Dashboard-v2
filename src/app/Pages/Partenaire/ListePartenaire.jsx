@@ -12,6 +12,7 @@ const ListePartenaire = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
 
   const getPartenaire = async () => {
     try {
@@ -19,8 +20,8 @@ const ListePartenaire = () => {
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/getPartenaires`,
         {
           headers: {
-            "x-api-key": process.env.REACT_APP_API_KEY
-          }
+            "x-api-key": process.env.REACT_APP_API_KEY,
+          },
         }
       );
       setPartenaire(response.data.data);
@@ -33,54 +34,89 @@ const ListePartenaire = () => {
     getPartenaire();
   }, []);
 
-  const handleAddOrUpdatePartenaire = async (values) => {
-    console.log(values.logo);
-    
-    const formData = new FormData();
-    formData.append("nom", values.nom);
-    formData.append("lien", values.lien);
-    formData.append("adresse", values.adresse);
-    formData.append("telephone", values.telephone);
-    formData.append("status", values.status);
-    formData.append("location", values.location);
-    formData.append("logo", values.logo);
+  const addPartenaire = async (values) => {
     try {
-      // if (editingId) {
-      //   await axios.put(
-      //     `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/updatePartenaire/${editingId}`,
-      //     formData,
-      //     {
-      //       headers: {
-      //         "x-api-key": process.env.REACT_APP_API_KEY,
-      //         "Content-Type": "multipart/form-data"
-      //       }
-      //     }
-      //   );
-      //   message.success("Partenaire mis à jour avec succès !");
-      // } else {
-        console.log(formData,"alooo");
-        
-        await axios.post(
-          `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/addPartenaire`,
-          formData,
-          {
-            headers: {
-              "x-api-key": process.env.REACT_APP_API_KEY,
-              "Content-Type": "multipart/form-data"
-            }
-          }
-        );
-        message.success("Partenaire ajouté avec succès !");
-      
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        formData.append(key, values[key]);
+      });
+
+      if (logoFile) {
+        formData.append("logo", logoFile);
+        console.log(logoFile); // Log the file to ensure it’s set correctly
+      } else {
+        console.error("Logo file is missing!");
+      }
+
+      // Log formData contents
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      await axios.post(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/addPartenaire`,
+        formData,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      message.success("Partenaire ajouté avec succès !");
       setIsModalVisible(false);
       form.resetFields();
+      setLogoFile(null);
+      getPartenaire();
+    } catch (error) {
+      console.error(error);
+      message.error("Échec de l'ajout du partenaire.");
+    }
+  };
+
+
+
+  const updatePartenaire = async (values) => {
+    try {
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        formData.append(key, values[key]);
+      });
+
+      if (logoFile) {
+        formData.append("logo", logoFile);
+      }
+
+      await axios.put(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/updatePartenaire/${editingId}`,
+        formData,
+        {
+          headers: {
+            "x-api-key": process.env.REACT_APP_API_KEY,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      message.success("Partenaire mis à jour avec succès !");
+      setIsModalVisible(false);
+      form.resetFields();
+      setLogoFile(null); // Reset logo file
       setEditingId(null);
       getPartenaire();
     } catch (error) {
-      console.log(error);
-      message.error(
-        editingId ? "Échec de la mise à jour du partenaire." : "Échec de l'ajout du partenaire."
-      );
+      console.error(error);
+      message.error("Échec de la mise à jour du partenaire.");
+    }
+  };
+
+
+  const handleFormSubmit = (values) => {
+    if (editingId) {
+      updatePartenaire(values);
+    } else {
+      addPartenaire(values);
     }
   };
 
@@ -88,11 +124,16 @@ const ListePartenaire = () => {
     setEditingId(record._id);
     form.setFieldsValue({
       nom: record.nom,
-      lien: record.lien,
-      adresse: record.adresse,
+      matriculFiscal: record.matriculFiscal,
       telephone: record.telephone,
+      email: record.email,
+      ville: record.ville,
+      delegation: record.delegation,
+      codePostal: record.codePostal,
+      adresse: record.adresse,
+      lien: record.lien,
       status: record.status,
-      logo: record.logo
+      location: record.location,
     });
     setIsModalVisible(true);
   };
@@ -103,8 +144,8 @@ const ListePartenaire = () => {
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/deletePartenaire/${id}`,
         {
           headers: {
-            "x-api-key": process.env.REACT_APP_API_KEY
-          }
+            "x-api-key": process.env.REACT_APP_API_KEY,
+          },
         }
       );
       message.success("Partenaire supprimé avec succès !");
@@ -124,7 +165,7 @@ const ListePartenaire = () => {
       cancelText: "Non",
       onOk() {
         deletePartenaire(id);
-      }
+      },
     });
   };
 
@@ -140,39 +181,45 @@ const ListePartenaire = () => {
         />
       ),
       width: 100,
-      align: "center"
+      align: "center",
     },
     {
       title: "Nom partenaire",
       dataIndex: "nom",
-      key: "nom"
+      key: "nom",
     },
     {
-      title: "Lien",
-      dataIndex: "lien",
-      key: "lien"
-    },
-    {
-      title: "Adresse",
-      dataIndex: "adresse",
-      key: "adresse"
-    },
-    {
-      title: "Location",
-      dataIndex: "location",
-      key: "location"
+      title: "Matricul Fiscal",
+      dataIndex: "matriculFiscal",
+      key: "matriculFiscal",
     },
     {
       title: "Téléphone",
       dataIndex: "telephone",
-      key: "telephone"
+      key: "telephone",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => (status ? "Actif" : "Inactif")
+      title: "Ville",
+      dataIndex: "ville",
+      key: "ville",
     },
+    {
+      title: "Delegation",
+      dataIndex: "delegation",
+      key: "delegation",
+    },
+    {
+      title: "Code Postal",
+      dataIndex: "codePostal",
+      key: "codePostal",
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (createdAt) => new Date(createdAt).toLocaleDateString("fr-FR"), 
+    },
+
     {
       title: "Action",
       dataIndex: "_id",
@@ -188,47 +235,44 @@ const ListePartenaire = () => {
             style={{ color: "red", cursor: "pointer", fontSize: "16px" }}
           />
         </>
-      )
-    }
+      ),
+    },
   ];
-
-  // Count active and inactive partners
-  const totalPartenaire = partenaire.length;
-  const activePartenaire = partenaire.filter((p) => p.status).length;
-  const inactivePartenaire = totalPartenaire - activePartenaire;
 
   return (
     <div style={{ padding: "20px" }}>
       <div style={{ marginBottom: "10px" }}>
         <Box className="breadcrumb">
           <Breadcrumb
-            routeSegments={[{ name: "Liste des Partenaire", path: "/partenaire" }, { name: "Partenaire" }]}
+            routeSegments={[
+              { name: "Liste des Partenaires", path: "/partenaire" },
+              { name: "Partenaire" },
+            ]}
           />
         </Box>
       </div>
 
       <Row gutter={16} style={{ marginBottom: "20px" }}>
         <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
-          <Card title="Nombre de partenaire">
-            <p>{totalPartenaire}</p>
+          <Card title="Nombre de Partenaires">
+            <p>{partenaire.length}</p>
           </Card>
         </Col>
         <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
-          <Card title="Partenaire Actif">
-            <p>{activePartenaire}</p>
+          <Card title="Partenaires Actifs">
+            <p>{partenaire.filter((p) => p.status).length}</p>
           </Card>
         </Col>
         <Col xs={24} xl={8} style={{ marginBottom: "20px" }}>
-          <Card title="Partenaire Inactif">
-            <p>{inactivePartenaire}</p>
+          <Card title="Partenaires Inactifs">
+            <p>{partenaire.filter((p) => !p.status).length}</p>
           </Card>
         </Col>
       </Row>
 
-      <Divider orientation="left">
-        Liste des Partenaire
-      </Divider>
-      <div style={{ width: "100%", display: "flex", justifyContent: "right", padding: "10px" }}>
+      <Divider orientation="left">Liste des Partenaires</Divider>
+
+      <div style={{ width: "100%", display: "flex", justifyContent: "flex-end", padding: "10px" }}>
         <Button
           type="primary"
           onClick={() => {
@@ -244,80 +288,150 @@ const ListePartenaire = () => {
       <Table
         dataSource={partenaire.map((record) => ({
           ...record,
-          rowClassName: record.status ? "active-partner" : "inactive-partner"
+          key: record._id,
         }))}
         columns={columns}
         rowClassName={(record) => (record.status ? "" : "inactive-partner")}
         scroll={{ x: "max-content" }}
       />
 
-      <Modal
-        title={editingId ? "Mettre à jour le Partenaire" : "Ajouter un Partenaire"}
-        visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        footer={null}
-      >
-        <Form form={form} layout="vertical" onFinish={handleAddOrUpdatePartenaire}>
-          <Form.Item
-            name="nom"
-            label="Nom partenaire"
-            rules={[{ required: true, message: "Veuillez entrer le nom du partenaire." }]}
+<Modal
+  title={editingId ? "Mettre à jour le Partenaire" : "Ajouter un Partenaire"}
+  visible={isModalVisible}
+  onCancel={() => setIsModalVisible(false)}
+  footer={null}
+>
+  <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
+    <Row gutter={16}>
+      <Col xs={24} md={12}>
+        <Form.Item
+          name="nom"
+          label="Nom partenaire"
+          rules={[{ required: true, message: "Veuillez entrer le nom du partenaire." }]}
+        >
+          <Input placeholder="Nom du partenaire" />
+        </Form.Item>
+      </Col>
+      <Col xs={24} md={12}>
+        <Form.Item
+          name="matriculFiscal"
+          label="Matricule Fiscal"
+          rules={[{ required: true, message: "Veuillez entrer le matricule fiscal." }]}
+        >
+          <Input placeholder="Matricule Fiscal" />
+        </Form.Item>
+      </Col>
+    </Row>
+
+    <Row gutter={16}>
+      <Col xs={24} md={12}>
+        <Form.Item
+          name="telephone"
+          label="Téléphone"
+          rules={[{ required: true, message: "Veuillez entrer le numéro de téléphone." }]}
+        >
+          <Input placeholder="Téléphone" />
+        </Form.Item>
+      </Col>
+      <Col xs={24} md={12}>
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            { required: true, message: "Veuillez entrer l'email." },
+            { type: "email", message: "Veuillez entrer un email valide." },
+          ]}
+        >
+          <Input placeholder="Email" />
+        </Form.Item>
+      </Col>
+    </Row>
+
+    <Row gutter={16}>
+      <Col xs={24} md={12}>
+        <Form.Item
+          name="ville"
+          label="Ville"
+          rules={[{ required: true, message: "Veuillez entrer la ville." }]}
+        >
+          <Input placeholder="Ville" />
+        </Form.Item>
+      </Col>
+      <Col xs={24} md={12}>
+        <Form.Item name="delegation" label="Délégation">
+          <Input placeholder="Délégation" />
+        </Form.Item>
+      </Col>
+    </Row>
+
+    <Row gutter={16}>
+      <Col xs={24} md={12}>
+        <Form.Item name="codePostal" label="Code Postal">
+          <Input placeholder="Code Postal" />
+        </Form.Item>
+      </Col>
+      <Col xs={24} md={12}>
+        <Form.Item
+          name="adresse"
+          label="Adresse"
+          rules={[{ required: true, message: "Veuillez entrer l'adresse." }]}
+        >
+          <Input placeholder="Adresse" />
+        </Form.Item>
+      </Col>
+    </Row>
+
+    <Row gutter={16}>
+      <Col xs={24} md={12}>
+        <Form.Item
+          name="lien"
+          label="Lien"
+          rules={[{ required: true, message: "Veuillez entrer le lien." }]}
+        >
+          <Input placeholder="Lien" />
+        </Form.Item>
+      </Col>
+      <Col xs={24} md={12}>
+        <Form.Item
+          name="location"
+          label="Localisation"
+          rules={[{ required: true, message: "Veuillez entrer la localisation." }]}
+        >
+          <Input placeholder="Localisation" />
+        </Form.Item>
+      </Col>
+    </Row>
+
+    <Row gutter={16}>
+      <Col xs={24} md={12}>
+        <Form.Item name="logo" label="Logo" valuePropName="file">
+          <Upload
+            listType="picture"
+            beforeUpload={(file) => {
+              console.log(file); // Check if this is the correct file
+              setLogoFile(file); // Save the file to state
+              return false; // Prevent automatic upload
+            }}
+            maxCount={1}
           >
-            <Input placeholder="Nom du partenaire" />
-          </Form.Item>
+            <Button>Upload</Button>
+          </Upload>
+        </Form.Item>
+      </Col>
+    </Row>
 
-          <Form.Item
-            name="lien"
-            label="Lien"
-            rules={[{ required: true, message: "Veuillez entrer le lien." }]}
-          >
-            <Input placeholder="Lien" />
-          </Form.Item>
+    <Row>
+      <Col xs={24}>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            {editingId ? "Mettre à jour" : "Ajouter"}
+          </Button>
+        </Form.Item>
+      </Col>
+    </Row>
+  </Form>
+</Modal>
 
-          <Form.Item
-            name="adresse"
-            label="Adresse"
-            rules={[{ required: true, message: "Veuillez entrer l'adresse." }]}
-          >
-            <Input placeholder="Adresse" />
-          </Form.Item>
-
-          <Form.Item
-            name="telephone"
-            label="Téléphone"
-            rules={[{ required: true, message: "Veuillez entrer le téléphone." }]}
-          >
-            <Input placeholder="Téléphone" />
-          </Form.Item>
-
-          <Form.Item name="status" label="Status">
-            <Select placeholder="Sélectionner un status">
-              <Option value={true}>Actif</Option>
-              <Option value={false}>Inactif</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item name="location" label="Location">
-            <Input placeholder="Localisation" />
-          </Form.Item>
-
-          <Form.Item name="logo" label="Logo" valuePropName="file">
-            <Upload
-              listType="picture"
-              beforeUpload={() => false}
-              maxCount={1}
-            >
-              <Button>Upload</Button>
-            </Upload>
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              {editingId ? "Mettre à jour" : "Ajouter"}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };
