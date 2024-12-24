@@ -296,7 +296,6 @@ const EditAchat = () => {
 
                 style={{ marginTop: "20px" }}
             />
-
             <div style={{ textAlign: "right", marginTop: "20px" }}>
                 <div style={{ padding: "20px" }}><b>Total Prix Achat:</b> {totalPrixAchat} €</div>
                 <Button
