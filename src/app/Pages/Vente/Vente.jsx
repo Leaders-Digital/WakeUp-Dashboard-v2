@@ -11,7 +11,11 @@ const Vente = () => {
     const [productEntries, setProductEntries] = useState([{ produit: null, variant: null, quantite: null, prixVente: null }]);
     const [addedProducts, setAddedProducts] = useState([]);
     const [totalPrixVente, setTotalPrixVente] = useState(0);
-    const [numFacture, setNumFacture] = useState("");
+    const [typeClient, setTypeClient] = useState(null);
+    const [clients, setClients] = useState([]);
+    const [partenaires, setPartenaires] = useState([]);
+    const [selectedClient, setSelectedClient] = useState(null);
+    const [typePrix, setTypePrix] = useState(null);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -25,6 +29,33 @@ const Vente = () => {
             }
         };
         fetchProducts();
+    }, []);
+
+    useEffect(() => {
+        const fetchClients = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/client`, {
+                    headers: { "x-api-key": process.env.REACT_APP_API_KEY },
+                });
+                setClients(response.data);
+            } catch (error) {
+                console.error("Error fetching clients:", error);
+            }
+        };
+
+        const fetchPartenaires = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/partenaire/getPartenaires`, {
+                    headers: { "x-api-key": process.env.REACT_APP_API_KEY },
+                });
+                setPartenaires(response.data.data);
+            } catch (error) {
+                console.error("Error fetching partenaires:", error);
+            }
+        };
+
+        fetchClients();
+        fetchPartenaires();
     }, []);
 
     useEffect(() => {
@@ -75,8 +106,8 @@ const Vente = () => {
 
     const handleSubmit = async () => {
         try {
-            if (!numFacture) {
-                notification.error({ message: "Veuillez entrer un numéro de facture." });
+            if (!typeClient || !selectedClient) {
+                notification.error({ message: "Veuillez sélectionner un type de client et un client." });
                 return;
             }
 
@@ -86,7 +117,8 @@ const Vente = () => {
             }));
 
             const data = {
-                numFacture,
+                typeClient,
+                clientId: selectedClient,
                 products: productsData,
                 totalPrixVente,
             };
@@ -96,7 +128,7 @@ const Vente = () => {
             });
 
             notification.success({ message: "Vente ajoutée avec succès!" });
-            setNumFacture("");
+            setSelectedClient(null);
             setAddedProducts([]);
         } catch (error) {
             console.error("Error submitting vente:", error);
@@ -168,14 +200,52 @@ const Vente = () => {
             <Form form={form} layout="vertical" name="add_products_form">
                 <Row gutter={16}>
                     <Col span={8}>
-                        <Form.Item label="Numéro de Facture" required>
-                            <Input
-                                placeholder="Entrer le numéro de facture"
-                                value={numFacture}
-                                onChange={(e) => setNumFacture(e.target.value)}
-                            />
+                        <Form.Item label="Type de Client" required>
+                            <Select
+                                placeholder="Sélectionner le type de client"
+                                onChange={(value) => {
+                                    setTypeClient(value);
+                                    setSelectedClient(null);
+                                }}
+                                value={typeClient}
+                            >
+                                <Option value="personnePhysique">Personne Physique</Option>
+                                <Option value="societe">Société</Option>
+                            </Select>
                         </Form.Item>
                     </Col>
+                    <Col span={8}>
+                        {typeClient && (
+                            <Form.Item label={typeClient === "personnePhysique" ? "Client" : "Société"} required>
+                                <Select
+                                    placeholder={`Sélectionner ${typeClient === "personnePhysique" ? "un client" : "une société"}`}
+                                    onChange={(value) => setSelectedClient(value)}
+                                    value={selectedClient}
+                                >
+                                    {(typeClient === "personnePhysique" ? clients : partenaires).map((item) => (
+                                        <Option key={item._id} value={item._id}>
+                                            {typeClient === "personnePhysique" ? `${item.nomClient} ${item.prenomClient}` : item.nom}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        )}
+
+</Col>
+
+<Col span={8}>
+<Form.Item label="Type de Prix" required>
+    <Select
+        placeholder="Sélectionner le type de prix"
+        onChange={(value) => setTypePrix(value)}
+        value={typePrix}
+    >
+        <Option value="prixGros">Prix Gros</Option>
+        <Option value="prixVente">Prix Vente</Option>
+    </Select>
+</Form.Item>
+</Col>
+                
                 </Row>
                 <h3>Produits Ajoutés</h3>
                 {productEntries.map((entry, index) => (
@@ -199,6 +269,7 @@ const Vente = () => {
                                     ))}
                                 </Select>
                             </Form.Item>
+
                         </Col>
                         <Col span={8}>
                             <Form.Item label="Variant" required>
