@@ -1,3 +1,4 @@
+
 export const navigations = [
   {
     name: "Dashboard",
@@ -43,14 +44,6 @@ export const navigations = [
     ],
     users: ["admin", "editor", "viewer"]
   },
-  { name: "Banners", path: "/banners", icon: "panorama", users: ["admin", "editor"] },
-  {
-    name: "Liste des abonnés",
-    path: "/SubscriptionList",
-    icon: "local_post_office",
-    users: ["admin", "editor"]
-  },
-  { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] },
   {
     name: "Partenaire",
     path: "/partenaire/liste",
@@ -63,6 +56,17 @@ export const navigations = [
     icon: "account_box",
     users: ["admin", "editor"]
   },
+ 
+
+  { name: "Banners", path: "/banners", icon: "panorama", users: ["admin", "editor"] },
+  {
+    name: "Liste des abonnés",
+    path: "/SubscriptionList",
+    icon: "local_post_office",
+    users: ["admin", "editor"]
+  },
+  { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] },
+ 
   { name: "Promo", path: "/promo", icon: "shopping_basket", users: ["admin", "editor"] },
   { name: "Blog", path: "/blog", icon: "font_download", users: ["admin", "editor"] },
   {
