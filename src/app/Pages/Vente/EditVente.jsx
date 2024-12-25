@@ -122,10 +122,26 @@ const EditVente = () => {
             });
             return;
         }
-
+    
+        for (const entry of productEntries) {
+            const selectedProduct = products.find((p) => p._id === entry.produit);
+            const selectedVariant = selectedProduct?.variants?.find((v) => v._id === entry.variant);
+    
+            // Check if the entered quantity exceeds available stock
+            if (entry.quantite > selectedVariant?.quantity) {
+                notification.error({
+                    message: "Erreur de Quantité",
+                    description: `La quantité pour le produit "${selectedProduct?.nom}" et le variant "${selectedVariant?.reference}" dépasse le stock disponible (${selectedVariant?.quantity}).`,
+                });
+                return;
+            }
+        }
+    
+        // Add valid products to addedProducts array
         setAddedProducts([...addedProducts, ...productEntries]);
         setProductEntries([{ produit: null, variant: null, quantite: null }]);
     };
+    
 
     const handleDeleteRow = (index) => {
         const newProducts = addedProducts.filter((_, i) => i !== index);
@@ -151,7 +167,7 @@ const EditVente = () => {
                 entreprise: typeClient === "enterprise" ? selectedClient : undefined,
                 products: productsData,
                 priceType: typePrix,
-                totalPrice: totalPrixVente, // Include total sale price
+                totalPrice: totalPrixVente,
             };
 
             await axios.put(`${process.env.REACT_APP_API_URL_PRODUCTION}api/vente/update/${id}`, data, {

@@ -108,9 +108,26 @@ console.log(products, "products");
             });
             return;
         }
+    
+        for (const entry of productEntries) {
+            const selectedProduct = products.find((p) => p._id === entry.produit);
+            const selectedVariant = selectedProduct?.variants?.find((v) => v._id === entry.variant);
+    
+            // Validate quantity against available stock
+            if (entry.quantite > (selectedVariant?.quantity || 0)) {
+                notification.error({
+                    message: "Erreur de Quantité",
+                    description: `La quantité pour le produit "${selectedProduct?.nom}" et le variant "${selectedVariant?.reference}" dépasse le stock disponible (${selectedVariant?.quantity}).`,
+                });
+                return;
+            }
+        }
+    
+        // Add valid products to the addedProducts array
         setAddedProducts([...addedProducts, ...productEntries]);
         setProductEntries([{ produit: null, variant: null, quantite: null }]);
     };
+    
 
     const handleDeleteProduct = (index) => {
         const updatedProducts = addedProducts.filter((_, i) => i !== index);

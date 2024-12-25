@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Spin, Alert, Button, Input, Tag, message } from 'antd';
+import { Table, Spin, Alert, Button, Input, Tag, message, Select } from 'antd';
 import { EyeOutlined, CheckCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment';
@@ -41,11 +41,11 @@ const ListeVente = () => {
         setFilteredVentes(filtered);
     };
 
-    const handleValidate = async (id) => {
+    const handleValidate = async (id, value) => {
         try {
             const response = await axios.put(
                 `${process.env.REACT_APP_API_URL_PRODUCTION}api/vente/update-status/${id}`,
-                { status: "terminé" }, // Update the status to "terminé"
+                { status: value }, // Update the status to "terminé"
                 { headers: { "x-api-key": process.env.REACT_APP_API_KEY } }
             );
             message.success("Vente validée avec succès !");
@@ -55,7 +55,18 @@ const ListeVente = () => {
             message.error("Une erreur s'est produite lors de la validation.");
         }
     };
-
+    const getColor = (value) => {
+        switch (value) {
+            case "en attente":
+                return "orange";
+            case "terminé":
+                return "green";
+            case "annulé":
+                return "red";
+            default:
+                return "default";
+        }
+    };
     const columns = [
         {
             title: 'Numéro de Facture',
@@ -95,9 +106,35 @@ const ListeVente = () => {
             dataIndex: 'status',
             key: 'status',
             align: 'center',
-            render: (status) => {
-                const color = status === "terminé" ? "green" : status === "en attente" ? "orange" : "red";
-                return <Tag color={color}>{status}</Tag>;
+            render: (status, record) => {
+                const handleChange = (value) => {
+                    console.log(value);
+                    handleValidate(record._id, value)
+                };
+
+                return (
+                    <Select
+                    defaultValue={status}
+                    onChange={handleChange}
+                    style={{ width: 120 }}
+                >
+                    <Select.Option value="en attente">
+                        <span style={{ color: getColor("en attente") }}>
+                            en attente
+                        </span>
+                    </Select.Option>
+                    <Select.Option value="terminé">
+                        <span style={{ color: getColor("terminé") }}>
+                            terminé
+                        </span>
+                    </Select.Option>
+                    <Select.Option value="annulé">
+                        <span style={{ color: getColor("annulé") }}>
+                            annulé
+                        </span>
+                    </Select.Option>
+                </Select>
+                );
             },
         },
         {
@@ -110,7 +147,7 @@ const ListeVente = () => {
                         icon={<EyeOutlined />}
                         onClick={() => navigate(`/vente/edit/${record._id}`)}
                     >
-                        Voir
+                        Details
                     </Button>
                     {record.status === "en attente" && (
                         <Button
