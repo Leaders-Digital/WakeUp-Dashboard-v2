@@ -48,7 +48,7 @@ const ListeVente = () => {
                 { status: value }, // Update the status to "terminé"
                 { headers: { "x-api-key": process.env.REACT_APP_API_KEY } }
             );
-            message.success("Vente validée avec succès !");
+            message.success(`Vente mise à jour avec succès au statut "${value}" !`);
             fetchVentes(); // Refresh the data to reflect the updated status
         } catch (error) {
             console.error(error);
@@ -149,15 +149,7 @@ const ListeVente = () => {
                     >
                         Details
                     </Button>
-                    {record.status === "en attente" && (
-                        <Button
-                            icon={<CheckCircleOutlined />}
-                            type="primary"
-                            onClick={() => handleValidate(record._id)}
-                        >
-                            Valider
-                        </Button>
-                    )}
+               
                 </div>
             ),
         },
