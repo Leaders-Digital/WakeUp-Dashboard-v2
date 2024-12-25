@@ -86,6 +86,7 @@ const ListeVente = () => {
             dataIndex: 'totalPrice',
             key: 'totalPrice',
             align: 'center',
+            
         },
         {
             title: 'Créé le',

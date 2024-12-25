@@ -334,7 +334,7 @@ const EditVente = () => {
                                 type="primary"
                                 icon={<PlusOutlined />}
                                 onClick={handleAddProduct}
-                                style={{ marginTop: "24px" }}
+                                style={{ marginTop: "5px" }}
                             >
                                 Ajouter
                             </Button>
