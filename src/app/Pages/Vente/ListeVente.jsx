@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Spin, Alert, Button, Input, Tag } from 'antd';
+import { Table, Spin, Alert, Button, Input, Tag, message } from 'antd';
 import { EyeOutlined, CheckCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment';
@@ -15,7 +15,7 @@ const ListeVente = () => {
 
     const fetchVentes = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/vente`, {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL_PRODUCTION}api/vente/all`, {
                 headers: { "x-api-key": process.env.REACT_APP_API_KEY },
             });
             setVentes(response.data.ventes);
@@ -42,15 +42,17 @@ const ListeVente = () => {
     };
 
     const handleValidate = async (id) => {
-        console.log(`Valider la vente avec l'ID : ${id}`);
         try {
-            const response = await axios.put(`${process.env.REACT_APP_API_URL_PRODUCTION}api/vente/validate/${id}`, {}, {
-                headers: { "x-api-key": process.env.REACT_APP_API_KEY },
-            });
-            console.log(response.data);
-            fetchVentes();
+            const response = await axios.put(
+                `${process.env.REACT_APP_API_URL_PRODUCTION}api/vente/update-status/${id}`,
+                { status: "terminé" }, // Update the status to "terminé"
+                { headers: { "x-api-key": process.env.REACT_APP_API_KEY } }
+            );
+            message.success("Vente validée avec succès !");
+            fetchVentes(); // Refresh the data to reflect the updated status
         } catch (error) {
             console.error(error);
+            message.error("Une erreur s'est produite lors de la validation.");
         }
     };
 
@@ -70,8 +72,8 @@ const ListeVente = () => {
         },
         {
             title: 'Prix Total',
-            dataIndex: 'totalPrixVente',
-            key: 'totalPrixVente',
+            dataIndex: 'totalPrice',
+            key: 'totalPrice',
             align: 'center',
         },
         {
@@ -89,15 +91,14 @@ const ListeVente = () => {
             render: (date) => moment(date).format('YYYY-MM-DD HH:mm'),
         },
         {
-            title: 'Validé',
-            dataIndex: 'isValidated',
-            key: 'isValidated',
+            title: 'Statut',
+            dataIndex: 'status',
+            key: 'status',
             align: 'center',
-            render: (isValidated) => (
-                <Tag color={isValidated ? 'green' : 'red'}>
-                    {isValidated ? 'Validé' : 'Non Validé'}
-                </Tag>
-            ),
+            render: (status) => {
+                const color = status === "terminé" ? "green" : status === "en attente" ? "orange" : "red";
+                return <Tag color={color}>{status}</Tag>;
+            },
         },
         {
             title: 'Actions',
@@ -111,17 +112,15 @@ const ListeVente = () => {
                     >
                         Voir
                     </Button>
-                    {
-                        record.isValidated ? null : (
-                            <Button
-                                icon={<CheckCircleOutlined />}
-                                type="primary"
-                                onClick={() => handleValidate(record._id)}
-                            >
-                                Valider
-                            </Button>
-                        )
-                    }
+                    {record.status === "en attente" && (
+                        <Button
+                            icon={<CheckCircleOutlined />}
+                            type="primary"
+                            onClick={() => handleValidate(record._id)}
+                        >
+                            Valider
+                        </Button>
+                    )}
                 </div>
             ),
         },
