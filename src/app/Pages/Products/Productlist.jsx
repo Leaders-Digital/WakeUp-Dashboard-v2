@@ -83,8 +83,8 @@ const ProductList = () => {
           placeholder="Filtrer par catégorie"
         >
           {categories.map((v) => (
-            <Option key={v._id} value={v._id}>
-              {v._id} {/* Assuming 'nom' is the category name */}
+            <Option key={v.category} value={v.category}>
+              {v.category} {/* Assuming 'nom' is the category name */}
             </Option>
           ))}
         </Select>
@@ -164,6 +164,8 @@ const ProductList = () => {
           }
         }
       );
+      console.log(response.data.products);
+
       setProducts(response.data.products);
       setFullResponse(response.data);
     } catch (error) {
@@ -185,13 +187,16 @@ const ProductList = () => {
           }
         }
       );
+      console.log("response", response.data);
 
-      setCategories(response.data.categoryCounts);
+      setCategories(response.data);
+
     } catch (error) {
       message.error("Erreur lors de la récupération des catégories.");
       console.error(error);
     }
   };
+  console.log("heeeeeeere", products);
 
   // Effect Hooks
   useEffect(() => {
@@ -204,13 +209,13 @@ const ProductList = () => {
 
   // Calculate Sold Products
   const calculateSoldProducts = () => {
-    return products.filter((product) => product.solde).length;
+    return products?.filter((product) => product.solde).length;
   };
 
   // Calculate Categories Count
   const calculateCategories = () => {
     // Exclude "Tous les catégories" if present
-    return categories.filter((cat) => cat._id !== "Tous les catégories").length;
+    return categories?.filter((cat) => cat._id !== "Tous les catégories").length;
   };
 
   // Delete Product

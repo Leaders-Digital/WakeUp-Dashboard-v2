@@ -13,6 +13,8 @@ import "../fake-db";
 export default function App() {
   const content = useRoutes(routes);
 
+  console.log = () => { };
+  console.error = () => { };
   return (
     <SettingsProvider>
       <AuthProvider>
