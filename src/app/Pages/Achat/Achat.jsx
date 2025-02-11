@@ -32,6 +32,22 @@ const Achat = () => {
         setTotalPrixAchat(total);
     }, [addedProducts]);
 
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            if (addedProducts.length > 0 || numFacture) {
+                event.preventDefault();
+                event.returnValue = ""; // Required for modern browsers
+            }
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        // Cleanup the event listener when the component unmounts
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [addedProducts, numFacture]);
+
     const handleProductChange = (index, productId) => {
         const selectedProduct = products.find((product) => product._id === productId);
         const newProductEntries = [...productEntries];

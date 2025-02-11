@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Col, Row, Select, notification, Table } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
+import jsPDF from "jspdf";
+import BarcodeReader from "./BarcodeReader";
 
 const { Option } = Select;
 
@@ -60,26 +62,26 @@ const Vente = () => {
         fetchClients();
         fetchPartenaires();
     }, []);
-useEffect(() => {
-    console.log(addedProducts, "addedProducts");
+    useEffect(() => {
+        console.log(addedProducts, "addedProducts");
 
-    const total = addedProducts.reduce((sum, product) => {
-        console.log(product.prixGros, "product");
-        // Choose price type based on selected typePrix
-        const price =
-        
-            typePrix === "prixGros" ? product.prixGros : typePrix === "prixVente" ? product.prix : 0;
+        const total = addedProducts.reduce((sum, product) => {
+            console.log(product.prixGros, "product");
+            // Choose price type based on selected typePrix
+            const price =
 
-        return sum + (product.quantite || 0) * price;
-    }, 0);
+                typePrix === "prixGros" ? product.prixGros : typePrix === "prixVente" ? product.prix : 0;
 
-    console.log(total);
-    
+            return sum + (product.quantite || 0) * price;
+        }, 0);
 
-    setTotalPrixVente(total);
-}, [addedProducts, typePrix]); // Add typePrix as a dependency
+        console.log(total);
 
-console.log(products, "products");
+
+        setTotalPrixVente(total);
+    }, [addedProducts, typePrix]); // Add typePrix as a dependency
+
+    console.log(products, "products");
     const handleProductChange = (index, productId) => {
         const selectedProduct = products.find((product) => product._id === productId);
         const newProductEntries = [...productEntries];
@@ -108,11 +110,11 @@ console.log(products, "products");
             });
             return;
         }
-    
+
         for (const entry of productEntries) {
             const selectedProduct = products.find((p) => p._id === entry.produit);
             const selectedVariant = selectedProduct?.variants?.find((v) => v._id === entry.variant);
-    
+
             // Validate quantity against available stock
             if (entry.quantite > (selectedVariant?.quantity || 0)) {
                 notification.error({
@@ -122,12 +124,12 @@ console.log(products, "products");
                 return;
             }
         }
-    
+
         // Add valid products to the addedProducts array
         setAddedProducts([...addedProducts, ...productEntries]);
         setProductEntries([{ produit: null, variant: null, quantite: null }]);
     };
-    
+
 
     const handleDeleteProduct = (index) => {
         const updatedProducts = addedProducts.filter((_, i) => i !== index);
@@ -213,7 +215,7 @@ console.log(products, "products");
                 return unitPrice * (quantite || 0);
             },
         },
-        
+
         {
             title: "Action",
             render: (_, __, index) => (
@@ -390,6 +392,7 @@ console.log(products, "products");
                     >
                         Soumettre
                     </Button>
+                    <BarcodeReader />
                 </div>
             </Form>
         </div>

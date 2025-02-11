@@ -3,6 +3,7 @@ import { Form, Input, Button, Col, Row, Select, notification, Table } from "antd
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import jsPDF from "jspdf";
 
 const { Option } = Select;
 
@@ -309,6 +310,7 @@ const EditAchat = () => {
                 >
                     Soumettre les Modifications
                 </Button>
+
             </div>
         </div>
     );
