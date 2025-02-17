@@ -39,7 +39,6 @@ const DetailOrder = () => {
 
     fetchOrderDetails();
   }, [orderId]);
-
   if (loading) return <div>Loading...</div>;
   const handleDownloadInvoice = () => {
     const doc = new jsPDF();
@@ -47,12 +46,11 @@ const DetailOrder = () => {
     // Add Company Logo
     doc.addImage(logo, "jpeg", 8, 8, 50, 15);
 
-    // Title "Facture" in Bold
+    // Title "Bon de livraison"
     doc.setFontSize(22);
     doc.setFont("helvetica", "bold");
     doc.text("Bon de livraison", 105, 30, { align: "center" });
 
-    // Add a border under the title
     doc.setLineWidth(0.5);
     doc.line(10, 35, 200, 35);
 
@@ -78,29 +76,47 @@ const DetailOrder = () => {
     doc.text(`Téléphone: ${order.numTelephone}`, 10, 110);
     doc.text(`Date de Commande: ${formattedDateTime}`, 10, 120);
 
-    // Section Divider
     doc.line(10, 135, 200, 135);
 
-    // Calculate Total Quantity and Price without Livraison
-    const totalQuantity = order.listeDesProduits.reduce(
-      (sum, product) => sum + product.quantite,
-      0
-    );
-    const totalPriceWithoutLivraison = order.listeDesProduits.reduce(
-      (sum, product) => sum + (product.variant.product.prix * product.quantite || 0),
-      0
-    );
+    let productRows = [];
+    let totalQuantity = 0;
+    let totalPriceWithoutLivraison = 0;
 
-    // Prepare Product Data for Table
-    const productRows = order.listeDesProduits.map((product, index) => [
-      index + 1,
-      product?.variant?.product?.nom,
-      product?.variant?.reference,
-      product.quantite,
-      `${product.variant.product.prix || 0} TND`
-    ]);
+    // If there are products in the order
+    if (order.listeDesProduits.length > 0) {
+      productRows = order.listeDesProduits.map((product, index) => {
+        const price = product?.variant?.product?.prix || 0;
+        totalQuantity += product.quantite;
+        totalPriceWithoutLivraison += price * product.quantite;
 
-    // Add Total Row at the End
+        return [
+          index + 1,
+          product?.variant?.product?.nom || product,
+          product?.variant?.reference,
+          product.quantite,
+          `${price} TND`
+        ];
+      });
+    }
+
+    // If there are packs in the order
+    if (order.listeDesPack.length > 0) {
+      productRows = order.listeDesPack.map((pack, index) => {
+        const price = pack.pack.prix || 0;
+        totalQuantity += pack.quantite;
+        totalPriceWithoutLivraison += price * pack.quantite;
+
+        return [
+          index + 1,
+          pack.pack.nom,
+          "PACK",
+          pack.quantite,
+          `${price} TND`
+        ];
+      });
+    }
+
+    // Add Total Row
     productRows.push([
       "Total",
       "",
@@ -133,12 +149,9 @@ const DetailOrder = () => {
     // Define pageWidth for right-align calculations
     const pageWidth = doc.internal.pageSize.getWidth();
 
-    // Initialize variables for Livraison and Total
-    // Initialize variables for Livraison and Total
     let livraisonText = "";
     let totalGeneralText = "";
 
-    // Conditionally set text based on the 'payed' status
     if (order.payed) {
       totalGeneralText = `Total à payer: 0 TND`;
     } else {
@@ -147,12 +160,10 @@ const DetailOrder = () => {
       totalGeneralText = `Total à payer: ${prixTotalAvecLivraison.toFixed(2)} TND`;
     }
 
-    // Display Livraison and Total
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
 
     if (!order.payed) {
-      // Right-align Livraison text
       doc.text(
         livraisonText,
         pageWidth - doc.getTextWidth(livraisonText) - 10,
@@ -160,13 +171,12 @@ const DetailOrder = () => {
       );
     }
 
-    // Right-align Total text
     doc.text(
       totalGeneralText,
       pageWidth - doc.getTextWidth(totalGeneralText) - 10,
       doc.lastAutoTable.finalY + (order.payed ? 20 : 30)
     );
-    // Footer (Optional): Add any company policies, disclaimers, or thank you notes
+
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(150);
@@ -175,12 +185,9 @@ const DetailOrder = () => {
       "Pour toute question, veuillez nous contacter au contact@leaders-makeup.com",
       105,
       290,
-      {
-        align: "center"
-      }
+      { align: "center" }
     );
 
-    // Save the PDF with the filename containing the order ID
     doc.save(`Facture-${order.orderCode}.pdf`);
   };
 
