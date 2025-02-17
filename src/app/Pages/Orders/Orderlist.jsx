@@ -44,10 +44,10 @@ const Orderlist = () => {
         customerName: `${order.nom} ${order.prenom}`,
         product: order.listeDesProduits.map((item) => item.variant).join(", "),
         quantity: order.listeDesProduits.reduce((acc, item) => acc + item.quantite, 0),
-        status: order.statut ,// Use the 'statut' field from the backend
+        status: order.statut,// Use the 'statut' field from the backend
         date: moment(order.createdAt).format("YYYY-MM-DD"),
         prix: order.prixTotal + " TND",
-        payed : order.payed
+        payed: order.payed
 
       }));
       setOrders(formattedOrders);
@@ -137,7 +137,7 @@ const Orderlist = () => {
       dataIndex: "customerName",
       key: "customerName"
     },
-   
+
     {
       title: "Date",
       dataIndex: "date",
@@ -150,13 +150,13 @@ const Orderlist = () => {
       key: "status",
       render: (status) => <Tag color={statusColors[status] || "default"}>{status}</Tag>
     },
-   
+
     {
       title: "Prix",
       dataIndex: "prix",
       key: "prix"
     },
-    
+
     {
       title: "Paiement",
       dataIndex: "payed",
@@ -260,7 +260,7 @@ const Orderlist = () => {
         </Col>
       </Row>
 
-    
+
       <Table
         columns={columns}
         dataSource={filteredOrders}
