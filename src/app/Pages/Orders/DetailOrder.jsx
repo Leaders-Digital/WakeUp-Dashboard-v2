@@ -40,6 +40,9 @@ const DetailOrder = () => {
     fetchOrderDetails();
   }, [orderId]);
   if (loading) return <div>Loading...</div>;
+
+
+
   const handleDownloadInvoice = () => {
     const doc = new jsPDF();
 
@@ -85,7 +88,14 @@ const DetailOrder = () => {
     // If there are products in the order
     if (order.listeDesProduits.length > 0) {
       productRows = order.listeDesProduits.map((product, index) => {
-        const price = product?.variant?.product?.prix || 0;
+        let price = product?.variant?.product?.prix || 0;
+
+        // Apply discount if solde is true
+        if (product?.variant?.product?.solde) {
+          const discount = product.variant.product.soldePourcentage || 0;
+          price = price - (price * discount) / 100;
+        }
+
         totalQuantity += product.quantite;
         totalPriceWithoutLivraison += price * product.quantite;
 
@@ -94,7 +104,7 @@ const DetailOrder = () => {
           product?.variant?.product?.nom || product,
           product?.variant?.reference,
           product.quantite,
-          `${price} TND`
+          `${price.toFixed(2)} TND`
         ];
       });
     }
