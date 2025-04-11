@@ -18,6 +18,7 @@ const Orderlist = () => {
   const [statusFilter, setStatusFilter] = useState("Tous"); // Initialize with "Tous"
   const [dateRange, setDateRange] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  console.log(orders, "orders is here");
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -47,7 +48,8 @@ const Orderlist = () => {
         status: order.statut,// Use the 'statut' field from the backend
         date: moment(order.createdAt).format("YYYY-MM-DD"),
         prix: order.prixTotal + " TND",
-        payed: order.payed
+        payed: order.payed,
+        withOffer: order.withOffer
 
       }));
       setOrders(formattedOrders);

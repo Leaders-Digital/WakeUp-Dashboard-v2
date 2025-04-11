@@ -87,13 +87,26 @@ const DetailOrder = () => {
 
     // If there are products in the order
     if (order.listeDesProduits.length > 0) {
-      productRows = order.listeDesProduits.map((product, index) => {
+      // Sort products by price to apply discount on cheaper items
+      const sortedProducts = [...order.listeDesProduits].sort((a, b) => {
+        const priceA = a?.variant?.product?.prix || 0;
+        const priceB = b?.variant?.product?.prix || 0;
+        return priceA - priceB;
+      });
+
+      productRows = sortedProducts.map((product, index) => {
         let price = product?.variant?.product?.prix || 0;
+        let originalPrice = price;
 
         // Apply discount if solde is true
         if (product?.variant?.product?.solde) {
           const discount = product.variant.product.soldePourcentage || 0;
           price = price - (price * discount) / 100;
+        }
+
+        // Apply "Acheter 2 articles, le 2ème à -60%" offer if withOffer is true
+        if (order.withOffer && index % 2 === 1) {
+          price = originalPrice * 0.4; // 60% discount on the second item
         }
 
         totalQuantity += product.quantite;
@@ -104,7 +117,8 @@ const DetailOrder = () => {
           product?.variant?.product?.nom || product,
           product?.variant?.reference,
           product.quantite,
-          `${price.toFixed(2)} TND`
+          `${price.toFixed(2)} TND`,
+          order.withOffer && index % 2 === 1 ? "60% OFF" : ""
         ];
       });
     }
@@ -121,7 +135,8 @@ const DetailOrder = () => {
           pack.pack.nom,
           "PACK",
           pack.quantite,
-          `${price} TND`
+          `${price} TND`,
+          ""
         ];
       });
     }
@@ -132,12 +147,13 @@ const DetailOrder = () => {
       "",
       "",
       totalQuantity,
-      `${totalPriceWithoutLivraison.toFixed(2)} TND`
+      `${totalPriceWithoutLivraison.toFixed(2)} TND`,
+      ""
     ]);
 
     // Product Table Heading
     doc.autoTable({
-      head: [["#", "Produit", "Référence", "Quantité", "Prix (TND)"]],
+      head: [["#", "Produit", "Référence", "Quantité", "Prix (TND)", "Remise"]],
       body: productRows,
       startY: 140,
       styles: { fontSize: 10, cellPadding: 3 },
@@ -152,7 +168,9 @@ const DetailOrder = () => {
       },
       columnStyles: {
         0: { halign: "center" },
-        3: { halign: "right" }
+        3: { halign: "right" },
+        4: { halign: "right" },
+        5: { halign: "center" }
       }
     });
 
@@ -243,7 +261,10 @@ const DetailOrder = () => {
           <Text style={{ fontWeight: "700", fontSize: "20px" }}>Code de Suivie :</Text>{" "}
           {order?.orderCode}{" "}
         </p>
-
+        <p style={{ fontWeight: "700", fontSize: "20px", color: order?.withOffer ? "green" : "red" }}  >
+          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Offre :</Text>{" "}
+          {order?.withOffer ? "Remise Acheter 2 articles, le 2ème à -60%" : "Non"}
+        </p>
         <Button type="primary" onClick={handleDownloadInvoice}>
           Télécharger la facture
         </Button>
