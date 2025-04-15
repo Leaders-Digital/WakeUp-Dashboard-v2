@@ -16,9 +16,6 @@ COPY . .
 ARG REACT_APP_API_KEY=AIzaSyD-1X6JQJ3Q
 ARG REACT_APP_API_URL=https://wakeup-server.onrender.com/
 
-ENV REACT_APP_API_KEY=${REACT_APP_API_KEY}
-ENV REACT_APP_API_URL=${REACT_APP_API_URL}
-
 # Build the app
 RUN npm run build
 
@@ -34,13 +31,6 @@ RUN echo 'server { \
     server_name _; \
     root /usr/share/nginx/html; \
     index index.html; \
-    \
-    # Security headers \
-    add_header X-Content-Type-Options "nosniff"; \
-    add_header X-XSS-Protection "1; mode=block"; \
-    add_header X-Frame-Options "SAMEORIGIN"; \
-    add_header Referrer-Policy "strict-origin-when-cross-origin"; \
-    add_header Content-Security-Policy "default-src '\''self'\''; connect-src '\''self'\'' https://wakeup-server.onrender.com/; img-src '\''self'\'' data: blob:; style-src '\''self'\'' '\''unsafe-inline'\''; script-src '\''self'\'' '\''unsafe-inline'\'' '\''unsafe-eval'\''; font-src '\''self'\'' data:"; \
     \
     location / { \
         try_files $uri $uri/ /index.html; \
