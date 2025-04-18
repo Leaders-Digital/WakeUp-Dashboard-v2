@@ -79,6 +79,17 @@ const DetailOrder = () => {
     doc.text(`Téléphone: ${order.numTelephone}`, 10, 110);
     doc.text(`Date de Commande: ${formattedDateTime}`, 10, 120);
 
+    // Add Promotion Information
+    doc.setFont("helvetica", "bold");
+    if (order.withOffer) {
+      doc.setTextColor('#008000'); // Green for active promotion
+    } else {
+      doc.setTextColor('#FF0000'); // Red for inactive promotion
+    }
+    doc.text(`Offre: ${order.withOffer ? "Remise Acheter 2 articles, le 2ème à -60%" : "Non"}`, 10, 130);
+    doc.setTextColor('#000000'); // Reset text color to black
+    doc.setFont("helvetica", "normal");
+
     doc.line(10, 135, 200, 135);
 
     let productRows = [];
@@ -87,38 +98,41 @@ const DetailOrder = () => {
 
     // If there are products in the order
     if (order.listeDesProduits.length > 0) {
-      // Sort products by price to apply discount on cheaper items
-      const sortedProducts = [...order.listeDesProduits].sort((a, b) => {
-        const priceA = a?.variant?.product?.prix || 0;
-        const priceB = b?.variant?.product?.prix || 0;
-        return priceA - priceB;
+      // Create a flat array of all items with their quantities
+      const allItems = order.listeDesProduits.flatMap(product => {
+        const prixFinal = product?.variant?.product?.solde
+          ? product.variant.product.prix - (product.variant.product.prix * (product.variant.product.soldePourcentage / 100))
+          : product.variant.product.prix;
+
+        return Array(product.quantite).fill({
+          product,
+          prixFinal
+        });
       });
 
-      productRows = sortedProducts.map((product, index) => {
-        let price = product?.variant?.product?.prix || 0;
-        let originalPrice = price;
+      // Sort items by price in descending order (highest first)
+      allItems.sort((a, b) => b.prixFinal - a.prixFinal);
 
-        // Apply discount if solde is true
-        if (product?.variant?.product?.solde) {
-          const discount = product.variant.product.soldePourcentage || 0;
-          price = price - (price * discount) / 100;
+      // Process items for the invoice
+      productRows = allItems.map((item, index) => {
+        let price = item.prixFinal;
+        let discountApplied = false;
+
+        // Apply 60% discount only to the second most expensive item
+        if (order.withOffer && index === 1) {
+          price = item.prixFinal * 0.4;
+          discountApplied = true;
         }
 
-        // Apply "Acheter 2 articles, le 2ème à -60%" offer if withOffer is true
-        if (order.withOffer && index % 2 === 1) {
-          price = originalPrice * 0.4; // 60% discount on the second item
-        }
-
-        totalQuantity += product.quantite;
-        totalPriceWithoutLivraison += price * product.quantite;
+        totalPriceWithoutLivraison += price;
 
         return [
           index + 1,
-          product?.variant?.product?.nom || product,
-          product?.variant?.reference,
-          product.quantite,
+          item.product.variant.product.nom,
+          item.product.variant.reference,
+          1, // Quantity is always 1 in the flattened array
           `${price.toFixed(2)} TND`,
-          order.withOffer && index % 2 === 1 ? "60% OFF" : ""
+          discountApplied ? "60% OFF" : ""
         ];
       });
     }
