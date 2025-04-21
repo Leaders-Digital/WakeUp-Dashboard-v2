@@ -14,7 +14,7 @@ COPY . .
 
 # Set environment variables for build time
 ARG REACT_APP_API_KEY=AIzaSyD-1X6JQJ3Q
-ARG REACT_APP_API_URL=https://wakeup-server.onrender.com/
+ARG REACT_APP_API_URL=https://api.wakeup-cosmetics.tn/
 
 EXPOSE 3000
 
