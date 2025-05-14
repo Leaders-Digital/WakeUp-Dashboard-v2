@@ -18,8 +18,6 @@ const Orderlist = () => {
   const [statusFilter, setStatusFilter] = useState("Tous"); // Initialize with "Tous"
   const [dateRange, setDateRange] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  console.log(orders, "orders is here");
-
   const showModal = () => {
     setIsModalVisible(true);
   };

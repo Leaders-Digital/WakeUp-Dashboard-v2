@@ -36,9 +36,6 @@ const OneBlog = ({ item, getBlog }) => {
         // If the user confirms, call deleteBlog
         deleteBlog(id);
       },
-      onCancel() {
-        console.log("Cancel the delete action");
-      }
     });
   };
 

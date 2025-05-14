@@ -164,8 +164,6 @@ const ProductList = () => {
           }
         }
       );
-      console.log(response.data.products);
-
       setProducts(response.data.products);
       setFullResponse(response.data);
     } catch (error) {
@@ -187,8 +185,6 @@ const ProductList = () => {
           }
         }
       );
-      console.log("response", response.data);
-
       setCategories(response.data);
 
     } catch (error) {
@@ -196,8 +192,6 @@ const ProductList = () => {
       console.error(error);
     }
   };
-  console.log("heeeeeeere", products);
-
   // Effect Hooks
   useEffect(() => {
     getProducts();

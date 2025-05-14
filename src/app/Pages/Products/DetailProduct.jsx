@@ -215,7 +215,6 @@ const DetailProduct = () => {
 
   // Function to handle form submission failure
   const handleFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
     message.error("Veuillez corriger les erreurs du formulaire.");
   };
   const quantity = () => {
@@ -458,7 +457,7 @@ const DetailProduct = () => {
             name="quantity"
             rules={[
               { required: true, message: "La quantité est obligatoire." },
-             
+
             ]}
           >
             <Input type="number" placeholder="Quantité" />
@@ -562,7 +561,7 @@ const DetailProduct = () => {
             name="quantity"
             rules={[
               { required: true, message: "La quantité est obligatoire." },
-              
+
             ]}
           >
             <Input type="number" placeholder="Quantité" />
@@ -588,13 +587,13 @@ const DetailProduct = () => {
               defaultFileList={
                 currentVariant && currentVariant.picture
                   ? [
-                      {
-                        uid: "-1",
-                        name: "Current Picture",
-                        status: "done",
-                        url: `${process.env.REACT_APP_API_URL_PRODUCTION}${currentVariant.picture}`
-                      }
-                    ]
+                    {
+                      uid: "-1",
+                      name: "Current Picture",
+                      status: "done",
+                      url: `${process.env.REACT_APP_API_URL_PRODUCTION}${currentVariant.picture}`
+                    }
+                  ]
                   : []
               }
             >
@@ -625,13 +624,13 @@ const DetailProduct = () => {
               defaultFileList={
                 currentVariant && currentVariant.icon
                   ? [
-                      {
-                        uid: "-1",
-                        name: "Current Icon",
-                        status: "done",
-                        url: `${process.env.REACT_APP_API_URL_PRODUCTION}${currentVariant.icon}`
-                      }
-                    ]
+                    {
+                      uid: "-1",
+                      name: "Current Icon",
+                      status: "done",
+                      url: `${process.env.REACT_APP_API_URL_PRODUCTION}${currentVariant.icon}`
+                    }
+                  ]
                   : []
               }
             >

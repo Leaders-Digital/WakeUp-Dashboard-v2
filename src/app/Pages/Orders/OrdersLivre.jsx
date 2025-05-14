@@ -28,15 +28,14 @@ const OrdersLivre = () => {
         }
       );
       const fetchedOrders = response.data.data;
-      console.log(fetchedOrders,"hamma");
-      
-      const formattedOrders = fetchedOrders.reverse().map((order) => ({  
+
+      const formattedOrders = fetchedOrders.reverse().map((order) => ({
 
         key: order._id,
         orderId: order.orderCode,
         customerName: `${order.nom} ${order.prenom}`,
         product: order.listeDesProduits.map((item) => item.variant).join(", "),
-        quantity: order.listeDesProduits.reduce((acc, item) => acc + item.quantite, 0),        
+        quantity: order.listeDesProduits.reduce((acc, item) => acc + item.quantite, 0),
         status: order.statut
       }));
       setOrders(formattedOrders);

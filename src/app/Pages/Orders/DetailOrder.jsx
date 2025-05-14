@@ -15,8 +15,6 @@ const DetailOrder = () => {
   const [disabledCards, setDisabledCards] = useState([]);
   const location = useLocation();
   const orderId = location.state.orderId;
-  console.log(order, "oreder is here");
-
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {

@@ -65,8 +65,6 @@ const Users = () => {
           }
         }
       );
-      console.log(response.data.data);
-
       setInternUsers(response.data.data);
     } catch (error) {
       console.error(error);
@@ -86,8 +84,6 @@ const Users = () => {
         }
       });
       message.success("User deleted successfully!");
-      console.log("User deleted successfully!");
-
       getUsers(); // Refresh the product list after deletion
     } catch (error) {
       message.error("Failed to delete User");
@@ -215,12 +211,12 @@ const Users = () => {
       render: (lastLogin) =>
         lastLogin
           ? new Date(lastLogin).toLocaleString("fr-FR", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit"
-            })
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+          })
           : "Jamais connecté"
     },
     {

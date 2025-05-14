@@ -301,7 +301,6 @@ Mock.onPost("/api/ecommerce/update-cart-amount").reply((config) => {
       ...userCart,
       list: userCart.list.map((product) => {
         if (product.productId === productId) {
-          console.log("found");
           product.amount = amount;
         }
         return product;

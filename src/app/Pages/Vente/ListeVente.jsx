@@ -86,7 +86,7 @@ const ListeVente = () => {
             dataIndex: 'totalPrice',
             key: 'totalPrice',
             align: 'center',
-            
+
         },
         {
             title: 'Créé le',
@@ -109,32 +109,31 @@ const ListeVente = () => {
             align: 'center',
             render: (status, record) => {
                 const handleChange = (value) => {
-                    console.log(value);
                     handleValidate(record._id, value)
                 };
 
                 return (
                     <Select
-                    defaultValue={status}
-                    onChange={handleChange}
-                    style={{ width: 120 }}
-                >
-                    <Select.Option value="en attente">
-                        <span style={{ color: getColor("en attente") }}>
-                            en attente
-                        </span>
-                    </Select.Option>
-                    <Select.Option value="terminé">
-                        <span style={{ color: getColor("terminé") }}>
-                            terminé
-                        </span>
-                    </Select.Option>
-                    <Select.Option value="annulé">
-                        <span style={{ color: getColor("annulé") }}>
-                            annulé
-                        </span>
-                    </Select.Option>
-                </Select>
+                        defaultValue={status}
+                        onChange={handleChange}
+                        style={{ width: 120 }}
+                    >
+                        <Select.Option value="en attente">
+                            <span style={{ color: getColor("en attente") }}>
+                                en attente
+                            </span>
+                        </Select.Option>
+                        <Select.Option value="terminé">
+                            <span style={{ color: getColor("terminé") }}>
+                                terminé
+                            </span>
+                        </Select.Option>
+                        <Select.Option value="annulé">
+                            <span style={{ color: getColor("annulé") }}>
+                                annulé
+                            </span>
+                        </Select.Option>
+                    </Select>
                 );
             },
         },
@@ -150,7 +149,7 @@ const ListeVente = () => {
                     >
                         Details
                     </Button>
-               
+
                 </div>
             ),
         },

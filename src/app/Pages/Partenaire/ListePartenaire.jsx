@@ -43,14 +43,12 @@ const ListePartenaire = () => {
 
       if (logoFile) {
         formData.append("logo", logoFile);
-        console.log(logoFile); // Log the file to ensure it’s set correctly
       } else {
         console.error("Logo file is missing!");
       }
 
       // Log formData contents
       for (let [key, value] of formData.entries()) {
-        console.log(key, value);
       }
 
       await axios.post(
@@ -217,7 +215,7 @@ const ListePartenaire = () => {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (createdAt) => new Date(createdAt).toLocaleDateString("fr-FR"), 
+      render: (createdAt) => new Date(createdAt).toLocaleDateString("fr-FR"),
     },
 
     {
@@ -295,142 +293,141 @@ const ListePartenaire = () => {
         scroll={{ x: "max-content" }}
       />
 
-<Modal
-  title={editingId ? "Mettre à jour le Partenaire" : "Ajouter un Partenaire"}
-  visible={isModalVisible}
-  onCancel={() => setIsModalVisible(false)}
-  footer={null}
->
-  <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
-    <Row gutter={16}>
-      <Col xs={24} md={12}>
-        <Form.Item
-          name="nom"
-          label="Nom partenaire"
-          rules={[{ required: true, message: "Veuillez entrer le nom du partenaire." }]}
-        >
-          <Input placeholder="Nom du partenaire" />
-        </Form.Item>
-      </Col>
-      <Col xs={24} md={12}>
-        <Form.Item
-          name="matriculFiscal"
-          label="Matricule Fiscal"
-          rules={[{ required: true, message: "Veuillez entrer le matricule fiscal." }]}
-        >
-          <Input placeholder="Matricule Fiscal" />
-        </Form.Item>
-      </Col>
-    </Row>
+      <Modal
+        title={editingId ? "Mettre à jour le Partenaire" : "Ajouter un Partenaire"}
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={null}
+      >
+        <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
+          <Row gutter={16}>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="nom"
+                label="Nom partenaire"
+                rules={[{ required: true, message: "Veuillez entrer le nom du partenaire." }]}
+              >
+                <Input placeholder="Nom du partenaire" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="matriculFiscal"
+                label="Matricule Fiscal"
+                rules={[{ required: true, message: "Veuillez entrer le matricule fiscal." }]}
+              >
+                <Input placeholder="Matricule Fiscal" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-    <Row gutter={16}>
-      <Col xs={24} md={12}>
-        <Form.Item
-          name="telephone"
-          label="Téléphone"
-          rules={[{ required: true, message: "Veuillez entrer le numéro de téléphone." }]}
-        >
-          <Input placeholder="Téléphone" />
-        </Form.Item>
-      </Col>
-      <Col xs={24} md={12}>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            { required: true, message: "Veuillez entrer l'email." },
-            { type: "email", message: "Veuillez entrer un email valide." },
-          ]}
-        >
-          <Input placeholder="Email" />
-        </Form.Item>
-      </Col>
-    </Row>
+          <Row gutter={16}>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="telephone"
+                label="Téléphone"
+                rules={[{ required: true, message: "Veuillez entrer le numéro de téléphone." }]}
+              >
+                <Input placeholder="Téléphone" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="email"
+                label="Email"
+                rules={[
+                  { required: true, message: "Veuillez entrer l'email." },
+                  { type: "email", message: "Veuillez entrer un email valide." },
+                ]}
+              >
+                <Input placeholder="Email" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-    <Row gutter={16}>
-      <Col xs={24} md={12}>
-        <Form.Item
-          name="ville"
-          label="Ville"
-          rules={[{ required: true, message: "Veuillez entrer la ville." }]}
-        >
-          <Input placeholder="Ville" />
-        </Form.Item>
-      </Col>
-      <Col xs={24} md={12}>
-        <Form.Item name="delegation" label="Délégation">
-          <Input placeholder="Délégation" />
-        </Form.Item>
-      </Col>
-    </Row>
+          <Row gutter={16}>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="ville"
+                label="Ville"
+                rules={[{ required: true, message: "Veuillez entrer la ville." }]}
+              >
+                <Input placeholder="Ville" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item name="delegation" label="Délégation">
+                <Input placeholder="Délégation" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-    <Row gutter={16}>
-      <Col xs={24} md={12}>
-        <Form.Item name="codePostal" label="Code Postal">
-          <Input placeholder="Code Postal" />
-        </Form.Item>
-      </Col>
-      <Col xs={24} md={12}>
-        <Form.Item
-          name="adresse"
-          label="Adresse"
-          rules={[{ required: true, message: "Veuillez entrer l'adresse." }]}
-        >
-          <Input placeholder="Adresse" />
-        </Form.Item>
-      </Col>
-    </Row>
+          <Row gutter={16}>
+            <Col xs={24} md={12}>
+              <Form.Item name="codePostal" label="Code Postal">
+                <Input placeholder="Code Postal" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="adresse"
+                label="Adresse"
+                rules={[{ required: true, message: "Veuillez entrer l'adresse." }]}
+              >
+                <Input placeholder="Adresse" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-    <Row gutter={16}>
-      <Col xs={24} md={12}>
-        <Form.Item
-          name="lien"
-          label="Lien"
-          rules={[{ required: true, message: "Veuillez entrer le lien." }]}
-        >
-          <Input placeholder="Lien" />
-        </Form.Item>
-      </Col>
-      <Col xs={24} md={12}>
-        <Form.Item
-          name="location"
-          label="Localisation"
-          rules={[{ required: true, message: "Veuillez entrer la localisation." }]}
-        >
-          <Input placeholder="Localisation" />
-        </Form.Item>
-      </Col>
-    </Row>
+          <Row gutter={16}>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="lien"
+                label="Lien"
+                rules={[{ required: true, message: "Veuillez entrer le lien." }]}
+              >
+                <Input placeholder="Lien" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name="location"
+                label="Localisation"
+                rules={[{ required: true, message: "Veuillez entrer la localisation." }]}
+              >
+                <Input placeholder="Localisation" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-    <Row gutter={16}>
-      <Col xs={24} md={12}>
-        <Form.Item name="logo" label="Logo" valuePropName="file">
-          <Upload
-            listType="picture"
-            beforeUpload={(file) => {
-              console.log(file); // Check if this is the correct file
-              setLogoFile(file); // Save the file to state
-              return false; // Prevent automatic upload
-            }}
-            maxCount={1}
-          >
-            <Button>Upload</Button>
-          </Upload>
-        </Form.Item>
-      </Col>
-    </Row>
+          <Row gutter={16}>
+            <Col xs={24} md={12}>
+              <Form.Item name="logo" label="Logo" valuePropName="file">
+                <Upload
+                  listType="picture"
+                  beforeUpload={(file) => {
+                    setLogoFile(file); // Save the file to state
+                    return false; // Prevent automatic upload
+                  }}
+                  maxCount={1}
+                >
+                  <Button>Upload</Button>
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
 
-    <Row>
-      <Col xs={24}>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {editingId ? "Mettre à jour" : "Ajouter"}
-          </Button>
-        </Form.Item>
-      </Col>
-    </Row>
-  </Form>
-</Modal>
+          <Row>
+            <Col xs={24}>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">
+                  {editingId ? "Mettre à jour" : "Ajouter"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
 
     </div>
   );

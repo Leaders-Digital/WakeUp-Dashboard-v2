@@ -97,7 +97,6 @@ export default function MatxVerticalNav({ items }) {
       console.log(error);
     }
   };
-  console.log(user);
 
   useEffect(() => {
     getUserInfo();
