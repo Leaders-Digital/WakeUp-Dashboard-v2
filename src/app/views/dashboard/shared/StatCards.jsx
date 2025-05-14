@@ -47,7 +47,7 @@ export default function StatCards({ allData }) {
     },
     {
       name: "Produit en repture de stock",
-      amount: allData.variantsWithLessThan3Quantity?.length,
+      amount: allData?.variantsWithLessThan3Quantity?.length,
       Icon: ProductionQuantityLimitsIcon
     },
     { name: "Commandes en cours", amount: allData.enCoursOrdersCount, Icon: LocalShippingIcon }
