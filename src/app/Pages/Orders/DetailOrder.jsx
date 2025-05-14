@@ -317,13 +317,13 @@ const DetailOrder = () => {
                   </span>
                 </p>
                 <p>
-                  <Text strong>Description:</Text> {product.variant.product.description}
+                  <Text strong>Description:</Text> {product?.variant?.product?.description}
                 </p>
                 <p>
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <img
-                      src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product.variant.picture}`}
-                      alt={product.variant.reference}
+                      src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product?.variant?.picture}`}
+                      alt={product?.variant?.reference}
                       style={{ width: "100%", maxWidth: "100px" }}
                     />
                   </div>
@@ -351,15 +351,15 @@ const DetailOrder = () => {
             >
               <div>
                 <p>
-                  <Text strong>nom du Pack:</Text> {product.pack.nom}
+                  <Text strong>nom du Pack:</Text> {product?.pack?.nom}
                 </p>
                 <p>
-                  <Text strong>Description:</Text> {product.pack.description}
+                  <Text strong>Description:</Text> {product?.pack?.description}
                 </p>
                 <p>
                   <Text strong>Image:</Text>{" "}
                   <img
-                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product.pack.mainPicture}`}
+                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product?.pack?.mainPicture}`}
                     // alt={product.variant.reference}
                     style={{ width: "100%", maxWidth: "100px" }}
                   />
