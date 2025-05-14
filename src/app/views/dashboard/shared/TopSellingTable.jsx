@@ -101,7 +101,7 @@ export default function TopSellingTable({ allData }) {
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                   <Avatar
                     src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product.picture}`}
-                    alt={product.product.nom}
+                    alt={product?.product?.nom}
                     sx={{ width: 50, height: 50 }}
                   />
                 </TableCell>
@@ -111,11 +111,11 @@ export default function TopSellingTable({ allData }) {
                 </TableCell>
 
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
-                  {product.product.nom}
+                  {product?.product?.nom}
                 </TableCell>
 
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
-                  {product.quantity}
+                  {product?.quantity}
                 </TableCell>
               </TableRow>
             ))}
