@@ -53,11 +53,14 @@ export default function TopSellingTable({ allData }) {
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
 
+  // Add safety check for allData and variantsWithLessThan3Quantity
+  const variants = allData?.variantsWithLessThan3Quantity || [];
+
   // Calculate total pages
-  const totalPages = Math.ceil(allData.variantsWithLessThan3Quantity.length / itemsPerPage);
+  const totalPages = Math.ceil(variants.length / itemsPerPage);
 
   // Pagination data
-  const paginatedData = allData.variantsWithLessThan3Quantity.slice(
+  const paginatedData = variants.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -96,26 +99,26 @@ export default function TopSellingTable({ allData }) {
               <TableRow
                 key={index}
                 hover
-                onClick={() => navigate(`/produit/details/`, { state: { productId: product.product._id } })}
+                onClick={() => navigate(`/produit/details/`, { state: { productId: product?.product?._id } })}
               >
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                   <Avatar
-                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product.picture}`}
-                    alt={product.product.nom}
+                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product?.picture}`}
+                    alt={product?.product?.nom || 'Product image'}
                     sx={{ width: 50, height: 50 }}
                   />
                 </TableCell>
 
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
-                  {product?.reference}
+                  {product?.reference || 'N/A'}
                 </TableCell>
 
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
-                  {product.product.nom}
+                  {product?.product?.nom || 'N/A'}
                 </TableCell>
 
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
-                  {product.quantity}
+                  {product?.quantity || 0}
                 </TableCell>
               </TableRow>
             ))}
