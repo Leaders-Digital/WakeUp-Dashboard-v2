@@ -63,10 +63,7 @@ const Vente = () => {
         fetchPartenaires();
     }, []);
     useEffect(() => {
-        console.log(addedProducts, "addedProducts");
-
         const total = addedProducts.reduce((sum, product) => {
-            console.log(product.prixGros, "product");
             // Choose price type based on selected typePrix
             const price =
 
@@ -75,18 +72,13 @@ const Vente = () => {
             return sum + (product.quantite || 0) * price;
         }, 0);
 
-        console.log(total);
 
 
         setTotalPrixVente(total);
     }, [addedProducts, typePrix]); // Add typePrix as a dependency
-
-    console.log(products, "products");
     const handleProductChange = (index, productId) => {
         const selectedProduct = products.find((product) => product._id === productId);
         const newProductEntries = [...productEntries];
-        console.log(selectedProduct, "selectedProduct");
-
         newProductEntries[index].produit = productId;
         newProductEntries[index].variantOptions = selectedProduct?.variants || [];
         newProductEntries[index].variant = selectedProduct?.variants?.[0]?._id || null;
@@ -171,8 +163,6 @@ const Vente = () => {
             );
 
             // Debugging response
-            console.log("Response:", response.data);
-
             // Success notification and reset state
             notification.success({ message: "Vente ajoutée avec succès!" });
             setAddedProducts([]);

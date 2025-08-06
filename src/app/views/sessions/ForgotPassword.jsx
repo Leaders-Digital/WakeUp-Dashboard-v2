@@ -33,10 +33,6 @@ export default function ForgotPassword() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("admin@example.com");
 
-  const handleFormSubmit = () => {
-    console.log(email);
-  };
-
   return (
     <StyledRoot>
       <Card className="card">
@@ -47,7 +43,7 @@ export default function ForgotPassword() {
             </div>
 
             <ContentBox>
-              <form onSubmit={handleFormSubmit}>
+              <form >
                 <TextField
                   type="email"
                   name="email"

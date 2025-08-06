@@ -46,12 +46,10 @@ const ListAchat = () => {
     };
 
     const handleValidate = async (id) => {
-        console.log(`Valider l'achat avec l'ID : ${id}`);
         try {
             const response = await axios.put(`${process.env.REACT_APP_API_URL_PRODUCTION}api/achat/validate/${id}`, {}, {
                 headers: { "x-api-key": process.env.REACT_APP_API_KEY },
             });
-            console.log(response.data);
             fetchAchats();
         } catch (error) {
             console.error(error);

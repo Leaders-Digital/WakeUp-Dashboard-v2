@@ -108,7 +108,6 @@ const EditAchat = () => {
                 variantId: product.variant, // Use variant ID
                 quantite: product.quantite, // Include quantity
             }));
-            console.log(productsData);
             const data = {
                 numFacture,
                 products: productsData,

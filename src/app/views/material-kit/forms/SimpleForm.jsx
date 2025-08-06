@@ -31,12 +31,6 @@ const SimpleForm = () => {
     });
     return () => ValidatorForm.removeValidationRule("isPasswordMatch");
   }, [state.password]);
-
-  const handleSubmit = (event) => {
-    // console.log("submitted");
-    // console.log(event);
-  };
-
   const handleChange = (event) => {
     event.persist();
     setState({ ...state, [event.target.name]: event.target.value });
@@ -58,7 +52,7 @@ const SimpleForm = () => {
 
   return (
     <div>
-      <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
+      <ValidatorForm onError={() => null}>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
             <TextField
