@@ -3,11 +3,12 @@ import Meta from "antd/es/card/Meta";
 import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const OneBanner = ({ banner }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(
-    `${process.env.REACT_APP_API_URL_PRODUCTION}` + banner.picture
+    getImageUrl(banner.picture)
   );
 
   // Gérer le changement d'image

@@ -23,6 +23,7 @@ import { EditOutlined, PlusOutlined, UploadOutlined, DeleteOutlined } from "@ant
 import { Breadcrumb } from "app/components";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const DetailProduct = () => {
   const location = useLocation();
@@ -232,7 +233,7 @@ const DetailProduct = () => {
       key: "picture",
       render: (picture) => (
         <img
-          src={`${process.env.REACT_APP_API_URL_PRODUCTION}${picture}`}
+          src={getImageUrl(picture)}
           alt="Variant"
           style={{ width: "70px", height: "70px", borderRadius: "8px" }}
         />
@@ -262,7 +263,7 @@ const DetailProduct = () => {
       key: "icon",
       render: (icon) => (
         <img
-          src={`${process.env.REACT_APP_API_URL_PRODUCTION}${icon}`}
+          src={getImageUrl(icon)}
           alt="Variant"
           style={{ width: "70px", height: "70px", borderRadius: "8px" }}
         />
@@ -357,7 +358,7 @@ const DetailProduct = () => {
                 <img
                   height="300px"
                   width="300px"
-                  src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product.mainPicture}`}
+                  src={getImageUrl(product.mainPicture)}
                   alt={product?.nom}
                   style={{ objectFit: "cover", borderRadius: "8px" }}
                 />
@@ -591,7 +592,7 @@ const DetailProduct = () => {
                       uid: "-1",
                       name: "Current Picture",
                       status: "done",
-                      url: `${process.env.REACT_APP_API_URL_PRODUCTION}${currentVariant.picture}`
+                      url: getImageUrl(currentVariant.picture)
                     }
                   ]
                   : []
@@ -628,7 +629,7 @@ const DetailProduct = () => {
                       uid: "-1",
                       name: "Current Icon",
                       status: "done",
-                      url: `${process.env.REACT_APP_API_URL_PRODUCTION}${currentVariant.icon}`
+                      url: getImageUrl(currentVariant.icon)
                     }
                   ]
                   : []

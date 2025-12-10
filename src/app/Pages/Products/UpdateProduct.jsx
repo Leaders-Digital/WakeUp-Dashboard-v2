@@ -16,6 +16,7 @@ import {
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import TextArea from "antd/es/input/TextArea";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const { Option } = Select;
 
@@ -114,7 +115,7 @@ const UpdateProduct = () => {
               uid: "-1",
               name: "Current Image",
               status: "done",
-              url: `${process.env.REACT_APP_API_URL_PRODUCTION}${response.data.mainPicture}`
+              url: getImageUrl(response.data.mainPicture)
             }
           ]
           : []

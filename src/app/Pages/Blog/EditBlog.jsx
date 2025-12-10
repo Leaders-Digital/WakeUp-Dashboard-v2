@@ -3,6 +3,7 @@ import { Button, message, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import holder from "../../../assets/holder.webp"; // Make sure this path is correct
 import axios from "axios";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const EditBlog = ({ item, getBlog, isModalOpen, onClose }) => {
   const fileInputRef = useRef(null);
@@ -118,7 +119,7 @@ const EditBlog = ({ item, getBlog, isModalOpen, onClose }) => {
             logo
               ? URL.createObjectURL(logo)
               : item.blogImage
-              ? `${process.env.REACT_APP_API_URL_PRODUCTION}${item.blogImage}`
+              ? getImageUrl(item.blogImage)
               : holder
           }
           width={150}

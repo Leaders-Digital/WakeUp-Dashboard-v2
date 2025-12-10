@@ -7,6 +7,7 @@ import "jspdf-autotable"; // Importation pour l'ajout de tableaux stylisés
 import { Box } from "@mui/material";
 import { Breadcrumb } from "app/components";
 import logo from "../../../assets/WhatsApp.jpeg";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const { Title, Text } = Typography;
 const DetailOrder = () => {
@@ -320,7 +321,7 @@ const DetailOrder = () => {
                 <p>
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <img
-                      src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product?.variant?.picture}`}
+                      src={getImageUrl(product?.variant?.picture)}
                       alt={product?.variant?.reference}
                       style={{ width: "100%", maxWidth: "100px" }}
                     />
@@ -357,7 +358,7 @@ const DetailOrder = () => {
                 <p>
                   <Text strong>Image:</Text>{" "}
                   <img
-                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product?.pack?.mainPicture}`}
+                    src={getImageUrl(product?.pack?.mainPicture)}
                     // alt={product.variant.reference}
                     style={{ width: "100%", maxWidth: "100px" }}
                   />

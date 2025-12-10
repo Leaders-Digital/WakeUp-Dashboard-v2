@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getImageUrl } from "app/utils/imageUrl";
 
 // STYLED COMPONENTS
 const CardHeader = styled(Box)(() => ({
@@ -103,7 +104,7 @@ export default function TopSellingTable({ allData }) {
               >
                 <TableCell colSpan={4} align="left" sx={{ px: 5, textTransform: "capitalize" }}>
                   <Avatar
-                    src={`${process.env.REACT_APP_API_URL_PRODUCTION}${product?.picture}`}
+                    src={getImageUrl(product?.picture)}
                     alt={product?.product?.nom || 'Product image'}
                     sx={{ width: 50, height: 50 }}
                   />

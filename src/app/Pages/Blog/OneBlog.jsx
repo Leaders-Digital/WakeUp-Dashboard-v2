@@ -5,6 +5,7 @@ import Meta from "antd/es/card/Meta";
 import BlogDetails from "./BlogDetails";
 import EditBlog from "./EditBlog"; // Import the EditBlog component
 import axios from "axios";
+import { getImageUrl } from "app/utils/imageUrl";
 const { confirm } = Modal;
 
 const OneBlog = ({ item, getBlog }) => {
@@ -58,7 +59,7 @@ const OneBlog = ({ item, getBlog }) => {
         cover={
           <img
             alt="example"
-            src={`${process.env.REACT_APP_API_URL_PRODUCTION}${item.blogImage}`}
+            src={getImageUrl(item.blogImage)}
             style={{ height: "200px", objectFit: "cover" }}
           />
         }

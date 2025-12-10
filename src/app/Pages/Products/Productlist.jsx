@@ -26,6 +26,7 @@ import {
 } from "@ant-design/icons";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const { confirm } = Modal;
 const { Option } = Select;
@@ -259,7 +260,7 @@ const ProductList = () => {
       dataIndex: "mainPicture",
       render: (mainPicture) => (
         <img
-          src={`${process.env.REACT_APP_API_URL_PRODUCTION}${mainPicture}`}
+          src={getImageUrl(mainPicture)}
           alt="mainPicture"
           style={{ width: "70px", height: "70px", borderRadius: "8px" }}
         />

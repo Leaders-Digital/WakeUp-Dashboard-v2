@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Breadcrumb } from "app/components";
 import { Box } from "@mui/material";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const { Option } = Select;
 
@@ -173,7 +174,7 @@ const ListePartenaire = () => {
       dataIndex: "logo",
       render: (logo) => (
         <img
-          src={`${process.env.REACT_APP_API_URL_PRODUCTION}${logo}`}
+          src={getImageUrl(logo)}
           alt="mainPicture"
           style={{ width: "70px", height: "70px", borderRadius: "8px" }}
         />

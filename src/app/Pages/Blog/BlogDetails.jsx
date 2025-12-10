@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const BlogDetails = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,7 +44,7 @@ const BlogDetails = ({ item }) => {
       >
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <img
-            src={`${process.env.REACT_APP_API_URL_PRODUCTION}`+ item.blogImage}
+            src={getImageUrl(item.blogImage)}
             width={500}
             alt="Blog Image"
             style={{
