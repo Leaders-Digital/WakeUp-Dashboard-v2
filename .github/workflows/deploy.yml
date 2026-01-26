@@ -33,7 +33,8 @@ jobs:
           build-args: |
             REACT_APP_API_KEY=${{ secrets.REACT_APP_API_KEY }}
             REACT_APP_API_URL_PRODUCTION=${{ secrets.REACT_APP_API_URL_PRODUCTION }}
-      
+            REACT_APP_API_URL_IMAGE=${{ secrets.REACT_APP_API_URL_IMAGE }}
+            
       - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
