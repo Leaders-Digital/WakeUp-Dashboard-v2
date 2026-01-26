@@ -10,7 +10,6 @@ export const getImageUrl = (path) => {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-
   // Otherwise, prepend the API URL
   return `${process.env.REACT_APP_API_URL_IMAGE}${path}`;
 };
