@@ -32,7 +32,7 @@ jobs:
             bangov2/wakeup-dashboard:latest
           build-args: |
             REACT_APP_API_KEY=${{ secrets.REACT_APP_API_KEY }}
-            REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
+            REACT_APP_API_URL_PRODUCTION=${{ secrets.REACT_APP_API_URL_PRODUCTION }}
       
       - name: Deploy to server
         uses: appleboy/ssh-action@master
