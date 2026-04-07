@@ -68,6 +68,15 @@ export const navigations = [
   { name: "Liste Des Avis", path: "/avis", icon: "sms", users: ["admin", "editor"] },
  
   { name: "Promo", path: "/promo", icon: "shopping_basket", users: ["admin", "editor"] },
+  {
+    name: "Inventaire",
+    icon: "inventory_2",
+    children: [
+      { name: "Scan Inventaire", iconText: "SI", path: "/inventaire" },
+      { name: "Inventaire Archive", iconText: "IA", path: "/inventaire/archive" }
+    ],
+    users: ["admin", "editor", "viewer"]
+  },
   { name: "Blog", path: "/blog", icon: "font_download", users: ["admin", "editor"] },
   {
     name: "Utilisateurs internes",

@@ -32,6 +32,8 @@ import ListeVente from "./Pages/Vente/ListeVente";
 import EditAchat from "./Pages/Achat/EditAchat";
 import Clients from "./Pages/Clients/ListeClients";
 import EditVente from "./Pages/Vente/EditVente";
+import Inventaire from "./Pages/Inventaire/Inventaire";
+import InventaireArchive from "./Pages/Inventaire/InventaireArchive";
 
 // SESSION PAGES
 const NotFound = Loadable(lazy(() => import("app/views/sessions/NotFound")));
@@ -103,7 +105,9 @@ const routes = [
       { path: "/clients/liste", element: <Clients /> },
 
       // partenaire pages route
-      { path: "/promo", element: <Promo /> }
+      { path: "/promo", element: <Promo /> },
+      { path: "/inventaire", element: <Inventaire /> },
+      { path: "/inventaire/archive", element: <InventaireArchive /> }
     ]
   },
 
