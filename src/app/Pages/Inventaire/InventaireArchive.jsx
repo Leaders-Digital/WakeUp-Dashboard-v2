@@ -11,6 +11,29 @@ const { Text } = Typography;
 const ARCHIVE_STORAGE_KEY = "wakeup-inventaire-archive-v1";
 const HEX_COLOR_REGEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
 
+const resolveImageUrl = (path) => {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+
+  const normalizedPath = String(path).replace(/^\/+/, "");
+  const imageBase = process.env.REACT_APP_API_URL_IMAGE;
+  if (imageBase && imageBase !== "undefined") {
+    return `${imageBase}${normalizedPath}`;
+  }
+
+  const apiBase = process.env.REACT_APP_API_URL_PRODUCTION;
+  if (apiBase && apiBase !== "undefined") {
+    try {
+      const origin = new URL(apiBase).origin;
+      return `${origin}/${normalizedPath}`;
+    } catch (error) {
+      return "";
+    }
+  }
+
+  return "";
+};
+
 const loadImageAsDataUrl = async (url) => {
   if (!url) return "";
   try {
@@ -109,11 +132,11 @@ const InventaireArchive = () => {
   const barcodeDetailsMap = useMemo(() => {
     const map = new Map();
     apiProducts.forEach((product) => {
-      const productImageUrl = getImageUrl(product?.mainPicture || "");
+      const productImageUrl = resolveImageUrl(getImageUrl(product?.mainPicture || ""));
       (product.variants || []).forEach((variant) => {
         const barcode = String(variant?.codeAbarre || "").trim();
         if (!barcode) return;
-        const variantImageUrl = getImageUrl(variant?.picture || "");
+        const variantImageUrl = resolveImageUrl(getImageUrl(variant?.picture || ""));
         map.set(barcode, {
           productName: product?.nom || "",
           imageUrl: variantImageUrl || productImageUrl || "",
@@ -230,7 +253,7 @@ const InventaireArchive = () => {
           row.displayProductName || "",
           row.displayColor || "--",
           String(row.quantity || 0),
-          row.displayImage || ""
+          ""
         ]),
         styles: { fontSize: 9, cellPadding: 2, valign: "middle" },
         headStyles: { fillColor: [22, 119, 255] },
