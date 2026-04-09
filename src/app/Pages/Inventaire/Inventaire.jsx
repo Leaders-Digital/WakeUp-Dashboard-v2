@@ -271,7 +271,7 @@ const Inventaire = () => {
     keepScannerFocused();
   };
 
-  const saveInventorySnapshot = () => {
+  const saveInventorySnapshot = async () => {
     if (!rows.length) {
       message.warning("Aucune ligne a sauvegarder.");
       return;
@@ -295,7 +295,30 @@ const Inventaire = () => {
     }
 
     localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify([snapshot, ...existing]));
-    message.success("Inventaire sauvegarde. Consultez 'Inventaire Archive'.");
+
+    let savedToDatabase = false;
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL_PRODUCTION}api/inventaire/session`,
+        {
+          sessionLabel: `Inventaire ${new Date().toLocaleString()}`,
+          boxes,
+          rows
+        },
+        {
+          headers: { "x-api-key": process.env.REACT_APP_API_KEY }
+        }
+      );
+      savedToDatabase = true;
+    } catch (error) {
+      console.error("Error while saving inventaire in database:", error);
+    }
+
+    if (savedToDatabase) {
+      message.success("Inventaire sauvegarde (local + base de donnees).");
+    } else {
+      message.warning("Inventaire sauvegarde localement seulement (DB indisponible).");
+    }
     keepScannerFocused();
   };
 

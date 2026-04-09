@@ -8,18 +8,43 @@ import { getImageUrl } from "app/utils/imageUrl";
 const { Text } = Typography;
 const ARCHIVE_STORAGE_KEY = "wakeup-inventaire-archive-v1";
 
+const normalizeSession = (session, source) => ({
+  id: String(session?._id || session?.id || ""),
+  createdAt: session?.createdAt || new Date().toISOString(),
+  boxes: Array.isArray(session?.boxes) ? session.boxes : [],
+  rows: Array.isArray(session?.rows) ? session.rows : [],
+  source
+});
+
 const InventaireArchive = () => {
   const [version, setVersion] = useState(0);
   const [apiProducts, setApiProducts] = useState([]);
+  const [dbSessions, setDbSessions] = useState([]);
+  const [dbLoaded, setDbLoaded] = useState(false);
 
-  const sessions = useMemo(() => {
+  const localSessions = useMemo(() => {
     try {
       const parsed = JSON.parse(localStorage.getItem(ARCHIVE_STORAGE_KEY) || "[]");
-      return Array.isArray(parsed) ? parsed : [];
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map((session) => normalizeSession(session, "local"));
     } catch (error) {
       return [];
     }
   }, [version]);
+
+  const sessions = useMemo(() => {
+    const map = new Map();
+    dbSessions.forEach((session) => map.set(session.id, session));
+    localSessions.forEach((session) => {
+      if (!map.has(session.id)) {
+        map.set(session.id, session);
+      }
+    });
+
+    return Array.from(map.values()).sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [dbSessions, localSessions]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -39,16 +64,42 @@ const InventaireArchive = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const fetchDbSessions = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL_PRODUCTION}api/inventaire/session`,
+          {
+            headers: { "x-api-key": process.env.REACT_APP_API_KEY }
+          }
+        );
+        const normalized = (response.data?.sessions || []).map((session) =>
+          normalizeSession(session, "db")
+        );
+        setDbSessions(normalized);
+      } catch (error) {
+        console.warn("Inventaire DB archive unavailable, fallback to local only.");
+      } finally {
+        setDbLoaded(true);
+      }
+    };
+
+    fetchDbSessions();
+  }, [version]);
+
   const barcodeDetailsMap = useMemo(() => {
     const map = new Map();
     apiProducts.forEach((product) => {
-      const imageUrl = getImageUrl(product?.mainPicture || "");
+      const productImageUrl = getImageUrl(product?.mainPicture || "");
       (product.variants || []).forEach((variant) => {
         const barcode = String(variant?.codeAbarre || "").trim();
         if (!barcode) return;
+        const variantImageUrl = getImageUrl(variant?.picture || "");
         map.set(barcode, {
           productName: product?.nom || "",
-          imageUrl
+          imageUrl: variantImageUrl || productImageUrl || "",
+          variantImageUrl,
+          productImageUrl
         });
       });
     });
@@ -66,16 +117,50 @@ const InventaireArchive = () => {
     });
 
   const removeSession = (id) => {
-    const next = sessions.filter((session) => session.id !== id);
-    localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(next));
-    setVersion((v) => v + 1);
-    message.success("Sauvegarde supprimee.");
+    const target = sessions.find((session) => session.id === id);
+    if (!target) return;
+
+    const run = async () => {
+      try {
+        if (target.source === "db") {
+          await axios.delete(
+            `${process.env.REACT_APP_API_URL_PRODUCTION}api/inventaire/session/${id}`,
+            {
+              headers: { "x-api-key": process.env.REACT_APP_API_KEY }
+            }
+          );
+        } else {
+          const nextLocal = localSessions.filter((session) => session.id !== id);
+          localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(nextLocal));
+        }
+        setVersion((v) => v + 1);
+        message.success("Sauvegarde supprimee.");
+      } catch (error) {
+        message.error("Echec de suppression de la sauvegarde.");
+      }
+    };
+
+    run();
   };
 
   const clearArchive = () => {
-    localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify([]));
-    setVersion((v) => v + 1);
-    message.success("Archive videe.");
+    const run = async () => {
+      try {
+        localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify([]));
+        if (dbSessions.length) {
+          await axios.delete(`${process.env.REACT_APP_API_URL_PRODUCTION}api/inventaire/session`, {
+            headers: { "x-api-key": process.env.REACT_APP_API_KEY }
+          });
+        }
+        setVersion((v) => v + 1);
+        message.success("Archive videe (local + DB).");
+      } catch (error) {
+        message.warning("Archive locale videe. Suppression DB indisponible.");
+        setVersion((v) => v + 1);
+      }
+    };
+
+    run();
   };
 
   const printSessionBoxes = (session) => {
@@ -146,7 +231,7 @@ const InventaireArchive = () => {
             th, td { border: 1px solid #ddd; padding: 8px; font-size: 12px; vertical-align: middle; }
             th { background: #f5f5f5; text-align: left; }
             .qty { text-align: center; font-weight: 700; }
-            img { width: 58px; height: 58px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
+            img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; display: block; margin: 0 auto; }
             .no-image { color: #888; font-size: 11px; }
             @media print { .box-section { page-break-after: always; } .box-section:last-child { page-break-after: auto; } }
           </style>
@@ -191,7 +276,7 @@ const InventaireArchive = () => {
           <img
             src={details.imageUrl}
             alt={record.productName || details.productName || "product"}
-            style={{ width: 48, height: 48, borderRadius: 6, objectFit: "cover", border: "1px solid #eee" }}
+            style={{ width: 68, height: 68, borderRadius: 6, objectFit: "cover", border: "1px solid #eee" }}
           />
         );
       }
@@ -227,6 +312,8 @@ const InventaireArchive = () => {
         extra={
           <Space>
             <Tag color="processing">Sessions: {sessions.length}</Tag>
+            {dbLoaded && <Tag color="purple">DB: {dbSessions.length}</Tag>}
+            <Tag color="default">Local: {localSessions.length}</Tag>
             <Button danger onClick={clearArchive} disabled={!sessions.length}>
               Vider archive
             </Button>
@@ -240,8 +327,8 @@ const InventaireArchive = () => {
             accordion
             items={sessions.map((session) => {
               const createdAt = new Date(session.createdAt).toLocaleString();
-              const rows = Array.isArray(session.rows) ? session.rows : [];
-              const boxes = Array.isArray(session.boxes) ? session.boxes : [];
+              const rows = session.rows;
+              const boxes = session.boxes;
 
               return {
                 key: session.id,
@@ -252,6 +339,9 @@ const InventaireArchive = () => {
                         <Text strong>{createdAt}</Text>
                         <Tag>BOX: {boxes.length}</Tag>
                         <Tag>Lignes: {rows.length}</Tag>
+                        <Tag color={session.source === "db" ? "green" : "default"}>
+                          {session.source.toUpperCase()}
+                        </Tag>
                       </Space>
                     </Col>
                     <Col>
