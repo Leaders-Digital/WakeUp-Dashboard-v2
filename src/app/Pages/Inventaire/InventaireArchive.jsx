@@ -7,6 +7,7 @@ import { getImageUrl } from "app/utils/imageUrl";
 
 const { Text } = Typography;
 const ARCHIVE_STORAGE_KEY = "wakeup-inventaire-archive-v1";
+const HEX_COLOR_REGEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
 
 const normalizeSession = (session, source) => ({
   id: String(session?._id || session?.id || ""),
@@ -99,7 +100,8 @@ const InventaireArchive = () => {
           productName: product?.nom || "",
           imageUrl: variantImageUrl || productImageUrl || "",
           variantImageUrl,
-          productImageUrl
+          productImageUrl,
+          variantColor: variant?.color || ""
         });
       });
     });
@@ -109,10 +111,14 @@ const InventaireArchive = () => {
   const enrichRows = (rows) =>
     rows.map((row) => {
       const details = barcodeDetailsMap.get(String(row.barcode || "").trim());
+      const cleanedName = String(row.productName || "")
+        .replace(/\s+\/\s+#[0-9a-f]{3,6}/gi, "")
+        .trim();
       return {
         ...row,
-        displayProductName: row.productName || details?.productName || row.barcode || "N/A",
-        displayImage: details?.imageUrl || ""
+        displayProductName: cleanedName || details?.productName || row.barcode || "N/A",
+        displayImage: details?.imageUrl || "",
+        displayColor: details?.variantColor || ""
       };
     });
 
@@ -185,6 +191,13 @@ const InventaireArchive = () => {
               <tr>
                 <td>${row.barcode || ""}</td>
                 <td>${row.displayProductName || ""}</td>
+                <td>
+                  ${
+                    row.displayColor && HEX_COLOR_REGEX.test(row.displayColor)
+                      ? `<span class="color-dot" style="background:${row.displayColor};"></span> ${row.displayColor}`
+                      : row.displayColor || "--"
+                  }
+                </td>
                 <td class="qty">${row.quantity || 0}</td>
                 <td>
                   ${
@@ -206,6 +219,7 @@ const InventaireArchive = () => {
                 <tr>
                   <th>Barcode</th>
                   <th>Product Name</th>
+                  <th>Color</th>
                   <th>Quantity</th>
                   <th>Image</th>
                 </tr>
@@ -231,6 +245,7 @@ const InventaireArchive = () => {
             th, td { border: 1px solid #ddd; padding: 8px; font-size: 12px; vertical-align: middle; }
             th { background: #f5f5f5; text-align: left; }
             .qty { text-align: center; font-weight: 700; }
+            .color-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #999; display: inline-block; vertical-align: middle; margin-right: 6px; }
             img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; display: block; margin: 0 auto; }
             .no-image { color: #888; font-size: 11px; }
             @media print { .box-section { page-break-after: always; } .box-section:last-child { page-break-after: auto; } }
@@ -263,6 +278,33 @@ const InventaireArchive = () => {
       render: (value, record) => {
         const details = barcodeDetailsMap.get(String(record.barcode || "").trim());
         return value || details?.productName || <Text type="secondary">{record.barcode}</Text>;
+      }
+    },
+    {
+      title: "Couleur",
+      key: "color",
+      width: 130,
+      render: (_, record) => {
+        const details = barcodeDetailsMap.get(String(record.barcode || "").trim());
+        const color = details?.variantColor || "";
+        if (!color) return <Text type="secondary">--</Text>;
+        return HEX_COLOR_REGEX.test(color) ? (
+          <Space size={6}>
+            <span
+              style={{
+                width: 12,
+                height: 12,
+                borderRadius: "50%",
+                border: "1px solid #999",
+                background: color,
+                display: "inline-block"
+              }}
+            />
+            <Text>{color}</Text>
+          </Space>
+        ) : (
+          <Text>{color}</Text>
+        );
       }
     },
     {
