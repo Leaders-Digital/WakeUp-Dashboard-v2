@@ -11,6 +11,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 // console.error = () => {};
 const root = createRoot(document.getElementById("root"));
 
+
 root.render(
   <BrowserRouter>
     <App />
