@@ -43,6 +43,34 @@ const getVariantLabel = (variant) => {
   return parts.length ? `(${parts.join(" / ")})` : "";
 };
 
+const resolveImageUrl = (path) => {
+  if (!path) return "";
+  const rawPath = String(path).trim();
+  if (!rawPath) return "";
+  if (rawPath.startsWith("http://") || rawPath.startsWith("https://")) return rawPath;
+
+  const cleanedPath = rawPath.replace(/^undefined\/?/i, "").replace(/\\/g, "/");
+  const normalizedPath = cleanedPath.replace(/^\/+/, "");
+  if (!normalizedPath) return "";
+
+  const imageBase = process.env.REACT_APP_API_URL_IMAGE;
+  if (imageBase && imageBase !== "undefined") {
+    return `${imageBase}${normalizedPath}`;
+  }
+
+  const apiBase = process.env.REACT_APP_API_URL_PRODUCTION;
+  if (apiBase && apiBase !== "undefined") {
+    try {
+      const origin = new URL(apiBase).origin;
+      return `${origin}/${normalizedPath}`;
+    } catch (error) {
+      return "";
+    }
+  }
+
+  return "";
+};
+
 const Inventaire = () => {
   const scanInputRef = useRef(null);
   const scanResetTimerRef = useRef(null);
@@ -127,11 +155,15 @@ const Inventaire = () => {
   const barcodeMap = useMemo(() => {
     const map = new Map();
     apiProducts.forEach((product) => {
+      const productImageUrl = resolveImageUrl(product?.mainPicture || "");
       (product.variants || []).forEach((variant) => {
         if (!variant?.codeAbarre) return;
+        const variantImageUrl = resolveImageUrl(variant?.picture || "");
         map.set(String(variant.codeAbarre).trim(), {
           productName: product?.nom || "",
-          variantLabel: getVariantLabel(variant)
+          variantLabel: getVariantLabel(variant),
+          imageUrl: variantImageUrl || productImageUrl || "",
+          color: variant?.color || ""
         });
       });
     });
@@ -190,7 +222,9 @@ const Inventaire = () => {
           productName: found ? `${found.productName} ${found.variantLabel}`.trim() : "",
           quantity: 1,
           box: currentBox,
-          foundInDb: Boolean(found)
+          foundInDb: Boolean(found),
+          imageUrl: found?.imageUrl || "",
+          color: found?.color || ""
         }
       ];
     });

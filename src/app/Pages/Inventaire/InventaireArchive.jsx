@@ -18,7 +18,7 @@ const resolveImageUrl = (path) => {
 
   // Some existing helpers/builders may produce strings like "undefineduploads/..."
   const cleanedPath = rawPath.replace(/^undefined\/?/i, "");
-  const normalizedPath = cleanedPath.replace(/^\/+/, "");
+  const normalizedPath = cleanedPath.replace(/\\/g, "/").replace(/^\/+/, "");
   if (!normalizedPath) return "";
   const imageBase = process.env.REACT_APP_API_URL_IMAGE;
   if (imageBase && imageBase !== "undefined") {
@@ -162,8 +162,8 @@ const InventaireArchive = () => {
       return {
         ...row,
         displayProductName: cleanedName || details?.productName || row.barcode || "N/A",
-        displayImage: details?.imageUrl || "",
-        displayColor: details?.variantColor || ""
+        displayImage: row.imageUrl || details?.imageUrl || "",
+        displayColor: row.color || details?.variantColor || ""
       };
     });
 
@@ -364,10 +364,11 @@ const InventaireArchive = () => {
       width: 90,
       render: (_, record) => {
         const details = barcodeDetailsMap.get(String(record.barcode || "").trim());
-        if (!details?.imageUrl) return <Text type="secondary">--</Text>;
+        const imageUrl = record.imageUrl || details?.imageUrl || "";
+        if (!imageUrl) return <Text type="secondary">--</Text>;
         return (
           <img
-            src={details.imageUrl}
+            src={imageUrl}
             alt={record.productName || details.productName || "product"}
             style={{ width: 68, height: 68, borderRadius: 6, objectFit: "cover", border: "1px solid #eee" }}
           />
