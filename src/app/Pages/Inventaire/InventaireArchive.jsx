@@ -35,10 +35,10 @@ const getBarcodeDataUrl = (barcode) => {
   }
 };
 
-const loadImageDataUrl = (url) =>
+const loadImagePayload = (url) =>
   new Promise((resolve) => {
     if (!url) {
-      resolve("");
+      resolve(null);
       return;
     }
 
@@ -47,20 +47,26 @@ const loadImageDataUrl = (url) =>
     img.onload = () => {
       try {
         const canvas = document.createElement("canvas");
-        canvas.width = img.naturalWidth || img.width;
-        canvas.height = img.naturalHeight || img.height;
+        const width = img.naturalWidth || img.width;
+        const height = img.naturalHeight || img.height;
+        canvas.width = width;
+        canvas.height = height;
         const ctx = canvas.getContext("2d");
         if (!ctx) {
-          resolve("");
+          resolve(null);
           return;
         }
         ctx.drawImage(img, 0, 0);
-        resolve(canvas.toDataURL("image/png"));
+        resolve({
+          dataUrl: canvas.toDataURL("image/png"),
+          width,
+          height
+        });
       } catch (error) {
-        resolve("");
+        resolve(null);
       }
     };
-    img.onerror = () => resolve("");
+    img.onerror = () => resolve(null);
     img.src = url;
   });
 
@@ -200,7 +206,7 @@ const InventaireArchive = () => {
         box: String(row.box || "--").toUpperCase(),
         quantity: Number(row.quantity) || 0,
         omarQty: Number(referenceQtyMap.get(String(row.barcode || "").trim())) || 0,
-        variantImageDataUrl: await loadImageDataUrl(row.displayImage || "")
+        variantImage: await loadImagePayload(row.displayImage || "")
       }))
     );
 
@@ -234,7 +240,7 @@ const InventaireArchive = () => {
         row.barcode,
         row.productName,
         row.variantName,
-        row.variantImageDataUrl,
+        row.variantImage,
         row.box,
         String(row.quantity),
         String(row.omarQty),
@@ -285,13 +291,26 @@ const InventaireArchive = () => {
         }
 
         if (data.column.index !== 3) return;
-        const imageDataUrl = String(data.cell.raw || "").trim();
+        const payload =
+          data.cell.raw && typeof data.cell.raw === "object" ? data.cell.raw : null;
         const iconSize = Math.min(data.cell.width, data.cell.height) - 6;
         const x = data.cell.x + (data.cell.width - iconSize) / 2;
         const y = data.cell.y + (data.cell.height - iconSize) / 2;
 
-        if (imageDataUrl) {
-          doc.addImage(imageDataUrl, "PNG", x, y, iconSize, iconSize);
+        if (payload?.dataUrl && payload?.width && payload?.height) {
+          const cellInnerWidth = Math.max(data.cell.width - 4, 1);
+          const cellInnerHeight = Math.max(data.cell.height - 4, 1);
+          const ratio = payload.width / payload.height;
+          let drawW = cellInnerWidth;
+          let drawH = drawW / ratio;
+          if (drawH > cellInnerHeight) {
+            drawH = cellInnerHeight;
+            drawW = drawH * ratio;
+          }
+
+          const imgX = data.cell.x + (data.cell.width - drawW) / 2;
+          const imgY = data.cell.y + (data.cell.height - drawH) / 2;
+          doc.addImage(payload.dataUrl, "PNG", imgX, imgY, drawW, drawH);
           return;
         }
 
