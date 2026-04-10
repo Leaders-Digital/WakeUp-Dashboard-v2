@@ -3,56 +3,11 @@ import { Breadcrumb } from "app/components";
 import { Box } from "@mui/material";
 import axios from "axios";
 import { Button, Card, Col, Collapse, Empty, Row, Space, Table, Tag, Typography, message } from "antd";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import { getImageUrl } from "app/utils/imageUrl";
 
 const { Text } = Typography;
 const ARCHIVE_STORAGE_KEY = "wakeup-inventaire-archive-v1";
 const HEX_COLOR_REGEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
-
-const resolveImageUrl = (path) => {
-  if (!path) return "";
-  const rawPath = String(path).trim();
-  if (!rawPath) return "";
-  if (rawPath.startsWith("http://") || rawPath.startsWith("https://")) return rawPath;
-
-  // Some existing helpers/builders may produce strings like "undefineduploads/..."
-  const cleanedPath = rawPath.replace(/^undefined\/?/i, "");
-  const normalizedPath = cleanedPath.replace(/\\/g, "/").replace(/^\/+/, "");
-  if (!normalizedPath) return "";
-  const imageBase = process.env.REACT_APP_API_URL_IMAGE;
-  if (imageBase && imageBase !== "undefined") {
-    return `${imageBase}${normalizedPath}`;
-  }
-
-  const apiBase = process.env.REACT_APP_API_URL_PRODUCTION;
-  if (apiBase && apiBase !== "undefined") {
-    try {
-      const origin = new URL(apiBase).origin;
-      return `${origin}/${normalizedPath}`;
-    } catch (error) {
-      return "";
-    }
-  }
-
-  return "";
-};
-
-const loadImageAsDataUrl = async (url) => {
-  if (!url) return "";
-  try {
-    const response = await fetch(url);
-    if (!response.ok) return "";
-    const blob = await response.blob();
-    return await new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(typeof reader.result === "string" ? reader.result : "");
-      reader.readAsDataURL(blob);
-    });
-  } catch (error) {
-    return "";
-  }
-};
 
 const normalizeSession = (session, source) => ({
   id: String(session?._id || session?.id || ""),
@@ -136,11 +91,11 @@ const InventaireArchive = () => {
   const barcodeDetailsMap = useMemo(() => {
     const map = new Map();
     apiProducts.forEach((product) => {
-      const productImageUrl = resolveImageUrl(product?.mainPicture || "");
+      const productImageUrl = getImageUrl(product?.mainPicture || "");
       (product.variants || []).forEach((variant) => {
         const barcode = String(variant?.codeAbarre || "").trim();
         if (!barcode) return;
-        const variantImageUrl = resolveImageUrl(variant?.picture || "");
+        const variantImageUrl = getImageUrl(variant?.picture || "");
         map.set(barcode, {
           productName: product?.nom || "",
           imageUrl: variantImageUrl || productImageUrl || "",
@@ -162,8 +117,8 @@ const InventaireArchive = () => {
       return {
         ...row,
         displayProductName: cleanedName || details?.productName || row.barcode || "N/A",
-        displayImage: row.imageUrl || details?.imageUrl || "",
-        displayColor: row.color || details?.variantColor || ""
+        displayImage: details?.imageUrl || "",
+        displayColor: details?.variantColor || ""
       };
     });
 
@@ -214,106 +169,100 @@ const InventaireArchive = () => {
     run();
   };
 
-  const exportSessionPdf = async (session) => {
+  const printSessionBoxes = (session) => {
     const rows = enrichRows(Array.isArray(session?.rows) ? session.rows : []);
     const boxes = Array.isArray(session?.boxes) ? session.boxes : [];
-    const createdAt = new Date(session.createdAt);
+    const createdAt = new Date(session.createdAt).toLocaleString();
+    const printWindow = window.open("", "_blank", "width=1200,height=800");
 
-    if (!rows.length) {
-      message.warning("Aucune ligne a exporter pour cette session.");
+    if (!printWindow) {
+      message.error("Popup bloquee. Autorisez les popups pour imprimer.");
       return;
     }
 
-    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    const uniqueImages = Array.from(new Set(rows.map((row) => row.displayImage).filter(Boolean)));
-    const imageDataByUrl = {};
-    await Promise.all(
-      uniqueImages.map(async (url) => {
-        imageDataByUrl[url] = await loadImageAsDataUrl(url);
+    const sectionsHtml = boxes
+      .map((boxName) => {
+        const boxRows = rows.filter((row) => row.box === boxName);
+        if (!boxRows.length) return "";
+
+        const rowsHtml = boxRows
+          .map(
+            (row) => `
+              <tr>
+                <td>${row.barcode || ""}</td>
+                <td>${row.displayProductName || ""}</td>
+                <td>
+                  ${
+                    row.displayColor && HEX_COLOR_REGEX.test(row.displayColor)
+                      ? `<span class="color-dot" style="background:${row.displayColor};"></span> ${row.displayColor}`
+                      : row.displayColor || "--"
+                  }
+                </td>
+                <td class="qty">${row.quantity || 0}</td>
+                <td>
+                  ${
+                    row.displayImage
+                      ? `<img src="${row.displayImage}" alt="${row.displayProductName}" />`
+                      : `<span class="no-image">No image</span>`
+                  }
+                </td>
+              </tr>
+            `
+          )
+          .join("");
+
+        return `
+          <section class="box-section">
+            <h2>BOX ${boxName}</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Barcode</th>
+                  <th>Product Name</th>
+                  <th>Color</th>
+                  <th>Quantity</th>
+                  <th>Image</th>
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </section>
+        `;
       })
-    );
+      .join("");
 
-    let firstSection = true;
-    boxes.forEach((boxName) => {
-      const boxRows = rows.filter((row) => row.box === boxName);
-      if (!boxRows.length) return;
-
-      if (!firstSection) {
-        doc.addPage();
-      }
-      firstSection = false;
-
-      doc.setFontSize(15);
-      doc.text(`Inventaire - BOX ${boxName}`, 14, 14);
-      doc.setFontSize(10);
-      doc.text(`Session: ${createdAt.toLocaleString()}`, 14, 20);
-      doc.text(`Total lignes: ${boxRows.length}`, 14, 25);
-
-      autoTable(doc, {
-        startY: 30,
-        head: [["Barcode", "Product Name", "Color", "Quantity", "Image"]],
-        body: boxRows.map((row) => [
-          row.barcode || "",
-          row.displayProductName || "",
-          row.displayColor || "--",
-          String(row.quantity || 0),
-          row.displayImage || ""
-        ]),
-        styles: { fontSize: 9, cellPadding: 2, valign: "middle" },
-        headStyles: { fillColor: [22, 119, 255] },
-        columnStyles: {
-          0: { cellWidth: 36 },
-          1: { cellWidth: 58 },
-          2: { cellWidth: 28 },
-          3: { cellWidth: 20, halign: "center" },
-          4: { cellWidth: 42, minCellHeight: 26 }
-        },
-        didParseCell: (data) => {
-          if (data.section === "body" && data.column.index === 4) {
-            data.cell.text = [""];
-          }
-        },
-        didDrawCell: (data) => {
-          if (data.section !== "body") return;
-
-          if (data.column.index === 2) {
-            const colorValue = String(data.cell.raw || "");
-            if (HEX_COLOR_REGEX.test(colorValue)) {
-              const [r, g, b] = colorValue
-                .replace("#", "")
-                .match(colorValue.length === 4 ? /./g : /../g)
-                .map((hex) => (hex.length === 1 ? hex + hex : hex))
-                .map((hex) => parseInt(hex, 16));
-              doc.setDrawColor(140, 140, 140);
-              doc.setFillColor(r, g, b);
-              doc.circle(data.cell.x + 4, data.cell.y + data.cell.height / 2, 1.6, "FD");
-            }
-          }
-
-          if (data.column.index === 4) {
-            const imageUrl = String(data.cell.raw || "");
-            const imageData = imageDataByUrl[imageUrl];
-            if (!imageData) return;
-            try {
-              const padding = 1.5;
-              doc.addImage(
-                imageData,
-                "JPEG",
-                data.cell.x + padding,
-                data.cell.y + padding,
-                data.cell.width - padding * 2,
-                data.cell.height - padding * 2
-              );
-            } catch (error) {
-              // ignore image draw failure and keep cell text empty
-            }
-          }
-        }
-      });
-    });
-
-    doc.save(`inventaire-all-boxes-${createdAt.toISOString().slice(0, 10)}.pdf`);
-    message.success("PDF genere. Vous pouvez maintenant l'imprimer.");
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Inventaire ${createdAt}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; color: #111; }
+            h1 { margin: 0 0 8px; }
+            .meta { margin-bottom: 14px; color: #444; }
+            .box-section { margin-bottom: 24px; page-break-inside: avoid; }
+            h2 { margin: 0 0 8px; padding-bottom: 4px; border-bottom: 1px solid #ddd; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; font-size: 12px; vertical-align: middle; }
+            th { background: #f5f5f5; text-align: left; }
+            .qty { text-align: center; font-weight: 700; }
+            .color-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #999; display: inline-block; vertical-align: middle; margin-right: 6px; }
+            img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; display: block; margin: 0 auto; }
+            .no-image { color: #888; font-size: 11px; }
+            @media print { .box-section { page-break-after: always; } .box-section:last-child { page-break-after: auto; } }
+          </style>
+        </head>
+        <body>
+          <h1>Inventaire - All BOXES</h1>
+          <div class="meta">Session: ${createdAt}</div>
+          ${sectionsHtml || "<p>No rows to print.</p>"}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+    }, 350);
   };
 
   const columns = [
@@ -364,11 +313,10 @@ const InventaireArchive = () => {
       width: 90,
       render: (_, record) => {
         const details = barcodeDetailsMap.get(String(record.barcode || "").trim());
-        const imageUrl = record.imageUrl || details?.imageUrl || "";
-        if (!imageUrl) return <Text type="secondary">--</Text>;
+        if (!details?.imageUrl) return <Text type="secondary">--</Text>;
         return (
           <img
-            src={imageUrl}
+            src={details.imageUrl}
             alt={record.productName || details.productName || "product"}
             style={{ width: 68, height: 68, borderRadius: 6, objectFit: "cover", border: "1px solid #eee" }}
           />
@@ -444,10 +392,10 @@ const InventaireArchive = () => {
                           size="small"
                           onClick={(event) => {
                             event.stopPropagation();
-                            exportSessionPdf(session);
+                            printSessionBoxes(session);
                           }}
                         >
-                          Export PDF All BOXES
+                          Print All BOXES
                         </Button>
                         <Button
                           danger
