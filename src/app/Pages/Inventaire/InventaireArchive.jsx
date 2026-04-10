@@ -7,6 +7,7 @@ import { getImageUrl } from "app/utils/imageUrl";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import JsBarcode from "jsbarcode";
+import referenceStock from "./inventaireReferenceStock.json";
 
 const { Text } = Typography;
 const ARCHIVE_STORAGE_KEY = "wakeup-inventaire-archive-v1";
@@ -163,6 +164,17 @@ const InventaireArchive = () => {
     return map;
   }, [apiProducts]);
 
+  const referenceQtyMap = useMemo(() => {
+    const map = new Map();
+    const items = Array.isArray(referenceStock?.items) ? referenceStock.items : [];
+    items.forEach((item) => {
+      const barcode = String(item?.barcode || "").trim();
+      if (!barcode) return;
+      map.set(barcode, Number(item?.stock) || 0);
+    });
+    return map;
+  }, []);
+
   const enrichRows = (rows) =>
     rows.map((row) => {
       const details = barcodeDetailsMap.get(String(row.barcode || "").trim());
@@ -187,6 +199,7 @@ const InventaireArchive = () => {
         variantName: row.displayVariant || "--",
         box: String(row.box || "--").toUpperCase(),
         quantity: Number(row.quantity) || 0,
+        omarQty: Number(referenceQtyMap.get(String(row.barcode || "").trim())) || 0,
         variantImageDataUrl: await loadImageDataUrl(row.displayImage || "")
       }))
     );
@@ -216,28 +229,43 @@ const InventaireArchive = () => {
 
     autoTable(doc, {
       startY: 28,
-      head: [["Barcode", "Product", "Variant", "Img", "BOX", "Quantity"]],
+      head: [["Barcode", "Product", "Variant", "Img", "BOX", "Quantity", "qte omar", "Difference"]],
       body: rows.map((row) => [
         row.barcode,
         row.productName,
         row.variantName,
         row.variantImageDataUrl,
         row.box,
-        String(row.quantity)
+        String(row.quantity),
+        String(row.omarQty),
+        String(row.quantity - row.omarQty)
       ]),
       styles: { fontSize: 9, cellPadding: 3, valign: "middle" },
       headStyles: { fillColor: [22, 119, 255] },
       columnStyles: {
-        0: { cellWidth: 45, minCellHeight: 20 },
-        1: { cellWidth: 48 },
-        2: { cellWidth: 34 },
-        3: { cellWidth: 16, halign: "center" },
-        4: { cellWidth: 16, halign: "center" },
-        5: { cellWidth: 20, halign: "center" }
+        0: { cellWidth: 34, minCellHeight: 20 },
+        1: { cellWidth: 34 },
+        2: { cellWidth: 26 },
+        3: { cellWidth: 13, halign: "center" },
+        4: { cellWidth: 12, halign: "center" },
+        5: { cellWidth: 16, halign: "center" },
+        6: { cellWidth: 16, halign: "center" },
+        7: { cellWidth: 18, halign: "center" }
       },
       didParseCell: (data) => {
         if (data.section === "body" && data.column.index === 2) {
           data.cell.styles.fontStyle = "bold";
+        }
+        if (data.section === "body" && data.column.index === 7) {
+          const diff = Number(data.cell.raw) || 0;
+          if (diff > 0) {
+            data.cell.styles.textColor = [56, 158, 13];
+            data.cell.text = [`+${diff}`];
+            data.cell.styles.fontStyle = "bold";
+          } else if (diff < 0) {
+            data.cell.styles.textColor = [207, 19, 34];
+            data.cell.styles.fontStyle = "bold";
+          }
         }
       },
       didDrawCell: (data) => {
@@ -488,6 +516,35 @@ const InventaireArchive = () => {
       dataIndex: "quantity",
       key: "quantity",
       width: 120
+    },
+    {
+      title: "qte omar",
+      key: "fileQuantity",
+      width: 130,
+      render: (_, record) => {
+        const barcode = String(record?.barcode || "").trim();
+        if (!referenceQtyMap.has(barcode)) return <Text type="secondary">--</Text>;
+        return <Text>{referenceQtyMap.get(barcode)}</Text>;
+      }
+    },
+    {
+      title: "Difference",
+      key: "difference",
+      width: 130,
+      render: (_, record) => {
+        const barcode = String(record?.barcode || "").trim();
+        if (!referenceQtyMap.has(barcode)) return <Text type="secondary">--</Text>;
+        const inventaireQty = Number(record?.quantity) || 0;
+        const fileQty = Number(referenceQtyMap.get(barcode)) || 0;
+        const diff = inventaireQty - fileQty;
+        if (diff > 0) {
+          return <Tag color="success">{`+${diff}`}</Tag>;
+        }
+        if (diff < 0) {
+          return <Tag color="error">{`${diff}`}</Tag>;
+        }
+        return <Tag>0</Tag>;
+      }
     },
     {
       title: "BOX",

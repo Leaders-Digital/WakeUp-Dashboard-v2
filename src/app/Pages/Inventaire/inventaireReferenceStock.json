@@ -1,0 +1,1194 @@
+{
+  "sourceFile": "Etat final valorisé 08-01-25.xlsx",
+  "generatedAt": "2026-04-10T15:28:05.444Z",
+  "items": [
+    {
+      "barcode": "8057017690030",
+      "stock": 139,
+      "libelle": "Color Era",
+      "reference": "01 Blue sapphire"
+    },
+    {
+      "barcode": "8057017690047",
+      "stock": 129,
+      "libelle": "Color Era",
+      "reference": "02 Deep Emeraude"
+    },
+    {
+      "barcode": "8057017690054",
+      "stock": 120,
+      "libelle": "Color Era",
+      "reference": "03 Gray touch"
+    },
+    {
+      "barcode": "8057017690061",
+      "stock": 131,
+      "libelle": "Color Era",
+      "reference": "04 Taupe"
+    },
+    {
+      "barcode": "8057017690078",
+      "stock": 135,
+      "libelle": "Color Era",
+      "reference": "05 Glory Mauve"
+    },
+    {
+      "barcode": "8057017690085",
+      "stock": 136,
+      "libelle": "Color Era",
+      "reference": "06 Satin burgundy"
+    },
+    {
+      "barcode": "8057017690092",
+      "stock": 124,
+      "libelle": "Color Era",
+      "reference": "07 Golden Honey"
+    },
+    {
+      "barcode": "8057017690108",
+      "stock": 129,
+      "libelle": "Color Era",
+      "reference": "08 Caramel"
+    },
+    {
+      "barcode": "8057017690115",
+      "stock": 101,
+      "libelle": "Color Era",
+      "reference": "09 Golden Sun"
+    },
+    {
+      "barcode": "8057017690122",
+      "stock": 122,
+      "libelle": "Color Era",
+      "reference": "10 Vibrant Peach"
+    },
+    {
+      "barcode": "8057017690160",
+      "stock": 0,
+      "libelle": "Primer Transparent",
+      "reference": "Primer Mascara transparent"
+    },
+    {
+      "barcode": "8057017690177",
+      "stock": 61,
+      "libelle": "Skin Corrector",
+      "reference": "Peach"
+    },
+    {
+      "barcode": "8057017690207",
+      "stock": 92,
+      "libelle": "Skin Corrector",
+      "reference": "Violet"
+    },
+    {
+      "barcode": "8057017690214",
+      "stock": 43,
+      "libelle": "Make Up Fixer",
+      "reference": "Make up fixer"
+    },
+    {
+      "barcode": "8057017690221",
+      "stock": 56,
+      "libelle": "Matte",
+      "reference": "Dahlia"
+    },
+    {
+      "barcode": "8057017690245",
+      "stock": 37,
+      "libelle": "Matte",
+      "reference": "Mela Marcia"
+    },
+    {
+      "barcode": "8057017690269",
+      "stock": 6,
+      "libelle": "Matte",
+      "reference": "Peach"
+    },
+    {
+      "barcode": "8057017690276",
+      "stock": 7,
+      "libelle": "Matte",
+      "reference": "Camelia"
+    },
+    {
+      "barcode": "8057017690283",
+      "stock": 39,
+      "libelle": "Matte",
+      "reference": "Da Lat"
+    },
+    {
+      "barcode": "8057017690290",
+      "stock": 37,
+      "libelle": "Matte",
+      "reference": "Paw Paw"
+    },
+    {
+      "barcode": "8057017690306",
+      "stock": 78,
+      "libelle": "Satin Finish",
+      "reference": "Ruby"
+    },
+    {
+      "barcode": "8057017690313",
+      "stock": 83,
+      "libelle": "Satin Finish",
+      "reference": "Opaline"
+    },
+    {
+      "barcode": "8057017690344",
+      "stock": 59,
+      "libelle": "Satin Finish",
+      "reference": "Amber"
+    },
+    {
+      "barcode": "8057017690351",
+      "stock": 63,
+      "libelle": "Satin Finish",
+      "reference": "Rhodonite"
+    },
+    {
+      "barcode": "8057017690368",
+      "stock": 70,
+      "libelle": "Satin Finish",
+      "reference": "Topaz"
+    },
+    {
+      "barcode": "8057017690375",
+      "stock": 68,
+      "libelle": "Satin Finish",
+      "reference": "Citrine"
+    },
+    {
+      "barcode": "8057017690627",
+      "stock": 90,
+      "libelle": "High Glossy",
+      "reference": "Sky High"
+    },
+    {
+      "barcode": "8057017690665",
+      "stock": 73,
+      "libelle": "High Glossy",
+      "reference": "Lolli Pop"
+    },
+    {
+      "barcode": "8057017690672",
+      "stock": 67,
+      "libelle": "High Glossy",
+      "reference": "Rustic Wood"
+    },
+    {
+      "barcode": "8057017690689",
+      "stock": 14,
+      "libelle": "High Glossy",
+      "reference": "Wild Cherry"
+    },
+    {
+      "barcode": "8057017690696",
+      "stock": 4,
+      "libelle": "Lip Shine Stick SPF 15",
+      "reference": "Kir Royal"
+    },
+    {
+      "barcode": "8057017690719",
+      "stock": 11,
+      "libelle": "Lip Shine Stick SPF 15",
+      "reference": "Cherry Brandy"
+    },
+    {
+      "barcode": "8057017690733",
+      "stock": 11,
+      "libelle": "Lip Shine Stick SPF 15",
+      "reference": "Moradita"
+    },
+    {
+      "barcode": "8057017690757",
+      "stock": 13,
+      "libelle": "Lip Shine Stick SPF 15",
+      "reference": "Gold Rush"
+    },
+    {
+      "barcode": "8057017690887",
+      "stock": 33,
+      "libelle": "Immediate Plumping",
+      "reference": "Maera"
+    },
+    {
+      "barcode": "8057017690894",
+      "stock": 33,
+      "libelle": "Immediate Plumping",
+      "reference": "Melite"
+    },
+    {
+      "barcode": "8057017690900",
+      "stock": 34,
+      "libelle": "Immediate Plumping",
+      "reference": "Moira"
+    },
+    {
+      "barcode": "8057017690917",
+      "stock": 40,
+      "libelle": "Immediate Plumping",
+      "reference": "Alia 04"
+    },
+    {
+      "barcode": "8057017690924",
+      "stock": 26,
+      "libelle": "Immediate Plumping",
+      "reference": "Aura"
+    },
+    {
+      "barcode": "8057017690931",
+      "stock": 84,
+      "libelle": "Immediate Plumping",
+      "reference": "Aiva 06"
+    },
+    {
+      "barcode": "8057017690948",
+      "stock": 46,
+      "libelle": "Lip Kiss Long Stay",
+      "reference": "Aroa"
+    },
+    {
+      "barcode": "8057017690955",
+      "stock": 93,
+      "libelle": "Lip Kiss Long Stay",
+      "reference": "Maya"
+    },
+    {
+      "barcode": "8057017690962",
+      "stock": 82,
+      "libelle": "Lip Kiss Long Stay",
+      "reference": "waikiki"
+    },
+    {
+      "barcode": "8057017690979",
+      "stock": 56,
+      "libelle": "Lip Kiss Long Stay",
+      "reference": "Natadola"
+    },
+    {
+      "barcode": "8057017690986",
+      "stock": 88,
+      "libelle": "Lip Kiss Long Stay",
+      "reference": "Cherai"
+    },
+    {
+      "barcode": "8057017690993",
+      "stock": 95,
+      "libelle": "Lip Kiss Long Stay",
+      "reference": "Bonaire"
+    },
+    {
+      "barcode": "8057017691105",
+      "stock": 48,
+      "libelle": "Fluid Concealer",
+      "reference": "C1"
+    },
+    {
+      "barcode": "8057017691112",
+      "stock": 23,
+      "libelle": "Fluid Concealer",
+      "reference": "C2"
+    },
+    {
+      "barcode": "8057017691129",
+      "stock": 15,
+      "libelle": "Fluid Concealer",
+      "reference": "C3"
+    },
+    {
+      "barcode": "8057017691143",
+      "stock": 32,
+      "libelle": "Fluid Concealer",
+      "reference": "W1"
+    },
+    {
+      "barcode": "8057017691242",
+      "stock": 0,
+      "libelle": "MAGIC SPF 15",
+      "reference": "1"
+    },
+    {
+      "barcode": "8057017691259",
+      "stock": 1,
+      "libelle": "MAGIC SPF 15",
+      "reference": "2"
+    },
+    {
+      "barcode": "8057017691266",
+      "stock": 10,
+      "libelle": "MAGIC SPF 15",
+      "reference": "3"
+    },
+    {
+      "barcode": "8057017691976",
+      "stock": 0,
+      "libelle": "Mosaic Terracotta",
+      "reference": "1"
+    },
+    {
+      "barcode": "8057017691983",
+      "stock": 2,
+      "libelle": "Mosaic Terracotta",
+      "reference": "2"
+    },
+    {
+      "barcode": "8057017691990",
+      "stock": 0,
+      "libelle": "Mosaic Terracotta",
+      "reference": "3"
+    },
+    {
+      "barcode": "8057017692003",
+      "stock": 56,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Maya 01"
+    },
+    {
+      "barcode": "8057017692010",
+      "stock": 69,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Lynx 02"
+    },
+    {
+      "barcode": "8057017692065",
+      "stock": 76,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Phoenix 07"
+    },
+    {
+      "barcode": "8057017692072",
+      "stock": 82,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Vela 08"
+    },
+    {
+      "barcode": "8057017692102",
+      "stock": 69,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Lahu 11"
+    },
+    {
+      "barcode": "8057017692157",
+      "stock": 69,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Lira 16"
+    },
+    {
+      "barcode": "8057017692201",
+      "stock": 56,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Leo 21"
+    },
+    {
+      "barcode": "8057017692218",
+      "stock": 31,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Addigi"
+    },
+    {
+      "barcode": "8057017692232",
+      "stock": 38,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Pisces"
+    },
+    {
+      "barcode": "8057017692270",
+      "stock": 35,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Birch"
+    },
+    {
+      "barcode": "8057017692287",
+      "stock": 3,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Mair"
+    },
+    {
+      "barcode": "8057017692348",
+      "stock": 22,
+      "libelle": "Mono Eyeshadow",
+      "reference": "Druze"
+    },
+    {
+      "barcode": "8057017692584",
+      "stock": 0,
+      "libelle": "blush",
+      "reference": "Peach Star"
+    },
+    {
+      "barcode": "8057017692621",
+      "stock": 1,
+      "libelle": "blush",
+      "reference": "Pink Bubbles 05"
+    },
+    {
+      "barcode": "8057017692676",
+      "stock": 0,
+      "libelle": "blush",
+      "reference": "Charleston Matte 10"
+    },
+    {
+      "barcode": "8057017692812",
+      "stock": 15,
+      "libelle": "Instant facial smoother facial scrub",
+      "reference": "Instant facial smoother facial scrub"
+    },
+    {
+      "barcode": "8057017692836",
+      "stock": 6,
+      "libelle": "Day Cream",
+      "reference": "Vitamin infusion"
+    },
+    {
+      "barcode": "8057017692843",
+      "stock": 6,
+      "libelle": "Night cream",
+      "reference": "Nourishing and restoring"
+    },
+    {
+      "barcode": "8057017692850",
+      "stock": 18,
+      "libelle": "Sensitive Cream",
+      "reference": "Soothing calm skin"
+    },
+    {
+      "barcode": "8057017692867",
+      "stock": 8,
+      "libelle": "Eye cream",
+      "reference": "Fill In Microspheres Eye Cream"
+    },
+    {
+      "barcode": "8057017692874",
+      "stock": 6,
+      "libelle": "Skin Serum",
+      "reference": "Instant effect"
+    },
+    {
+      "barcode": "8057017692881",
+      "stock": 2,
+      "libelle": "Face cleanser",
+      "reference": "Revitalizing Cleansing Mousse"
+    },
+    {
+      "barcode": "8057017692898",
+      "stock": 48,
+      "libelle": "Brush cleanser brush",
+      "reference": "Brush cleanser"
+    },
+    {
+      "barcode": "8057017692904",
+      "stock": 25,
+      "libelle": "Body Hydrator Milk Mist",
+      "reference": "Hydrating Milk Mist"
+    },
+    {
+      "barcode": "8057017692911",
+      "stock": 0,
+      "libelle": "Micellar Water",
+      "reference": "Micellar Water"
+    },
+    {
+      "barcode": "8057017692935",
+      "stock": 98,
+      "libelle": "Diamonds And Pearls !",
+      "reference": "Diamond highlighter"
+    },
+    {
+      "barcode": "8057017692942",
+      "stock": 31,
+      "libelle": "Soft My Lips !",
+      "reference": "Soft my lips Pink"
+    },
+    {
+      "barcode": "8057017692959",
+      "stock": 24,
+      "libelle": "Beads Stars",
+      "reference": "Highlighting beads stars"
+    },
+    {
+      "barcode": "8057017692966",
+      "stock": 4,
+      "libelle": "Love Is In the Hair",
+      "reference": "Hair Hydrator"
+    },
+    {
+      "barcode": "8057017692973",
+      "stock": 41,
+      "libelle": "Magical Toning Body Potion",
+      "reference": "Body skincare"
+    },
+    {
+      "barcode": "8057017692980",
+      "stock": 5,
+      "libelle": "Face and Body Hydrator",
+      "reference": "Face and body"
+    },
+    {
+      "barcode": "8057017693109",
+      "stock": 37,
+      "libelle": "Flashlight",
+      "reference": "Neutral Beige 01"
+    },
+    {
+      "barcode": "8057017693116",
+      "stock": 39,
+      "libelle": "Flashlight",
+      "reference": "Vibrant Beige 02"
+    },
+    {
+      "barcode": "8057017693123",
+      "stock": 93,
+      "libelle": "Flashlight",
+      "reference": "Light Bronze 03"
+    },
+    {
+      "barcode": "8057017693130",
+      "stock": 101,
+      "libelle": "Flashlight",
+      "reference": "Dark Bronze 04"
+    },
+    {
+      "barcode": "8057017693147",
+      "stock": 43,
+      "libelle": "Eyebrow Mascara",
+      "reference": "01 Dark brown"
+    },
+    {
+      "barcode": "8057017693154",
+      "stock": 71,
+      "libelle": "Eyebrow Mascara",
+      "reference": "02 Pure Brown"
+    },
+    {
+      "barcode": "8057017693161",
+      "stock": 57,
+      "libelle": "Eyebrow Mascara",
+      "reference": "03 Chocolate Brown"
+    },
+    {
+      "barcode": "8057017693178",
+      "stock": 88,
+      "libelle": "Eyebrow Mascara",
+      "reference": "04 Beige Brown"
+    },
+    {
+      "barcode": "8057017693338",
+      "stock": 41,
+      "libelle": "Flowing Line",
+      "reference": "01 Yam"
+    },
+    {
+      "barcode": "8057017693345",
+      "stock": 27,
+      "libelle": "Flowing Line",
+      "reference": "02 Beige Brown"
+    },
+    {
+      "barcode": "8057017693352",
+      "stock": 56,
+      "libelle": "Flowing Line",
+      "reference": "03 Bordeaux"
+    },
+    {
+      "barcode": "8057017693369",
+      "stock": 66,
+      "libelle": "Flowing Line",
+      "reference": "04 Deep Rose"
+    },
+    {
+      "barcode": "8057017693376",
+      "stock": 46,
+      "libelle": "Flowing Line",
+      "reference": "05 Brownish"
+    },
+    {
+      "barcode": "8057017693383",
+      "stock": 74,
+      "libelle": "Flowing Line",
+      "reference": "06 Chic Red"
+    },
+    {
+      "barcode": "8057017693390",
+      "stock": 49,
+      "libelle": "Flowing Line",
+      "reference": "07 Red Maroon"
+    },
+    {
+      "barcode": "8057017693406",
+      "stock": 60,
+      "libelle": "Flowing Line",
+      "reference": "08 Pop Orange"
+    },
+    {
+      "barcode": "8057017693413",
+      "stock": 34,
+      "libelle": "Flowing Line",
+      "reference": "09 Cool Beige"
+    },
+    {
+      "barcode": "8057017693468",
+      "stock": 57,
+      "libelle": "Volcano",
+      "reference": "Bronzed 01"
+    },
+    {
+      "barcode": "8057017693475",
+      "stock": 179,
+      "libelle": "Color Vibe",
+      "reference": "01 Mars"
+    },
+    {
+      "barcode": "8057017693482",
+      "stock": 152,
+      "libelle": "Color Vibe",
+      "reference": "02 Boysenberry"
+    },
+    {
+      "barcode": "8057017693499",
+      "stock": 182,
+      "libelle": "Color Vibe",
+      "reference": "03 Umber"
+    },
+    {
+      "barcode": "8057017693505",
+      "stock": 60,
+      "libelle": "Lavish",
+      "reference": "01 Elegant touch"
+    },
+    {
+      "barcode": "8057017693512",
+      "stock": 61,
+      "libelle": "Lavish",
+      "reference": "02 Ready Red"
+    },
+    {
+      "barcode": "8057017693529",
+      "stock": 59,
+      "libelle": "Lavish",
+      "reference": "03 Lip Lip"
+    },
+    {
+      "barcode": "8057017693536",
+      "stock": 68,
+      "libelle": "Lavish",
+      "reference": "04 Season"
+    },
+    {
+      "barcode": "8057017693543",
+      "stock": 18,
+      "libelle": "Color Veil",
+      "reference": "01 Hurry up matte lipstick"
+    },
+    {
+      "barcode": "8057017693550",
+      "stock": 50,
+      "libelle": "Color Veil",
+      "reference": "02 Only me"
+    },
+    {
+      "barcode": "8057017693567",
+      "stock": 38,
+      "libelle": "Color Veil",
+      "reference": "03 Selfie Red"
+    },
+    {
+      "barcode": "8057017693574",
+      "stock": 49,
+      "libelle": "Color Veil",
+      "reference": "04 On Time"
+    },
+    {
+      "barcode": "8057017693611",
+      "stock": 6,
+      "libelle": "Sweet Radiance Moisturising",
+      "reference": "Beige Dor茅 04"
+    },
+    {
+      "barcode": "8057017693628",
+      "stock": 62,
+      "libelle": "Sweet Radiance Moisturising",
+      "reference": "Tan 08"
+    },
+    {
+      "barcode": "8057017693635",
+      "stock": 36,
+      "libelle": "Sweet Radiance Moisturising",
+      "reference": "Peach Rose 03"
+    },
+    {
+      "barcode": "8057017693666",
+      "stock": 29,
+      "libelle": "Sweet Radiance Moisturising",
+      "reference": "Natural rose 02"
+    },
+    {
+      "barcode": "8057017693697",
+      "stock": 22,
+      "libelle": "Sweet Radiance Moisturising",
+      "reference": "Honey 07"
+    },
+    {
+      "barcode": "8057017693703",
+      "stock": 0,
+      "libelle": "Volume Up",
+      "reference": "01 Black"
+    },
+    {
+      "barcode": "8057017693727",
+      "stock": 18,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "01 Nude Peach"
+    },
+    {
+      "barcode": "8057017693741",
+      "stock": 11,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "02 Blushing Rose"
+    },
+    {
+      "barcode": "8057017693765",
+      "stock": 8,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "03 Soft Rosewood"
+    },
+    {
+      "barcode": "8057017693789",
+      "stock": 48,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "04 Sunny Coral"
+    },
+    {
+      "barcode": "8057017693802",
+      "stock": 51,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "05 Royal Red"
+    },
+    {
+      "barcode": "8057017693826",
+      "stock": 73,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "06 Cherry Red"
+    },
+    {
+      "barcode": "8057017693840",
+      "stock": 74,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "07 Elegant Mauve"
+    },
+    {
+      "barcode": "8057017693864",
+      "stock": 80,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "08 Berry Red"
+    },
+    {
+      "barcode": "8057017693888",
+      "stock": 71,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "09 Misty beige"
+    },
+    {
+      "barcode": "8057017693901",
+      "stock": 86,
+      "libelle": "Petal Veil Liquid Matte",
+      "reference": "10 Warm Chocolate"
+    },
+    {
+      "barcode": "8057017694045",
+      "stock": 57,
+      "libelle": "Sparkle Dust",
+      "reference": "01 Party gold"
+    },
+    {
+      "barcode": "8057017694052",
+      "stock": 69,
+      "libelle": "Sparkle Dust",
+      "reference": "02 Platinum bronze"
+    },
+    {
+      "barcode": "8057017694069",
+      "stock": 68,
+      "libelle": "Sparkle Dust",
+      "reference": "03 Extravagant Rose"
+    },
+    {
+      "barcode": "8057017694076",
+      "stock": 69,
+      "libelle": "Sparkle Dust",
+      "reference": "04 Catwalk Copper"
+    },
+    {
+      "barcode": "8057017694083",
+      "stock": 68,
+      "libelle": "Sparkle Dust",
+      "reference": "05 Frozen Lilac"
+    },
+    {
+      "barcode": "8057017694212",
+      "stock": 38,
+      "libelle": "Eyeconic Liner Waterproof",
+      "reference": "01 Black"
+    },
+    {
+      "barcode": "8057017694236",
+      "stock": 47,
+      "libelle": "Shape and Fill",
+      "reference": "01 Taupe"
+    },
+    {
+      "barcode": "8057017694250",
+      "stock": 52,
+      "libelle": "Shape and Fill",
+      "reference": "02 Ash Brown"
+    },
+    {
+      "barcode": "8057017694274",
+      "stock": 44,
+      "libelle": "Shape and Fill",
+      "reference": "03 Auburn"
+    },
+    {
+      "barcode": "8057017694298",
+      "stock": 34,
+      "libelle": "Shape and Fill",
+      "reference": "04 Neutral Brown"
+    },
+    {
+      "barcode": "8057017694311",
+      "stock": 58,
+      "libelle": "Shape and Fill",
+      "reference": "05 Chocolate"
+    },
+    {
+      "barcode": "8057017694335",
+      "stock": 74,
+      "libelle": "Shape and Fill",
+      "reference": "06 Graphite"
+    },
+    {
+      "barcode": "8057017694359",
+      "stock": 15,
+      "libelle": "Brow Definer",
+      "reference": "01 Taupe"
+    },
+    {
+      "barcode": "8057017694397",
+      "stock": 4,
+      "libelle": "Brow Definer",
+      "reference": "03 Auburn"
+    },
+    {
+      "barcode": "8057017694410",
+      "stock": 4,
+      "libelle": "Brow Definer",
+      "reference": "04 Neutral Brown"
+    },
+    {
+      "barcode": "8057017694458",
+      "stock": 16,
+      "libelle": "Brow Definer",
+      "reference": "06 Graphite"
+    },
+    {
+      "barcode": "8057017694489",
+      "stock": 26,
+      "libelle": "Eye Feel Palette",
+      "reference": "Nude 01"
+    },
+    {
+      "barcode": "8057017694502",
+      "stock": 0,
+      "libelle": "Shout Out",
+      "reference": "01 Black"
+    },
+    {
+      "barcode": "8057017694526",
+      "stock": 25,
+      "libelle": "Fix and Care",
+      "reference": "01 Clear"
+    },
+    {
+      "barcode": "8057017694540",
+      "stock": 2,
+      "libelle": "Light Up Drops",
+      "reference": "Rose Quartz 01"
+    },
+    {
+      "barcode": "8057017694564",
+      "stock": 4,
+      "libelle": "Light Up Drops",
+      "reference": "Gold Champagne"
+    },
+    {
+      "barcode": "8057017694588",
+      "stock": 39,
+      "libelle": "Eye Feel Palette",
+      "reference": "Spicy 02"
+    },
+    {
+      "barcode": "8057017694700",
+      "stock": 4,
+      "libelle": "Mirror Glaze",
+      "reference": "Candy Butter 01"
+    },
+    {
+      "barcode": "8057017694724",
+      "stock": 4,
+      "libelle": "Mirror Glaze",
+      "reference": "Melted Honey 02"
+    },
+    {
+      "barcode": "8057017694748",
+      "stock": 43,
+      "libelle": "Everyday Hero",
+      "reference": "01 Iconic Cashemere"
+    },
+    {
+      "barcode": "8057017694755",
+      "stock": 30,
+      "libelle": "Everyday Hero",
+      "reference": "02 Eseential Rose"
+    },
+    {
+      "barcode": "8057017694762",
+      "stock": 44,
+      "libelle": "Everyday Hero",
+      "reference": "03 Timeless Nude"
+    },
+    {
+      "barcode": "8057017694779",
+      "stock": 48,
+      "libelle": "Everyday Hero",
+      "reference": "04 Classic Mauve"
+    },
+    {
+      "barcode": "8057017694786",
+      "stock": 51,
+      "libelle": "Everyday Hero",
+      "reference": "05 Glam Rosewood"
+    },
+    {
+      "barcode": "8057017694793",
+      "stock": 70,
+      "libelle": "Everyday Hero",
+      "reference": "06 Perfect Ruby"
+    },
+    {
+      "barcode": "8057017694809",
+      "stock": 87,
+      "libelle": "Everyday Hero",
+      "reference": "07 Chic Magenta"
+    },
+    {
+      "barcode": "8057017694816",
+      "stock": 93,
+      "libelle": "Everyday Hero",
+      "reference": "08 Burgundy Star"
+    },
+    {
+      "barcode": "8057017699217",
+      "stock": 79,
+      "libelle": "Creamy Lipliner",
+      "reference": "Ruby"
+    },
+    {
+      "barcode": "8057017699224",
+      "stock": 73,
+      "libelle": "Creamy Lipliner",
+      "reference": "Mandarin Granat"
+    },
+    {
+      "barcode": "8057017699262",
+      "stock": 55,
+      "libelle": "Creamy Lipliner",
+      "reference": "Amber 07"
+    },
+    {
+      "barcode": "8057017699316",
+      "stock": 82,
+      "libelle": "Long Lasting",
+      "reference": "Amande"
+    },
+    {
+      "barcode": "8057017699347",
+      "stock": 80,
+      "libelle": "Long Lasting",
+      "reference": "Fuetes Rouge"
+    },
+    {
+      "barcode": "8057017699385",
+      "stock": 184,
+      "libelle": "True Colour",
+      "reference": "Topaz 03"
+    },
+    {
+      "barcode": "8057017699408",
+      "stock": 179,
+      "libelle": "True Colour",
+      "reference": "Emerald 05"
+    },
+    {
+      "barcode": "8057017699415",
+      "stock": 164,
+      "libelle": "True Colour",
+      "reference": "Sapphire 06"
+    },
+    {
+      "barcode": "8057017699422",
+      "stock": 148,
+      "libelle": "True Colour",
+      "reference": "Turquoise 07"
+    },
+    {
+      "barcode": "8057017699439",
+      "stock": 145,
+      "libelle": "True Colour",
+      "reference": "Black diamond 08"
+    },
+    {
+      "barcode": "8057017699446",
+      "stock": 114,
+      "libelle": "Creamy Eyeliner",
+      "reference": "Coffee 01"
+    },
+    {
+      "barcode": "8057017699453",
+      "stock": 85,
+      "libelle": "Creamy Eyeliner",
+      "reference": "Onyx 02"
+    },
+    {
+      "barcode": "8057017699477",
+      "stock": 155,
+      "libelle": "Creamy Eyeliner",
+      "reference": "Peridot 04"
+    },
+    {
+      "barcode": "8057017699484",
+      "stock": 143,
+      "libelle": "Creamy Eyeliner",
+      "reference": "Amy 05"
+    },
+    {
+      "barcode": "8057017699491",
+      "stock": 138,
+      "libelle": "Iridescent two-tone",
+      "reference": "Blue topaz 01"
+    },
+    {
+      "barcode": "8057017699507",
+      "stock": 116,
+      "libelle": "Iridescent two-tone",
+      "reference": "White topaz 02"
+    },
+    {
+      "barcode": "8057017699514",
+      "stock": 194,
+      "libelle": "Iridescent two-tone",
+      "reference": "Tiger Eye 03"
+    },
+    {
+      "barcode": "8057017699521",
+      "stock": 176,
+      "libelle": "Long Lasting",
+      "reference": "Thunder 01"
+    },
+    {
+      "barcode": "8057017699545",
+      "stock": 157,
+      "libelle": "Long Lasting",
+      "reference": "Poseidon 03"
+    },
+    {
+      "barcode": "8057017699569",
+      "stock": 158,
+      "libelle": "Long Lasting",
+      "reference": "Titan 05"
+    },
+    {
+      "barcode": "8057017699613",
+      "stock": 161,
+      "libelle": "Long Lasting",
+      "reference": "Snow 10"
+    },
+    {
+      "barcode": "8057017699736",
+      "stock": 43,
+      "libelle": "Round Tapered Blending 101",
+      "reference": "Round Tapered Blending 101"
+    },
+    {
+      "barcode": "8057017699743",
+      "stock": 37,
+      "libelle": "Classic Flat Eyeshadow 102",
+      "reference": "Classic Flat Eyeshadow 102"
+    },
+    {
+      "barcode": "8057017699750",
+      "stock": 36,
+      "libelle": "Concealer brush 103",
+      "reference": "Concealer brush 103"
+    },
+    {
+      "barcode": "8057017699767",
+      "stock": 39,
+      "libelle": "Flat eyeliner and retouch brush 104",
+      "reference": "Flat eyeliner and retouch brush 104"
+    },
+    {
+      "barcode": "8057017699774",
+      "stock": 44,
+      "libelle": "Cats tongue synthetic Lip Brush",
+      "reference": "Cats tongue synthetic Lip Brush"
+    },
+    {
+      "barcode": "8057017699781",
+      "stock": 30,
+      "libelle": "Eyeshadow double brush 106",
+      "reference": "Eyeshadow double brush 106"
+    },
+    {
+      "barcode": "8057017699804",
+      "stock": 44,
+      "libelle": "Pencil blending brush 108",
+      "reference": "Pencil blending brush 108"
+    },
+    {
+      "barcode": "8057017699811",
+      "stock": 32,
+      "libelle": "Angeled eyeshadow 109",
+      "reference": "Angeled eyeshadow 109"
+    },
+    {
+      "barcode": "8057017699873",
+      "stock": 41,
+      "libelle": "Retractable Lip Brush",
+      "reference": "Retractable Lip Brush"
+    },
+    {
+      "barcode": "8057017699880",
+      "stock": 26,
+      "libelle": "Flat Powder Brush 116",
+      "reference": "Flat Powder Brush 116"
+    },
+    {
+      "barcode": "8057017699903",
+      "stock": 34,
+      "libelle": "Liquid Foundation Brush 118",
+      "reference": "Liquid Foundation Brush 118"
+    },
+    {
+      "barcode": "8057017699941",
+      "stock": 41,
+      "libelle": "Triangular Foundation 122",
+      "reference": "Triangular Foundation 122"
+    },
+    {
+      "barcode": "8057017699996",
+      "stock": 35,
+      "libelle": "Tip and blend make up brushes foundation 201",
+      "reference": "Tip and blend make up brushes foundation 201"
+    }
+  ]
+}
