@@ -4,10 +4,64 @@ import { Box } from "@mui/material";
 import axios from "axios";
 import { Button, Card, Col, Collapse, Empty, Row, Space, Table, Tag, Typography, message } from "antd";
 import { getImageUrl } from "app/utils/imageUrl";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import JsBarcode from "jsbarcode";
 
 const { Text } = Typography;
 const ARCHIVE_STORAGE_KEY = "wakeup-inventaire-archive-v1";
 const HEX_COLOR_REGEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
+
+const getVariantDisplayName = (variant) => {
+  const parts = [variant?.name, variant?.nom, variant?.reference, variant?.color].filter(Boolean);
+  return parts.length ? parts.join(" / ") : "";
+};
+
+const getBarcodeDataUrl = (barcode) => {
+  try {
+    const canvas = document.createElement("canvas");
+    JsBarcode(canvas, barcode, {
+      format: "CODE128",
+      displayValue: true,
+      fontSize: 10,
+      width: 1.5,
+      height: 34,
+      margin: 0
+    });
+    return canvas.toDataURL("image/png");
+  } catch (error) {
+    return "";
+  }
+};
+
+const loadImageDataUrl = (url) =>
+  new Promise((resolve) => {
+    if (!url) {
+      resolve("");
+      return;
+    }
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve("");
+          return;
+        }
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      } catch (error) {
+        resolve("");
+      }
+    };
+    img.onerror = () => resolve("");
+    img.src = url;
+  });
 
 const normalizeSession = (session, source) => ({
   id: String(session?._id || session?.id || ""),
@@ -101,7 +155,8 @@ const InventaireArchive = () => {
           imageUrl: variantImageUrl || productImageUrl || "",
           variantImageUrl,
           productImageUrl,
-          variantColor: variant?.color || ""
+          variantColor: variant?.color || "",
+          variantName: getVariantDisplayName(variant)
         });
       });
     });
@@ -118,9 +173,114 @@ const InventaireArchive = () => {
         ...row,
         displayProductName: cleanedName || details?.productName || row.barcode || "N/A",
         displayImage: details?.imageUrl || "",
-        displayColor: details?.variantColor || ""
+        displayColor: details?.variantColor || "",
+        displayVariant: details?.variantName || ""
       };
     });
+
+  const downloadSessionPdf = async (session) => {
+    const enrichedRows = enrichRows(Array.isArray(session?.rows) ? session.rows : []);
+    const rowsWithImages = await Promise.all(
+      enrichedRows.map(async (row) => ({
+        barcode: String(row.barcode || "").trim(),
+        productName: row.displayProductName || row.productName || "N/A",
+        variantName: row.displayVariant || "--",
+        box: String(row.box || "--").toUpperCase(),
+        quantity: Number(row.quantity) || 0,
+        variantImageDataUrl: await loadImageDataUrl(row.displayImage || "")
+      }))
+    );
+
+    const rows = rowsWithImages
+      .sort((a, b) => {
+        const boxCompare = a.box.localeCompare(b.box, undefined, { numeric: true, sensitivity: "base" });
+        if (boxCompare !== 0) return boxCompare;
+        return a.productName.localeCompare(b.productName, undefined, {
+          numeric: true,
+          sensitivity: "base"
+        });
+      });
+
+    if (!rows.length) {
+      message.warning("Aucune ligne a exporter.");
+      return;
+    }
+
+    const doc = new jsPDF({ orientation: "portrait" });
+    const createdAt = new Date(session?.createdAt || Date.now()).toLocaleString();
+    doc.setFontSize(16);
+    doc.text("Inventaire Archive - Session", 14, 16);
+    doc.setFontSize(11);
+    doc.text(`Session: ${createdAt}`, 14, 23);
+    doc.text(`Total lignes: ${rows.length}`, 120, 23);
+
+    autoTable(doc, {
+      startY: 28,
+      head: [["Barcode", "Product", "Variant", "Img", "BOX", "Quantity"]],
+      body: rows.map((row) => [
+        row.barcode,
+        row.productName,
+        row.variantName,
+        row.variantImageDataUrl,
+        row.box,
+        String(row.quantity)
+      ]),
+      styles: { fontSize: 9, cellPadding: 3, valign: "middle" },
+      headStyles: { fillColor: [22, 119, 255] },
+      columnStyles: {
+        0: { cellWidth: 45, minCellHeight: 20 },
+        1: { cellWidth: 48 },
+        2: { cellWidth: 34 },
+        3: { cellWidth: 16, halign: "center" },
+        4: { cellWidth: 16, halign: "center" },
+        5: { cellWidth: 20, halign: "center" }
+      },
+      didParseCell: (data) => {
+        if (data.section === "body" && data.column.index === 2) {
+          data.cell.styles.fontStyle = "bold";
+        }
+      },
+      didDrawCell: (data) => {
+        if (data.section !== "body") return;
+        if (data.column.index === 0) {
+          const value = String(data.cell.raw || "").trim();
+          if (!value) return;
+          const barcodeDataUrl = getBarcodeDataUrl(value);
+          if (!barcodeDataUrl) return;
+
+          const imgX = data.cell.x + 2;
+          const imgY = data.cell.y + 2;
+          const imgW = Math.max(data.cell.width - 4, 1);
+          const imgH = Math.max(data.cell.height - 8, 1);
+          doc.addImage(barcodeDataUrl, "PNG", imgX, imgY, imgW, imgH);
+          return;
+        }
+
+        if (data.column.index !== 3) return;
+        const imageDataUrl = String(data.cell.raw || "").trim();
+        const iconSize = Math.min(data.cell.width, data.cell.height) - 6;
+        const x = data.cell.x + (data.cell.width - iconSize) / 2;
+        const y = data.cell.y + (data.cell.height - iconSize) / 2;
+
+        if (imageDataUrl) {
+          doc.addImage(imageDataUrl, "PNG", x, y, iconSize, iconSize);
+          return;
+        }
+
+        doc.setDrawColor(130, 130, 130);
+        doc.setFillColor(245, 245, 245);
+        doc.roundedRect(x, y, iconSize, iconSize, 1.5, 1.5, "FD");
+        doc.setFillColor(170, 170, 170);
+        doc.circle(x + iconSize * 0.34, y + iconSize * 0.34, Math.max(iconSize * 0.08, 0.6), "F");
+        doc.setDrawColor(160, 160, 160);
+        doc.line(x + iconSize * 0.14, y + iconSize * 0.78, x + iconSize * 0.44, y + iconSize * 0.52);
+        doc.line(x + iconSize * 0.44, y + iconSize * 0.52, x + iconSize * 0.63, y + iconSize * 0.7);
+        doc.line(x + iconSize * 0.63, y + iconSize * 0.7, x + iconSize * 0.84, y + iconSize * 0.32);
+      }
+    });
+
+    doc.save(`inventaire-session-${new Date(session?.createdAt || Date.now()).toISOString().slice(0, 10)}.pdf`);
+  };
 
   const removeSession = (id) => {
     const target = sessions.find((session) => session.id === id);
@@ -396,6 +556,16 @@ const InventaireArchive = () => {
                           }}
                         >
                           Print All BOXES
+                        </Button>
+                        <Button
+                          type="primary"
+                          size="small"
+                          onClick={async (event) => {
+                            event.stopPropagation();
+                            await downloadSessionPdf(session);
+                          }}
+                        >
+                          Download PDF
                         </Button>
                         <Button
                           danger
