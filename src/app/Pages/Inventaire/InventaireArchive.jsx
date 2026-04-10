@@ -42,32 +42,48 @@ const loadImagePayload = (url) =>
       return;
     }
 
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      try {
-        const canvas = document.createElement("canvas");
-        const width = img.naturalWidth || img.width;
-        const height = img.naturalHeight || img.height;
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) {
+    const tryLoad = (withCrossOrigin) => {
+      const img = new Image();
+      if (withCrossOrigin) {
+        img.crossOrigin = "anonymous";
+      }
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          const width = img.naturalWidth || img.width;
+          const height = img.naturalHeight || img.height;
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(null);
+            return;
+          }
+          ctx.drawImage(img, 0, 0);
+          resolve({
+            dataUrl: canvas.toDataURL("image/png"),
+            width,
+            height
+          });
+        } catch (error) {
+          if (withCrossOrigin) {
+            tryLoad(false);
+            return;
+          }
           resolve(null);
+        }
+      };
+      img.onerror = () => {
+        if (withCrossOrigin) {
+          tryLoad(false);
           return;
         }
-        ctx.drawImage(img, 0, 0);
-        resolve({
-          dataUrl: canvas.toDataURL("image/png"),
-          width,
-          height
-        });
-      } catch (error) {
         resolve(null);
-      }
+      };
+      img.src = encodeURI(url);
     };
-    img.onerror = () => resolve(null);
-    img.src = url;
+
+    tryLoad(true);
   });
 
 const normalizeSession = (session, source) => ({
@@ -191,6 +207,7 @@ const InventaireArchive = () => {
         ...row,
         displayProductName: cleanedName || details?.productName || row.barcode || "N/A",
         displayImage: details?.imageUrl || "",
+        displayVariantImage: details?.variantImageUrl || "",
         displayColor: details?.variantColor || "",
         displayVariant: details?.variantName || ""
       };
@@ -206,7 +223,7 @@ const InventaireArchive = () => {
         box: String(row.box || "--").toUpperCase(),
         quantity: Number(row.quantity) || 0,
         omarQty: Number(referenceQtyMap.get(String(row.barcode || "").trim())) || 0,
-        variantImage: await loadImagePayload(row.displayImage || "")
+        variantImage: await loadImagePayload(row.displayVariantImage || row.displayImage || "")
       }))
     );
 
@@ -246,13 +263,13 @@ const InventaireArchive = () => {
         String(row.omarQty),
         String(row.quantity - row.omarQty)
       ]),
-      styles: { fontSize: 9, cellPadding: 3, valign: "middle" },
+      styles: { fontSize: 9, cellPadding: 3, valign: "middle", minCellHeight: 22 },
       headStyles: { fillColor: [22, 119, 255] },
       columnStyles: {
         0: { cellWidth: 34, minCellHeight: 20 },
         1: { cellWidth: 34 },
-        2: { cellWidth: 26 },
-        3: { cellWidth: 13, halign: "center" },
+        2: { cellWidth: 24 },
+        3: { cellWidth: 18, halign: "center" },
         4: { cellWidth: 12, halign: "center" },
         5: { cellWidth: 16, halign: "center" },
         6: { cellWidth: 16, halign: "center" },
