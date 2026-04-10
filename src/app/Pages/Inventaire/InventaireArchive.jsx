@@ -94,6 +94,34 @@ const normalizeSession = (session, source) => ({
   source
 });
 
+const aggregateRowsByBarcode = (rows) => {
+  const map = new Map();
+  rows.forEach((row) => {
+    const barcode = String(row?.barcode || "").trim();
+    if (!barcode) return;
+    const existing = map.get(barcode);
+    if (existing) {
+      existing.quantity += Number(row?.quantity) || 0;
+      if (row?.box) {
+        existing.boxes.add(String(row.box).toUpperCase());
+      }
+      return;
+    }
+
+    map.set(barcode, {
+      ...row,
+      quantity: Number(row?.quantity) || 0,
+      boxes: new Set(row?.box ? [String(row.box).toUpperCase()] : []),
+      box: row?.box ? String(row.box).toUpperCase() : "--"
+    });
+  });
+
+  return Array.from(map.values()).map((item) => ({
+    ...item,
+    box: item.boxes.size ? Array.from(item.boxes).sort().join(", ") : "--"
+  }));
+};
+
 const InventaireArchive = () => {
   const [version, setVersion] = useState(0);
   const [apiProducts, setApiProducts] = useState([]);
@@ -215,12 +243,13 @@ const InventaireArchive = () => {
 
   const downloadSessionPdf = async (session) => {
     const enrichedRows = enrichRows(Array.isArray(session?.rows) ? session.rows : []);
+    const aggregatedRows = aggregateRowsByBarcode(enrichedRows);
     const rowsWithImages = await Promise.all(
-      enrichedRows.map(async (row) => ({
+      aggregatedRows.map(async (row) => ({
         barcode: String(row.barcode || "").trim(),
         productName: row.displayProductName || row.productName || "N/A",
         variantName: row.displayVariant || "--",
-        box: String(row.box || "--").toUpperCase(),
+        box: String(row.box || "--"),
         quantity: Number(row.quantity) || 0,
         omarQty: Number(referenceQtyMap.get(String(row.barcode || "").trim())) || 0,
         variantImage: await loadImagePayload(row.displayVariantImage || row.displayImage || "")
@@ -623,6 +652,7 @@ const InventaireArchive = () => {
             items={sessions.map((session) => {
               const createdAt = new Date(session.createdAt).toLocaleString();
               const rows = session.rows;
+              const aggregatedRows = aggregateRowsByBarcode(enrichRows(rows));
               const boxes = session.boxes;
 
               return {
@@ -633,7 +663,7 @@ const InventaireArchive = () => {
                       <Space>
                         <Text strong>{createdAt}</Text>
                         <Tag>BOX: {boxes.length}</Tag>
-                        <Tag>Lignes: {rows.length}</Tag>
+                        <Tag>Lignes: {aggregatedRows.length}</Tag>
                         <Tag color={session.source === "db" ? "green" : "default"}>
                           {session.source.toUpperCase()}
                         </Tag>
@@ -693,7 +723,7 @@ const InventaireArchive = () => {
                     <Table
                       rowKey={(record) => `${session.id}-${record.key}`}
                       columns={columns}
-                      dataSource={rows}
+                      dataSource={aggregatedRows}
                       pagination={{ pageSize: 8 }}
                       bordered
                     />
