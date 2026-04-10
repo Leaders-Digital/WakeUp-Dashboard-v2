@@ -281,12 +281,11 @@ const InventaireArchive = () => {
 
     autoTable(doc, {
       startY: 28,
-      head: [["Barcode", "Product", "Variant", "Img", "BOX", "Quantity", "qte omar", "Difference"]],
+      head: [["Barcode", "Product", "Variant", "BOX", "Quantity", "qte omar", "Difference"]],
       body: rows.map((row) => [
         row.barcode,
         row.productName,
         row.variantName,
-        row.variantImage,
         row.box,
         String(row.quantity),
         String(row.omarQty),
@@ -295,20 +294,19 @@ const InventaireArchive = () => {
       styles: { fontSize: 9, cellPadding: 3, valign: "middle", minCellHeight: 22 },
       headStyles: { fillColor: [22, 119, 255] },
       columnStyles: {
-        0: { cellWidth: 34, minCellHeight: 20 },
-        1: { cellWidth: 34 },
-        2: { cellWidth: 24 },
+        0: { cellWidth: 38, minCellHeight: 20 },
+        1: { cellWidth: 42 },
+        2: { cellWidth: 28 },
         3: { cellWidth: 18, halign: "center" },
-        4: { cellWidth: 12, halign: "center" },
-        5: { cellWidth: 16, halign: "center" },
-        6: { cellWidth: 16, halign: "center" },
-        7: { cellWidth: 18, halign: "center" }
+        4: { cellWidth: 14, halign: "center" },
+        5: { cellWidth: 18, halign: "center" },
+        6: { cellWidth: 20, halign: "center" }
       },
       didParseCell: (data) => {
         if (data.section === "body" && data.column.index === 2) {
           data.cell.styles.fontStyle = "bold";
         }
-        if (data.section === "body" && data.column.index === 7) {
+        if (data.section === "body" && data.column.index === 6) {
           const diff = Number(data.cell.raw) || 0;
           if (diff > 0) {
             data.cell.styles.textColor = [56, 158, 13];
@@ -336,39 +334,6 @@ const InventaireArchive = () => {
           return;
         }
 
-        if (data.column.index !== 3) return;
-        const payload =
-          data.cell.raw && typeof data.cell.raw === "object" ? data.cell.raw : null;
-        const iconSize = Math.min(data.cell.width, data.cell.height) - 6;
-        const x = data.cell.x + (data.cell.width - iconSize) / 2;
-        const y = data.cell.y + (data.cell.height - iconSize) / 2;
-
-        if (payload?.dataUrl && payload?.width && payload?.height) {
-          const cellInnerWidth = Math.max(data.cell.width - 4, 1);
-          const cellInnerHeight = Math.max(data.cell.height - 4, 1);
-          const ratio = payload.width / payload.height;
-          let drawW = cellInnerWidth;
-          let drawH = drawW / ratio;
-          if (drawH > cellInnerHeight) {
-            drawH = cellInnerHeight;
-            drawW = drawH * ratio;
-          }
-
-          const imgX = data.cell.x + (data.cell.width - drawW) / 2;
-          const imgY = data.cell.y + (data.cell.height - drawH) / 2;
-          doc.addImage(payload.dataUrl, "PNG", imgX, imgY, drawW, drawH);
-          return;
-        }
-
-        doc.setDrawColor(130, 130, 130);
-        doc.setFillColor(245, 245, 245);
-        doc.roundedRect(x, y, iconSize, iconSize, 1.5, 1.5, "FD");
-        doc.setFillColor(170, 170, 170);
-        doc.circle(x + iconSize * 0.34, y + iconSize * 0.34, Math.max(iconSize * 0.08, 0.6), "F");
-        doc.setDrawColor(160, 160, 160);
-        doc.line(x + iconSize * 0.14, y + iconSize * 0.78, x + iconSize * 0.44, y + iconSize * 0.52);
-        doc.line(x + iconSize * 0.44, y + iconSize * 0.52, x + iconSize * 0.63, y + iconSize * 0.7);
-        doc.line(x + iconSize * 0.63, y + iconSize * 0.7, x + iconSize * 0.84, y + iconSize * 0.32);
       }
     });
 
@@ -557,22 +522,6 @@ const InventaireArchive = () => {
           </Space>
         ) : (
           <Text>{color}</Text>
-        );
-      }
-    },
-    {
-      title: "Image",
-      key: "image",
-      width: 90,
-      render: (_, record) => {
-        const details = barcodeDetailsMap.get(String(record.barcode || "").trim());
-        if (!details?.imageUrl) return <Text type="secondary">--</Text>;
-        return (
-          <img
-            src={details.imageUrl}
-            alt={record.productName || details.productName || "product"}
-            style={{ width: 68, height: 68, borderRadius: 6, objectFit: "cover", border: "1px solid #eee" }}
-          />
         );
       }
     },
