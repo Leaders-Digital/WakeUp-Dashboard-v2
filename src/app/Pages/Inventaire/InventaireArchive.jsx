@@ -3,7 +3,6 @@ import { Breadcrumb } from "app/components";
 import { Box } from "@mui/material";
 import axios from "axios";
 import { Button, Card, Col, Collapse, Empty, Row, Space, Table, Tag, Typography, message } from "antd";
-import { getImageUrl } from "app/utils/imageUrl";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -13,9 +12,14 @@ const HEX_COLOR_REGEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
 
 const resolveImageUrl = (path) => {
   if (!path) return "";
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  const rawPath = String(path).trim();
+  if (!rawPath) return "";
+  if (rawPath.startsWith("http://") || rawPath.startsWith("https://")) return rawPath;
 
-  const normalizedPath = String(path).replace(/^\/+/, "");
+  // Some existing helpers/builders may produce strings like "undefineduploads/..."
+  const cleanedPath = rawPath.replace(/^undefined\/?/i, "");
+  const normalizedPath = cleanedPath.replace(/^\/+/, "");
+  if (!normalizedPath) return "";
   const imageBase = process.env.REACT_APP_API_URL_IMAGE;
   if (imageBase && imageBase !== "undefined") {
     return `${imageBase}${normalizedPath}`;
@@ -132,11 +136,11 @@ const InventaireArchive = () => {
   const barcodeDetailsMap = useMemo(() => {
     const map = new Map();
     apiProducts.forEach((product) => {
-      const productImageUrl = resolveImageUrl(getImageUrl(product?.mainPicture || ""));
+      const productImageUrl = resolveImageUrl(product?.mainPicture || "");
       (product.variants || []).forEach((variant) => {
         const barcode = String(variant?.codeAbarre || "").trim();
         if (!barcode) return;
-        const variantImageUrl = resolveImageUrl(getImageUrl(variant?.picture || ""));
+        const variantImageUrl = resolveImageUrl(variant?.picture || "");
         map.set(barcode, {
           productName: product?.nom || "",
           imageUrl: variantImageUrl || productImageUrl || "",
@@ -253,7 +257,7 @@ const InventaireArchive = () => {
           row.displayProductName || "",
           row.displayColor || "--",
           String(row.quantity || 0),
-          ""
+          row.displayImage || ""
         ]),
         styles: { fontSize: 9, cellPadding: 2, valign: "middle" },
         headStyles: { fillColor: [22, 119, 255] },
@@ -263,6 +267,11 @@ const InventaireArchive = () => {
           2: { cellWidth: 28 },
           3: { cellWidth: 20, halign: "center" },
           4: { cellWidth: 42, minCellHeight: 26 }
+        },
+        didParseCell: (data) => {
+          if (data.section === "body" && data.column.index === 4) {
+            data.cell.text = [""];
+          }
         },
         didDrawCell: (data) => {
           if (data.section !== "body") return;
