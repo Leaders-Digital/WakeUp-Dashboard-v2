@@ -6,7 +6,6 @@ import { Button, Card, Col, Collapse, Empty, Row, Space, Table, Tag, Typography,
 import { getImageUrl } from "app/utils/imageUrl";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import JsBarcode from "jsbarcode";
 import referenceStock from "./inventaireReferenceStock.json";
 
 const { Text } = Typography;
@@ -18,73 +17,12 @@ const getVariantDisplayName = (variant) => {
   return parts.length ? parts.join(" / ") : "";
 };
 
-const getBarcodeDataUrl = (barcode) => {
-  try {
-    const canvas = document.createElement("canvas");
-    JsBarcode(canvas, barcode, {
-      format: "CODE128",
-      displayValue: true,
-      fontSize: 10,
-      width: 1.5,
-      height: 34,
-      margin: 0
-    });
-    return canvas.toDataURL("image/png");
-  } catch (error) {
-    return "";
-  }
+const formatMoney = (value) => {
+  const amount = Math.round(Number(value || 0));
+  if (!Number.isFinite(amount)) return "0 TND";
+  const grouped = String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return `${grouped} TND`;
 };
-
-const loadImagePayload = (url) =>
-  new Promise((resolve) => {
-    if (!url) {
-      resolve(null);
-      return;
-    }
-
-    const tryLoad = (withCrossOrigin) => {
-      const img = new Image();
-      if (withCrossOrigin) {
-        img.crossOrigin = "anonymous";
-      }
-      img.onload = () => {
-        try {
-          const canvas = document.createElement("canvas");
-          const width = img.naturalWidth || img.width;
-          const height = img.naturalHeight || img.height;
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          if (!ctx) {
-            resolve(null);
-            return;
-          }
-          ctx.drawImage(img, 0, 0);
-          resolve({
-            dataUrl: canvas.toDataURL("image/png"),
-            width,
-            height
-          });
-        } catch (error) {
-          if (withCrossOrigin) {
-            tryLoad(false);
-            return;
-          }
-          resolve(null);
-        }
-      };
-      img.onerror = () => {
-        if (withCrossOrigin) {
-          tryLoad(false);
-          return;
-        }
-        resolve(null);
-      };
-      img.src = encodeURI(url);
-    };
-
-    tryLoad(true);
-  });
 
 const normalizeSession = (session, source) => ({
   id: String(session?._id || session?.id || ""),
@@ -214,13 +152,17 @@ const InventaireArchive = () => {
     return map;
   }, [apiProducts]);
 
-  const referenceQtyMap = useMemo(() => {
+  const referenceByBarcodeMap = useMemo(() => {
     const map = new Map();
     const items = Array.isArray(referenceStock?.items) ? referenceStock.items : [];
     items.forEach((item) => {
       const barcode = String(item?.barcode || "").trim();
       if (!barcode) return;
-      map.set(barcode, Number(item?.stock) || 0);
+      map.set(barcode, {
+        quantity: Number(item?.stock) || 0,
+        purchasePrice: Number(item?.purchasePrice) || 0,
+        salePrice: Number(item?.salePrice) || 0
+      });
     });
     return map;
   }, []);
@@ -241,22 +183,30 @@ const InventaireArchive = () => {
       };
     });
 
-  const downloadSessionPdf = async (session) => {
+  const downloadSessionPdf = (session) => {
     const enrichedRows = enrichRows(Array.isArray(session?.rows) ? session.rows : []);
     const aggregatedRows = aggregateRowsByBarcode(enrichedRows);
-    const rowsWithImages = await Promise.all(
-      aggregatedRows.map(async (row) => ({
-        barcode: String(row.barcode || "").trim(),
-        productName: row.displayProductName || row.productName || "N/A",
-        variantName: row.displayVariant || "--",
-        box: String(row.box || "--"),
-        quantity: Number(row.quantity) || 0,
-        omarQty: Number(referenceQtyMap.get(String(row.barcode || "").trim())) || 0,
-        variantImage: await loadImagePayload(row.displayVariantImage || row.displayImage || "")
-      }))
-    );
-
-    const rows = rowsWithImages
+    const rows = aggregatedRows
+      .map((row) => {
+        const barcode = String(row.barcode || "").trim();
+        const reference = referenceByBarcodeMap.get(barcode);
+        const purchasePrice = Number(reference?.purchasePrice) || 0;
+        const salePrice = Number(reference?.salePrice) || 0;
+        const quantity = Number(row.quantity) || 0;
+        const omarQty = Number(reference?.quantity) || 0;
+        return {
+          barcode,
+          productName: row.displayProductName || row.productName || "N/A",
+          variantName: row.displayVariant || "--",
+          box: String(row.box || "--"),
+          quantity,
+          omarQty,
+          purchasePrice,
+          salePrice,
+          totalPurchase: quantity * purchasePrice,
+          totalSale: quantity * salePrice
+        };
+      })
       .sort((a, b) => {
         const boxCompare = a.box.localeCompare(b.box, undefined, { numeric: true, sensitivity: "base" });
         if (boxCompare !== 0) return boxCompare;
@@ -278,35 +228,49 @@ const InventaireArchive = () => {
     doc.setFontSize(11);
     doc.text(`Session: ${createdAt}`, 14, 23);
     doc.text(`Total lignes: ${rows.length}`, 120, 23);
+    const totalPurchaseAll = rows.reduce((sum, row) => sum + row.totalPurchase, 0);
+    const totalSaleAll = rows.reduce((sum, row) => sum + row.totalSale, 0);
 
     autoTable(doc, {
       startY: 28,
-      head: [["Barcode", "Product", "Variant", "BOX", "Quantity", "qte omar", "Difference"]],
+      margin: { left: 10, right: 10 },
+      tableWidth: "auto",
+      head: [
+        [
+          "Product",
+          "Variant",
+          "Quantity",
+          "Difference",
+          "Prix Unitaire",
+          "Prix Achat",
+          "Prix Vente"
+        ]
+      ],
       body: rows.map((row) => [
-        row.barcode,
         row.productName,
         row.variantName,
-        row.box,
         String(row.quantity),
-        String(row.omarQty),
-        String(row.quantity - row.omarQty)
+        String(row.quantity - row.omarQty),
+        formatMoney(row.salePrice),
+        formatMoney(row.totalPurchase),
+        formatMoney(row.totalSale)
       ]),
       styles: { fontSize: 9, cellPadding: 3, valign: "middle", minCellHeight: 22 },
       headStyles: { fillColor: [22, 119, 255] },
       columnStyles: {
-        0: { cellWidth: 38, minCellHeight: 20 },
-        1: { cellWidth: 42 },
-        2: { cellWidth: 28 },
-        3: { cellWidth: 18, halign: "center" },
-        4: { cellWidth: 14, halign: "center" },
-        5: { cellWidth: 18, halign: "center" },
-        6: { cellWidth: 20, halign: "center" }
+        0: { cellWidth: 46, halign: "left" },
+        1: { cellWidth: 28, halign: "left" },
+        2: { cellWidth: 12, halign: "center" },
+        3: { cellWidth: 12, halign: "center" },
+        4: { cellWidth: 30, halign: "right" },
+        5: { cellWidth: 30, halign: "right" },
+        6: { cellWidth: 30, halign: "right" }
       },
       didParseCell: (data) => {
-        if (data.section === "body" && data.column.index === 2) {
+        if (data.section === "body" && data.column.index === 1) {
           data.cell.styles.fontStyle = "bold";
         }
-        if (data.section === "body" && data.column.index === 6) {
+        if (data.section === "body" && data.column.index === 3) {
           const diff = Number(data.cell.raw) || 0;
           if (diff > 0) {
             data.cell.styles.textColor = [56, 158, 13];
@@ -320,22 +284,13 @@ const InventaireArchive = () => {
       },
       didDrawCell: (data) => {
         if (data.section !== "body") return;
-        if (data.column.index === 0) {
-          const value = String(data.cell.raw || "").trim();
-          if (!value) return;
-          const barcodeDataUrl = getBarcodeDataUrl(value);
-          if (!barcodeDataUrl) return;
-
-          const imgX = data.cell.x + 2;
-          const imgY = data.cell.y + 2;
-          const imgW = Math.max(data.cell.width - 4, 1);
-          const imgH = Math.max(data.cell.height - 8, 1);
-          doc.addImage(barcodeDataUrl, "PNG", imgX, imgY, imgW, imgH);
-          return;
-        }
-
       }
     });
+    const finalY = doc.lastAutoTable?.finalY || 28;
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Total prix achat: ${formatMoney(totalPurchaseAll)}`, 14, finalY + 10);
+    doc.text(`Total prix vente: ${formatMoney(totalSaleAll)}`, 14, finalY + 17);
 
     doc.save(`inventaire-session-${new Date(session?.createdAt || Date.now()).toISOString().slice(0, 10)}.pdf`);
   };
@@ -537,8 +492,9 @@ const InventaireArchive = () => {
       width: 130,
       render: (_, record) => {
         const barcode = String(record?.barcode || "").trim();
-        if (!referenceQtyMap.has(barcode)) return <Text type="secondary">--</Text>;
-        return <Text>{referenceQtyMap.get(barcode)}</Text>;
+        const reference = referenceByBarcodeMap.get(barcode);
+        if (!reference) return <Text type="secondary">--</Text>;
+        return <Text>{reference.quantity}</Text>;
       }
     },
     {
@@ -547,9 +503,10 @@ const InventaireArchive = () => {
       width: 130,
       render: (_, record) => {
         const barcode = String(record?.barcode || "").trim();
-        if (!referenceQtyMap.has(barcode)) return <Text type="secondary">--</Text>;
+        const reference = referenceByBarcodeMap.get(barcode);
+        if (!reference) return <Text type="secondary">--</Text>;
         const inventaireQty = Number(record?.quantity) || 0;
-        const fileQty = Number(referenceQtyMap.get(barcode)) || 0;
+        const fileQty = Number(reference.quantity) || 0;
         const diff = inventaireQty - fileQty;
         if (diff > 0) {
           return <Tag color="success">{`+${diff}`}</Tag>;
@@ -558,6 +515,30 @@ const InventaireArchive = () => {
           return <Tag color="error">{`${diff}`}</Tag>;
         }
         return <Tag>0</Tag>;
+      }
+    },
+    {
+      title: "Prix Achat",
+      key: "purchasePrice",
+      width: 130,
+      render: (_, record) => {
+        const barcode = String(record?.barcode || "").trim();
+        const reference = referenceByBarcodeMap.get(barcode);
+        if (!reference) return <Text type="secondary">--</Text>;
+        const total = (Number(record?.quantity) || 0) * (Number(reference.purchasePrice) || 0);
+        return <Text>{formatMoney(total)}</Text>;
+      }
+    },
+    {
+      title: "Prix Vente",
+      key: "salePrice",
+      width: 130,
+      render: (_, record) => {
+        const barcode = String(record?.barcode || "").trim();
+        const reference = referenceByBarcodeMap.get(barcode);
+        if (!reference) return <Text type="secondary">--</Text>;
+        const total = (Number(record?.quantity) || 0) * (Number(reference.salePrice) || 0);
+        return <Text>{formatMoney(total)}</Text>;
       }
     },
     {
@@ -603,6 +584,17 @@ const InventaireArchive = () => {
               const rows = session.rows;
               const aggregatedRows = aggregateRowsByBarcode(enrichRows(rows));
               const boxes = session.boxes;
+              const totals = aggregatedRows.reduce(
+                (acc, row) => {
+                  const barcode = String(row?.barcode || "").trim();
+                  const reference = referenceByBarcodeMap.get(barcode);
+                  const qty = Number(row?.quantity) || 0;
+                  acc.purchase += qty * (Number(reference?.purchasePrice) || 0);
+                  acc.sale += qty * (Number(reference?.salePrice) || 0);
+                  return acc;
+                },
+                { purchase: 0, sale: 0 }
+              );
 
               return {
                 key: session.id,
@@ -676,6 +668,12 @@ const InventaireArchive = () => {
                       pagination={{ pageSize: 8 }}
                       bordered
                     />
+                    <Row justify="end" style={{ marginTop: 10 }}>
+                      <Space>
+                        <Tag color="gold">Total prix achat: {formatMoney(totals.purchase)}</Tag>
+                        <Tag color="geekblue">Total prix vente: {formatMoney(totals.sale)}</Tag>
+                      </Space>
+                    </Row>
                   </div>
                 )
               };

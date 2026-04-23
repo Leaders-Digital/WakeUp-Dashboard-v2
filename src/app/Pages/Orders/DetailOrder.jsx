@@ -1,5 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Typography, Button } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { Card, Row, Col, Typography, Button, Tag, message, Descriptions, Table, Avatar, Empty, Badge, Space } from "antd";
+import {
+  CopyOutlined,
+  BarcodeOutlined,
+  AppstoreOutlined,
+  PictureOutlined,
+  UserOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  EnvironmentOutlined,
+  CalendarOutlined,
+  FileTextOutlined,
+  CreditCardOutlined,
+  GiftOutlined,
+  NumberOutlined,
+  DownloadOutlined,
+  InfoCircleOutlined,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
 import jsPDF from "jspdf";
@@ -10,10 +28,18 @@ import logo from "../../../assets/WhatsApp.jpeg";
 import { getImageUrl } from "app/utils/imageUrl";
 
 const { Title, Text } = Typography;
+
+const statusColors = {
+  "en cours": "orange",
+  validé: "blue",
+  "Validé": "blue",
+  livré: "green",
+  annulé: "red",
+};
+
 const DetailOrder = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [disabledCards, setDisabledCards] = useState([]);
   const location = useLocation();
   const orderId = location.state.orderId;
   useEffect(() => {
@@ -28,7 +54,6 @@ const DetailOrder = () => {
           }
         );
         setOrder(response.data.data);
-        setDisabledCards(new Array(response.data.data.listeDesProduits.length).fill(false));
         setLoading(false);
       } catch (error) {
         console.error("Failed to fetch order details:", error);
@@ -38,7 +63,200 @@ const DetailOrder = () => {
 
     fetchOrderDetails();
   }, [orderId]);
+
+  const itemRows = useMemo(() => {
+    if (!order) return [];
+    const variantRows = (order.listeDesProduits || []).map((item, idx) => {
+      const prodInfo = item?.variant?.product;
+      const unit = prodInfo?.solde
+        ? Number(prodInfo.prix) - Number(prodInfo.prix) * (Number(prodInfo.soldePourcentage || 0) / 100)
+        : Number(prodInfo?.prix || 0);
+      const qty = Number(item?.quantite || 0);
+      return {
+        key: `v-${idx}`,
+        type: "variant",
+        index: idx + 1,
+        picture: item?.variant?.picture,
+        name: prodInfo?.nom || "—",
+        reference: item?.variant?.reference || "—",
+        barcode: item?.variant?.codeAbarre || null,
+        color: item?.variant?.color || null,
+        quantity: qty,
+        unitPrice: unit,
+        total: unit * qty,
+        onSale: !!prodInfo?.solde,
+        salePercent: Number(prodInfo?.soldePourcentage || 0),
+      };
+    });
+    const packRows = (order.listeDesPack || []).map((p, idx) => {
+      const unit = Number(p?.pack?.prix || 0);
+      const qty = Number(p?.quantite || 0);
+      return {
+        key: `p-${idx}`,
+        type: "pack",
+        index: variantRows.length + idx + 1,
+        picture: p?.pack?.mainPicture,
+        name: p?.pack?.nom || "—",
+        reference: "—",
+        barcode: null,
+        color: null,
+        quantity: qty,
+        unitPrice: unit,
+        total: unit * qty,
+        onSale: false,
+        salePercent: 0,
+      };
+    });
+    return [...variantRows, ...packRows];
+  }, [order]);
+
+  const copyText = (text, label = "Copié") => {
+    if (!text) return;
+    navigator.clipboard?.writeText(text);
+    message.success(`${label}: ${text}`);
+  };
+
+  const itemColumns = [
+    {
+      title: "#",
+      dataIndex: "index",
+      key: "index",
+      width: 48,
+      align: "center",
+      render: (v) => <Text type="secondary">{v}</Text>,
+    },
+    {
+      title: "Image",
+      dataIndex: "picture",
+      key: "picture",
+      width: 72,
+      render: (pic, row) =>
+        pic ? (
+          <Avatar
+            shape="square"
+            size={56}
+            src={getImageUrl(pic)}
+            alt={row.name}
+            style={{ background: "#fafafa", border: "1px solid #f0f0f0" }}
+          />
+        ) : (
+          <Avatar shape="square" size={56} icon={<PictureOutlined />} style={{ background: "#fafafa" }} />
+        ),
+    },
+    {
+      title: "Produit",
+      dataIndex: "name",
+      key: "name",
+      render: (name, row) => (
+        <Space direction="vertical" size={2}>
+          <Text strong>{name}</Text>
+          <Space size={4} wrap>
+            {row.type === "pack" ? (
+              <Tag color="purple" icon={<AppstoreOutlined />}>PACK</Tag>
+            ) : (
+              <Tag color="blue">Variant</Tag>
+            )}
+            {row.onSale && row.salePercent > 0 && (
+              <Tag color="red">-{row.salePercent}%</Tag>
+            )}
+          </Space>
+        </Space>
+      ),
+    },
+    {
+      title: "Référence",
+      dataIndex: "reference",
+      key: "reference",
+      render: (ref) =>
+        ref && ref !== "—" ? (
+          <Text code style={{ fontSize: 12 }}>{ref}</Text>
+        ) : (
+          <Text type="secondary">—</Text>
+        ),
+    },
+    {
+      title: (
+        <span>
+          <BarcodeOutlined style={{ marginRight: 4 }} />
+          Code-barres
+        </span>
+      ),
+      dataIndex: "barcode",
+      key: "barcode",
+      render: (barcode) =>
+        barcode ? (
+          <Tag
+            color="geekblue"
+            style={{ fontFamily: "monospace", cursor: "pointer" }}
+            onClick={() => copyText(barcode, "Code-barres copié")}
+          >
+            {barcode} <CopyOutlined style={{ marginLeft: 4 }} />
+          </Tag>
+        ) : (
+          <Text type="secondary">—</Text>
+        ),
+    },
+    {
+      title: "Couleur",
+      dataIndex: "color",
+      key: "color",
+      width: 120,
+      render: (color) =>
+        color ? (
+          <Space size={6} align="center">
+            <span
+              aria-label={color}
+              title={color}
+              style={{
+                display: "inline-block",
+                width: 16,
+                height: 16,
+                borderRadius: "50%",
+                border: "1px solid #d9d9d9",
+                backgroundColor: color,
+              }}
+            />
+            <Text style={{ fontSize: 12 }}>{color}</Text>
+          </Space>
+        ) : (
+          <Text type="secondary">—</Text>
+        ),
+    },
+    {
+      title: "Quantité",
+      dataIndex: "quantity",
+      key: "quantity",
+      width: 100,
+      align: "center",
+      render: (q) => <Badge count={q} showZero style={{ backgroundColor: "#1677ff" }} />,
+    },
+    {
+      title: "Prix unit.",
+      dataIndex: "unitPrice",
+      key: "unitPrice",
+      width: 110,
+      align: "right",
+      render: (v) => <Text>{Number(v || 0).toFixed(2)} TND</Text>,
+    },
+    {
+      title: "Total",
+      dataIndex: "total",
+      key: "total",
+      width: 120,
+      align: "right",
+      render: (v) => <Text strong>{Number(v || 0).toFixed(2)} TND</Text>,
+    },
+  ];
+
   if (loading) return <div>Loading...</div>;
+
+  const tableSubtotal =
+    order?.merchandiseSubtotal != null
+      ? Number(order.merchandiseSubtotal)
+      : itemRows.reduce((acc, r) => acc + Number(r.total || 0), 0);
+  const tableDiscountAmount = Number(order?.discountAmount || 0);
+  const tableTotal = Number(order?.prixTotal || 0);
+  const hasTableDiscount = (order?.hasDiscount || order?.cnrpsDiscountApplied) && tableDiscountAmount > 0;
 
 
 
@@ -78,18 +296,32 @@ const DetailOrder = () => {
     doc.text(`Téléphone: ${order.numTelephone}`, 10, 110);
     doc.text(`Date de Commande: ${formattedDateTime}`, 10, 120);
 
-    // Add Promotion Information
-    doc.setFont("helvetica", "bold");
+    let cursorY = 120;
+    // Add promotion information only when active.
     if (order.withOffer) {
-      doc.setTextColor('#008000'); // Green for active promotion
-    } else {
-      doc.setTextColor('#FF0000'); // Red for inactive promotion
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor('#008000');
+      doc.text("Offre: Remise Acheter 2 articles, le 2ème à -60%", 10, 130);
+      doc.setTextColor('#000000');
+      doc.setFont("helvetica", "normal");
+      cursorY = 130;
     }
-    doc.text(`Offre: ${order.withOffer ? "Remise Acheter 2 articles, le 2ème à -60%" : "Non"}`, 10, 130);
-    doc.setTextColor('#000000'); // Reset text color to black
-    doc.setFont("helvetica", "normal");
+    if (order.cnrpsDiscountApplied && order.cnrpsCode) {
+      cursorY += 10;
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor('#B8860B');
+      doc.text(
+        `Code CNRPS: ${order.cnrpsCode}  (Remise ${order.discountPercentApplied}% = -${Number(order.discountAmount || 0).toFixed(2)} TND)`,
+        10,
+        cursorY
+      );
+      doc.setTextColor('#000000');
+      doc.setFont("helvetica", "normal");
+    }
 
-    doc.line(10, 135, 200, 135);
+    const dividerY = cursorY + 5;
+    doc.line(10, dividerY, 200, dividerY);
+    const tableStartY = dividerY + 5;
 
     let productRows = [];
     let totalQuantity = 0;
@@ -168,7 +400,7 @@ const DetailOrder = () => {
     doc.autoTable({
       head: [["#", "Produit", "Référence", "Quantité", "Prix (TND)", "Remise"]],
       body: productRows,
-      startY: 140,
+      startY: tableStartY,
       styles: { fontSize: 10, cellPadding: 3 },
       headStyles: {
         fillColor: [222, 140, 6],
@@ -190,32 +422,54 @@ const DetailOrder = () => {
     // Define pageWidth for right-align calculations
     const pageWidth = doc.internal.pageSize.getWidth();
 
+    const cnrpsDiscountAmount = order.cnrpsDiscountApplied
+      ? Number(order.discountAmount || 0)
+      : 0;
+    const cnrpsDiscountText = cnrpsDiscountAmount > 0
+      ? `Remise CNRPS (${order.discountPercentApplied}%): -${cnrpsDiscountAmount.toFixed(2)} TND`
+      : "";
+
     let livraisonText = "";
     let totalGeneralText = "";
 
+    const totalAfterCnrps = Math.max(0, totalPriceWithoutLivraison - cnrpsDiscountAmount);
     if (order.payed) {
       totalGeneralText = `Total à payer: 0 TND`;
     } else {
       livraisonText = `Livraison: 8 TND`;
-      const prixTotalAvecLivraison = totalPriceWithoutLivraison + 8;
+      const prixTotalAvecLivraison = totalAfterCnrps + 8;
       totalGeneralText = `Total à payer: ${prixTotalAvecLivraison.toFixed(2)} TND`;
     }
 
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
 
+    let linesBelowTable = 20;
+
+    if (cnrpsDiscountText) {
+      doc.setTextColor('#B8860B');
+      doc.text(
+        cnrpsDiscountText,
+        pageWidth - doc.getTextWidth(cnrpsDiscountText) - 10,
+        doc.lastAutoTable.finalY + linesBelowTable
+      );
+      doc.setTextColor('#000000');
+      linesBelowTable += 10;
+    }
+
     if (!order.payed) {
       doc.text(
         livraisonText,
         pageWidth - doc.getTextWidth(livraisonText) - 10,
-        doc.lastAutoTable.finalY + 20
+        doc.lastAutoTable.finalY + linesBelowTable
       );
+      linesBelowTable += 10;
     }
 
     doc.text(
       totalGeneralText,
       pageWidth - doc.getTextWidth(totalGeneralText) - 10,
-      doc.lastAutoTable.finalY + (order.payed ? 20 : 30)
+      doc.lastAutoTable.finalY + linesBelowTable
     );
 
     doc.setFontSize(10);
@@ -232,12 +486,6 @@ const DetailOrder = () => {
     doc.save(`Facture-${order.orderCode}.pdf`);
   };
 
-  const handleCardToggle = (index) => {
-    const newDisabledCards = [...disabledCards];
-    newDisabledCards[index] = !newDisabledCards[index]; // Toggle the specific card
-    setDisabledCards(newDisabledCards);
-  };
-
   return (
     <div style={{ padding: "20px" }}>
       <div style={{ marginBottom: "10px" }}>
@@ -250,127 +498,351 @@ const DetailOrder = () => {
           />
         </Box>
       </div>
-      <Card style={{ marginBottom: "20px" }}>
-        <Title level={2}>Détails de la commande pour </Title>
-
-        <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Nom et Prenom :</Text>{" "}
-          {order?.nom?.toUpperCase()} {order?.prenom?.toUpperCase()}{" "}
-        </p>
-        <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Prix Total :</Text>{" "}
-          {order?.prixTotal} TND
-        </p>
-        <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Telephone :</Text>{" "}
-          {order?.numTelephone}
-        </p>
-        <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Addresse :</Text> {order?.adresse},{" "}
-          {order?.ville}, {order?.gouvernorat}, {order?.codePostal}
-        </p>
-
-        <p>
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Code de Suivie :</Text>{" "}
-          {order?.orderCode}{" "}
-        </p>
-        <p style={{ fontWeight: "700", fontSize: "20px", color: order?.withOffer ? "green" : "red" }}  >
-          <Text style={{ fontWeight: "700", fontSize: "20px" }}>Offre :</Text>{" "}
-          {order?.withOffer ? "Remise Acheter 2 articles, le 2ème à -60%" : "Non"}
-        </p>
-        <Button type="primary" onClick={handleDownloadInvoice}>
-          Télécharger la facture
-        </Button>
-      </Card>
-      <Row gutter={[16, 16]}>
-        {order.listeDesProduits.map((product, index) => (
-          <Col key={index} xs={24} sm={24} md={24} lg={8}>
+      <Card
+        style={{ marginBottom: 20 }}
+        title={
+          <Space size={12} wrap>
+            <ShoppingCartOutlined style={{ fontSize: 22, color: "#1677ff" }} />
+            <Title level={4} style={{ margin: 0 }}>
+              Commande {order?.orderCode}
+            </Title>
+            {order?.statut && (
+              <Tag color={statusColors[order.statut] || "default"} style={{ textTransform: "capitalize" }}>
+                {order.statut}
+              </Tag>
+            )}
+            <Tag color={order?.payed ? "green" : "red"} icon={<CreditCardOutlined />}>
+              {order?.payed ? "Payé" : "Non payé"}
+            </Tag>
+            {order?.withOffer && (
+              <Tag color="magenta" icon={<GiftOutlined />}>
+                2ᵉ article -60%
+              </Tag>
+            )}
+            {order?.cnrpsDiscountApplied && (
+              <Tag color="gold">CNRPS -{order.discountPercentApplied}%</Tag>
+            )}
+          </Space>
+        }
+        extra={
+          <Button type="primary" icon={<DownloadOutlined />} onClick={handleDownloadInvoice}>
+            Télécharger la facture
+          </Button>
+        }
+      >
+        <Row gutter={[16, 16]}>
+          <Col xs={24} md={12}>
             <Card
-              title={`Product ${index + 1}`}
-              bordered={false}
-              style={{
-                backgroundColor: disabledCards[index] ? "#f0f0f0" : "#fff",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                height: "100%"
-              }}
+              size="small"
+              type="inner"
+              title={
+                <Space>
+                  <UserOutlined />
+                  <span>Client</span>
+                </Space>
+              }
             >
-              <div>
-                <p>
-                  <Text strong>Variant:</Text> {product.variant.reference}
-                </p>
-                <p>
-                  <Text strong>Quantity:</Text> {product.quantite}
-                </p>
-                <p>
-                  <Text strong>Color:</Text>{" "}
-                  <span
-                    style={{
-                      backgroundColor: product.variant.color,
-                      padding: "2px 8px",
-                      borderRadius: "4px"
-                    }}
+              <Descriptions column={1} size="small" colon={false}>
+                <Descriptions.Item label={<Text type="secondary">Nom complet</Text>}>
+                  <Text strong>
+                    {`${order?.nom || ""} ${order?.prenom || ""}`.trim().toUpperCase() || "—"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={
+                    <Text type="secondary">
+                      <PhoneOutlined /> Téléphone
+                    </Text>
+                  }
+                >
+                  {order?.numTelephone ? (
+                    <a href={`tel:${order.numTelephone}`}>{order.numTelephone}</a>
+                  ) : (
+                    "—"
+                  )}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={
+                    <Text type="secondary">
+                      <MailOutlined /> Email
+                    </Text>
+                  }
+                >
+                  {order?.email ? (
+                    <a href={`mailto:${order.email}`}>{order.email}</a>
+                  ) : (
+                    "—"
+                  )}
+                </Descriptions.Item>
+              </Descriptions>
+            </Card>
+          </Col>
+
+          <Col xs={24} md={12}>
+            <Card
+              size="small"
+              type="inner"
+              title={
+                <Space>
+                  <EnvironmentOutlined />
+                  <span>Livraison</span>
+                </Space>
+              }
+            >
+              <Descriptions column={1} size="small" colon={false}>
+                <Descriptions.Item label={<Text type="secondary">Adresse</Text>}>
+                  {order?.adresse || "—"}
+                </Descriptions.Item>
+                <Descriptions.Item label={<Text type="secondary">Ville</Text>}>
+                  {order?.ville || "—"}
+                </Descriptions.Item>
+                <Descriptions.Item label={<Text type="secondary">Gouvernorat</Text>}>
+                  {order?.gouvernorat || "—"}
+                </Descriptions.Item>
+                <Descriptions.Item label={<Text type="secondary">Code postal</Text>}>
+                  {order?.codePostal || "—"}
+                </Descriptions.Item>
+              </Descriptions>
+            </Card>
+          </Col>
+
+          <Col xs={24} md={12}>
+            <Card
+              size="small"
+              type="inner"
+              title={
+                <Space>
+                  <InfoCircleOutlined />
+                  <span>Suivi</span>
+                </Space>
+              }
+            >
+              <Descriptions column={1} size="small" colon={false}>
+                <Descriptions.Item
+                  label={
+                    <Text type="secondary">
+                      <NumberOutlined /> Code de suivi
+                    </Text>
+                  }
+                >
+                  <Text code copyable={{ text: order?.orderCode, tooltips: ["Copier", "Copié !"] }}>
+                    {order?.orderCode || "—"}
+                  </Text>
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={
+                    <Text type="secondary">
+                      <CalendarOutlined /> Créée le
+                    </Text>
+                  }
+                >
+                  {order?.createdAt
+                    ? new Date(order.createdAt).toLocaleString("fr-FR", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : "—"}
+                </Descriptions.Item>
+                {order?.updatedAt && order.updatedAt !== order.createdAt && (
+                  <Descriptions.Item
+                    label={
+                      <Text type="secondary">
+                        <CalendarOutlined /> Mise à jour
+                      </Text>
+                    }
                   >
-                    {product.variant.color}
-                  </span>
-                </p>
-                <p>
-                  <Text strong>Description:</Text> {product?.variant?.product?.description}
-                </p>
-                <p>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <img
-                      src={getImageUrl(product?.variant?.picture)}
-                      alt={product?.variant?.reference}
-                      style={{ width: "100%", maxWidth: "100px" }}
-                    />
-                  </div>
-                </p>
-              </div>
-              <Button onClick={() => handleCardToggle(index)}>
-                {disabledCards[index] ? "Enable" : "Disable"}
-              </Button>
+                    {new Date(order.updatedAt).toLocaleString("fr-FR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </Descriptions.Item>
+                )}
+                {order?.paymentRef && (
+                  <Descriptions.Item
+                    label={
+                      <Text type="secondary">
+                        <CreditCardOutlined /> Réf. paiement
+                      </Text>
+                    }
+                  >
+                    <Text code copyable={{ text: order.paymentRef, tooltips: ["Copier", "Copié !"] }}>
+                      {order.paymentRef}
+                    </Text>
+                  </Descriptions.Item>
+                )}
+              </Descriptions>
             </Card>
           </Col>
-        ))}
 
-        {order.listeDesPack.map((product, index) => (
-          <Col key={index} xs={24} sm={24} md={24} lg={8}>
-            <Card
-              title={`Product ${index + 1}`}
-              bordered={false}
-              style={{
-                backgroundColor: disabledCards[index] ? "#f0f0f0" : "#fff",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                height: "100%"
-              }}
-            >
-              <div>
-                <p>
-                  <Text strong>nom du Pack:</Text> {product?.pack?.nom}
-                </p>
-                <p>
-                  <Text strong>Description:</Text> {product?.pack?.description}
-                </p>
-                <p>
-                  <Text strong>Image:</Text>{" "}
-                  <img
-                    src={getImageUrl(product?.pack?.mainPicture)}
-                    // alt={product.variant.reference}
-                    style={{ width: "100%", maxWidth: "100px" }}
-                  />
-                </p>
-              </div>
-              <Button onClick={() => handleCardToggle(index)}>
-                {disabledCards[index] ? "Enable" : "Disable"}
-              </Button>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+          {order?.note ? (
+            <Col span={24}>
+              <Card
+                size="small"
+                type="inner"
+                title={
+                  <Space>
+                    <FileTextOutlined />
+                    <span>Note du client</span>
+                  </Space>
+                }
+              >
+                <Text italic style={{ whiteSpace: "pre-wrap" }}>
+                  {order.note}
+                </Text>
+              </Card>
+            </Col>
+          ) : null}
+
+          {order?.cnrpsDiscountApplied && order?.cnrpsCode ? (
+            <Col span={24}>
+              <Card
+                size="small"
+                type="inner"
+                style={{ background: "#fffbe6", borderColor: "#ffe58f" }}
+                title={
+                  <Space>
+                    <GiftOutlined style={{ color: "#B8860B" }} />
+                    <span style={{ fontWeight: 700 }}>Remise CNRPS appliquée</span>
+                    <Tag color="gold">-{order.discountPercentApplied}%</Tag>
+                  </Space>
+                }
+              >
+                <Descriptions column={{ xs: 1, sm: 2, md: 3 }} size="small">
+                  <Descriptions.Item label="Code CNRPS">
+                    <Text
+                      code
+                      copyable={{
+                        text: order.cnrpsCode,
+                        icon: <CopyOutlined />,
+                        tooltips: ["Copier", "Copié !"],
+                      }}
+                      style={{ fontWeight: 600 }}
+                    >
+                      {order.cnrpsCode}
+                    </Text>
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Pourcentage">
+                    {order.discountPercentApplied}%
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Montant remise">
+                    <Text type="danger">
+                      -{Number(order.discountAmount || 0).toFixed(2)} TND
+                    </Text>
+                  </Descriptions.Item>
+                  {order.merchandiseSubtotal != null && (
+                    <Descriptions.Item label="Sous-total articles">
+                      {Number(order.merchandiseSubtotal).toFixed(2)} TND
+                    </Descriptions.Item>
+                  )}
+                  <Descriptions.Item label="Éligible au checkout">
+                    <Tag color={order.cnrpsEligibleAtCheckout ? "green" : "red"}>
+                      {order.cnrpsEligibleAtCheckout ? "Oui" : "Non"}
+                    </Tag>
+                  </Descriptions.Item>
+                </Descriptions>
+              </Card>
+            </Col>
+          ) : null}
+        </Row>
+      </Card>
+      <Card
+        title={
+          <Space>
+            <AppstoreOutlined />
+            <span>Articles de la commande</span>
+            <Badge
+              count={itemRows.reduce((acc, r) => acc + Number(r.quantity || 0), 0)}
+              showZero
+              overflowCount={9999}
+              style={{ backgroundColor: "#1677ff" }}
+            />
+          </Space>
+        }
+        style={{ marginBottom: 20 }}
+        bodyStyle={{ padding: 0 }}
+      >
+        <Table
+          columns={itemColumns}
+          dataSource={itemRows}
+          pagination={false}
+          size="middle"
+          rowClassName={(row) => (row.type === "pack" ? "row-pack" : "row-variant")}
+          locale={{ emptyText: <Empty description="Aucun article" /> }}
+          scroll={{ x: "max-content" }}
+          summary={(rows) => {
+            const totalQty = rows.reduce((acc, r) => acc + Number(r.quantity || 0), 0);
+            return (
+              <>
+                <Table.Summary.Row style={{ background: "#fafafa" }}>
+                  <Table.Summary.Cell index={0} colSpan={6} align="right">
+                    <Text strong>Total quantité</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={1} align="center">
+                    <Badge count={totalQty} showZero style={{ backgroundColor: "#52c41a" }} />
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={2} align="right">
+                    <Text type="secondary">—</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={3} align="right">
+                    <Text type="secondary">—</Text>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={4} colSpan={8} align="right">
+                    <Text type="secondary">Sous-total articles</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={5} align="right">
+                    <Text>{tableSubtotal.toFixed(2)} TND</Text>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+
+                {hasTableDiscount && (
+                  <Table.Summary.Row>
+                    <Table.Summary.Cell index={6} colSpan={8} align="right">
+                      <Text type="secondary">Remise</Text>
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell index={7} align="right">
+                      <Text type="danger">
+                        -{tableDiscountAmount.toFixed(2)} TND
+                        {order?.discountPercentApplied ? ` (${order.discountPercentApplied}%)` : ""}
+                      </Text>
+                    </Table.Summary.Cell>
+                  </Table.Summary.Row>
+                )}
+
+                <Table.Summary.Row style={{ background: "#f6ffed" }}>
+                  <Table.Summary.Cell index={8} colSpan={8} align="right">
+                    <Text strong>Prix total</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={9} align="right">
+                    <Text strong style={{ color: "#1677ff", fontSize: 16 }}>
+                      {tableTotal.toFixed(2)} TND
+                    </Text>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={10} colSpan={8} align="right">
+                    <Text type="secondary">Statut paiement</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={11} align="right">
+                    <Tag color={order?.payed ? "green" : "red"}>
+                      {order?.payed ? "Payé" : "Non payé"}
+                    </Tag>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </>
+            );
+          }}
+        />
+      </Card>
     </div>
   );
 };

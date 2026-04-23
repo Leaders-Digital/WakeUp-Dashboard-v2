@@ -39,6 +39,71 @@ const StatsCard = ({ title, value }) => (
 );
 
 // Filters Component
+const ProductFilters = ({
+  search,
+  setSearch,
+  categoryFilter,
+  setCategoryFilter,
+  categories,
+  priceFilter,
+  setPriceFilter,
+  isSale,
+  setIsSale,
+  onAddProduct,
+  updateStock,
+  loadingStock,
+}) => (
+  <Row gutter={[16, 16]} style={{ marginTop: "10px" }}>
+    <Col xs={24} sm={12} md={6} lg={6}>
+      <Input.Search
+        placeholder="Chercher un produit ou code-barres"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        allowClear
+      />
+    </Col>
+    <Col xs={24} sm={12} md={6} lg={6}>
+      <Select
+        value={categoryFilter}
+        onChange={(value) => setCategoryFilter(value)}
+        style={{ width: "100%" }}
+        placeholder="Filtrer par catégorie"
+      >
+        {categories.map((v) => (
+          <Option key={v.category} value={v.category}>
+            {v.category}
+          </Option>
+        ))}
+      </Select>
+    </Col>
+    <Col xs={24} sm={12} md={6} lg={4}>
+      <Select
+        value={priceFilter}
+        onChange={(value) => setPriceFilter(value)}
+        style={{ width: "100%" }}
+        placeholder="Trier par prix"
+      >
+        <Option value="asc">Prix croissant</Option>
+        <Option value="desc">Prix décroissant</Option>
+      </Select>
+    </Col>
+    <Col xs={24} sm={12} md={6} lg={2}>
+      <Checkbox checked={isSale} onChange={(e) => setIsSale(e.target.checked)}>
+        Soldé
+      </Checkbox>
+    </Col>
+    <Col xs={24} sm={12} md={6} lg={4}>
+      <Button onClick={updateStock} loading={loadingStock} block>
+        Mise à jours du Stock
+      </Button>
+    </Col>
+    <Col xs={24} sm={12} md={6} lg={2}>
+      <Button type="primary" icon={<PlusOutlined />} onClick={onAddProduct} block>
+        Ajouter
+      </Button>
+    </Col>
+  </Row>
+);
 
 const ProductList = () => {
   // State Variables
@@ -54,80 +119,11 @@ const ProductList = () => {
 
 
   const navigate = useNavigate(); // Initialize useNavigate inside the component
-  const Filters = ({
-    search,
-    setSearch,
-    categoryFilter,
-    setCategoryFilter,
-    categories,
-    priceFilter,
-    setPriceFilter,
-    isSale,
-    setIsSale,
-    resetFilters,
-    onAddProduct // Navigation handler for adding a product
-  }) => (
-    <Row gutter={[16, 16]} style={{ marginTop: "10px" }}>
-      <Col xs={24} sm={12} md={6} lg={6}>
-        <Input.Search
-          placeholder="Chercher un produit"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          allowClear
-        />
-      </Col>
-      <Col xs={24} sm={12} md={6} lg={6}>
-        <Select
-          value={categoryFilter}
-          onChange={(value) => setCategoryFilter(value)}
-          style={{ width: "100%" }}
-          placeholder="Filtrer par catégorie"
-        >
-          {categories.map((v) => (
-            <Option key={v.category} value={v.category}>
-              {v.category} {/* Assuming 'nom' is the category name */}
-            </Option>
-          ))}
-        </Select>
-      </Col>
-      <Col xs={24} sm={12} md={6} lg={4}>
-        <Select
-          value={priceFilter}
-          onChange={(value) => setPriceFilter(value)}
-          style={{ width: "100%" }}
-          placeholder="Trier par prix"
-        >
-          <Option value="asc">Prix croissant</Option>
-          <Option value="desc">Prix décroissant</Option>
-        </Select>
-      </Col>
-      <Col xs={24} sm={12} md={6} lg={2}>
-        <Checkbox checked={isSale} onChange={(e) => setIsSale(e.target.checked)}>
-          Soldé
-        </Checkbox>
-      </Col>
-      <Col xs={24} sm={12} md={6} lg={4}>
-        <Button onClick={updateStock} loading={loadingStock} block>
-          Mise à jours du Stock
-        </Button>
-      </Col>
-      <Col xs={24} sm={12} md={6} lg={2}>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={onAddProduct} // Use the passed navigation handler
-          block
-        >
-          Ajouter
-        </Button>
-      </Col>
-    </Row>
-  );
 
   const updateStock = async () => {
     setLoadingStock(true); // Activer le chargement
     try {
-      const response = await axios.put(
+      await axios.put(
         `${process.env.REACT_APP_API_URL_PRODUCTION}api/product/update/all/varients`,
         {},
         {
@@ -332,14 +328,6 @@ const ProductList = () => {
     }
   ];
 
-  // Reset Filters Function
-  const resetFilters = () => {
-    setCategoryFilter("Tous les catégories");
-    setSearch("");
-    setIsSale(false);
-    setPriceFilter("asc");
-  };
-
   // Navigation Handlers
   const handleAddProduct = () => {
     navigate("/produit/ajouter"); // Adjust the path as per your routing setup
@@ -379,7 +367,7 @@ const ProductList = () => {
       <Divider orientation="left">Nos Produits</Divider>
 
       {/* Filters */}
-      <Filters
+      <ProductFilters
         search={search}
         setSearch={setSearch}
         categoryFilter={categoryFilter}
@@ -389,8 +377,9 @@ const ProductList = () => {
         setPriceFilter={setPriceFilter}
         isSale={isSale}
         setIsSale={setIsSale}
-        resetFilters={resetFilters}
-        onAddProduct={handleAddProduct} // Pass the navigation handler
+        onAddProduct={handleAddProduct}
+        updateStock={updateStock}
+        loadingStock={loadingStock}
       />
 
       {/* Products Table */}
@@ -399,7 +388,7 @@ const ProductList = () => {
           {products.length > 0 ? (
             <Table
               columns={columns}
-              dataSource={products.reverse()}
+              dataSource={[...products].reverse()}
               rowKey="_id"
               pagination={{ pageSize: 10 }}
               bordered

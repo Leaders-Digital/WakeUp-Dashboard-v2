@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import { Button, Card, Col, DatePicker, Divider, Input, message, Row, Select, Table, Tag } from "antd";
-import { EyeOutlined } from "@ant-design/icons"; // Add the Eye Icon
+import { Button, Card, Col, DatePicker, Divider, Input, message, Row, Select, Table, Tag, Tooltip } from "antd";
+import { CopyOutlined, EyeOutlined } from "@ant-design/icons"; // Add the Eye Icon
 import { Option } from "antd/es/mentions";
 import { Breadcrumb } from "app/components";
 import axios from "axios";
@@ -47,8 +47,12 @@ const Orderlist = () => {
         date: moment(order.createdAt).format("YYYY-MM-DD"),
         prix: order.prixTotal + " TND",
         payed: order.payed,
-        withOffer: order.withOffer
-
+        withOffer: order.withOffer,
+        cnrpsCode: order.cnrpsCode || null,
+        discountType: order.discountType || "none",
+        discountPercentApplied: order.discountPercentApplied || 0,
+        discountAmount: order.discountAmount || 0,
+        cnrpsDiscountApplied: !!order.cnrpsDiscountApplied
       }));
       setOrders(formattedOrders);
       setFilteredOrders(formattedOrders);
@@ -166,6 +170,27 @@ const Orderlist = () => {
           {payed ? "Payé" : "Non Payé"}
         </Tag>
       ),
+    },
+    {
+      title: "Code CNRPS",
+      key: "cnrps",
+      render: (_, record) => {
+        if (!record.cnrpsDiscountApplied || !record.cnrpsCode) {
+          return <Tag>Aucun</Tag>;
+        }
+        const copy = (e) => {
+          e.stopPropagation();
+          navigator.clipboard?.writeText(record.cnrpsCode);
+          message.success("Code CNRPS copié");
+        };
+        return (
+          <Tooltip title={`Remise ${record.discountPercentApplied}% (${Number(record.discountAmount).toFixed(2)} TND)`}>
+            <Tag color="gold" style={{ fontFamily: "monospace", cursor: "pointer" }} onClick={copy}>
+              {record.cnrpsCode} <CopyOutlined style={{ marginLeft: 4 }} />
+            </Tag>
+          </Tooltip>
+        );
+      }
     },
     {
       title: "Détails",

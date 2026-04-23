@@ -1,1192 +1,1588 @@
 {
   "sourceFile": "Etat final valorisé 08-01-25.xlsx",
-  "generatedAt": "2026-04-10T15:28:05.444Z",
+  "generatedAt": "2026-04-13T13:08:04.222Z",
   "items": [
     {
       "barcode": "8057017690030",
       "stock": 139,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "01 Blue sapphire"
     },
     {
       "barcode": "8057017690047",
       "stock": 129,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "02 Deep Emeraude"
     },
     {
       "barcode": "8057017690054",
       "stock": 120,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "03 Gray touch"
     },
     {
       "barcode": "8057017690061",
       "stock": 131,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "04 Taupe"
     },
     {
       "barcode": "8057017690078",
       "stock": 135,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "05 Glory Mauve"
     },
     {
       "barcode": "8057017690085",
       "stock": 136,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "06 Satin burgundy"
     },
     {
       "barcode": "8057017690092",
       "stock": 124,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "07 Golden Honey"
     },
     {
       "barcode": "8057017690108",
       "stock": 129,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "08 Caramel"
     },
     {
       "barcode": "8057017690115",
       "stock": 101,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "09 Golden Sun"
     },
     {
       "barcode": "8057017690122",
       "stock": 122,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Era",
       "reference": "10 Vibrant Peach"
     },
     {
       "barcode": "8057017690160",
       "stock": 0,
+      "purchasePrice": 17.74409,
+      "salePrice": 29750,
       "libelle": "Primer Transparent",
       "reference": "Primer Mascara transparent"
     },
     {
       "barcode": "8057017690177",
       "stock": 61,
+      "purchasePrice": 36.43423,
+      "salePrice": 54740,
       "libelle": "Skin Corrector",
       "reference": "Peach"
     },
     {
       "barcode": "8057017690207",
       "stock": 92,
+      "purchasePrice": 36.43423,
+      "salePrice": 54740,
       "libelle": "Skin Corrector",
       "reference": "Violet"
     },
     {
       "barcode": "8057017690214",
       "stock": 43,
+      "purchasePrice": 31.74682,
+      "salePrice": 51170,
       "libelle": "Make Up Fixer",
       "reference": "Make up fixer"
     },
     {
       "barcode": "8057017690221",
       "stock": 56,
+      "purchasePrice": 28.93842,
+      "salePrice": 44030,
       "libelle": "Matte",
       "reference": "Dahlia"
     },
     {
       "barcode": "8057017690245",
       "stock": 37,
+      "purchasePrice": 28.93842,
+      "salePrice": 44030,
       "libelle": "Matte",
       "reference": "Mela Marcia"
     },
     {
       "barcode": "8057017690269",
       "stock": 6,
+      "purchasePrice": 28.93842,
+      "salePrice": 44030,
       "libelle": "Matte",
       "reference": "Peach"
     },
     {
       "barcode": "8057017690276",
       "stock": 7,
+      "purchasePrice": 28.93842,
+      "salePrice": 44030,
       "libelle": "Matte",
       "reference": "Camelia"
     },
     {
       "barcode": "8057017690283",
       "stock": 39,
+      "purchasePrice": 28.93842,
+      "salePrice": 44030,
       "libelle": "Matte",
       "reference": "Da Lat"
     },
     {
       "barcode": "8057017690290",
       "stock": 37,
+      "purchasePrice": 28.93842,
+      "salePrice": 44030,
       "libelle": "Matte",
       "reference": "Paw Paw"
     },
     {
       "barcode": "8057017690306",
       "stock": 78,
+      "purchasePrice": 26.23236,
+      "salePrice": 42840,
       "libelle": "Satin Finish",
       "reference": "Ruby"
     },
     {
       "barcode": "8057017690313",
       "stock": 83,
+      "purchasePrice": 26.23236,
+      "salePrice": 42840,
       "libelle": "Satin Finish",
       "reference": "Opaline"
     },
     {
       "barcode": "8057017690344",
       "stock": 59,
+      "purchasePrice": 26.23236,
+      "salePrice": 42840,
       "libelle": "Satin Finish",
       "reference": "Amber"
     },
     {
       "barcode": "8057017690351",
       "stock": 63,
+      "purchasePrice": 26.23236,
+      "salePrice": 42840,
       "libelle": "Satin Finish",
       "reference": "Rhodonite"
     },
     {
       "barcode": "8057017690368",
       "stock": 70,
+      "purchasePrice": 26.23236,
+      "salePrice": 42840,
       "libelle": "Satin Finish",
       "reference": "Topaz"
     },
     {
       "barcode": "8057017690375",
       "stock": 68,
+      "purchasePrice": 26.23236,
+      "salePrice": 42840,
       "libelle": "Satin Finish",
       "reference": "Citrine"
     },
     {
       "barcode": "8057017690627",
       "stock": 90,
+      "purchasePrice": 26.23236,
+      "salePrice": 38080,
       "libelle": "High Glossy",
       "reference": "Sky High"
     },
     {
       "barcode": "8057017690665",
       "stock": 73,
+      "purchasePrice": 26.23236,
+      "salePrice": 38080,
       "libelle": "High Glossy",
       "reference": "Lolli Pop"
     },
     {
       "barcode": "8057017690672",
       "stock": 67,
+      "purchasePrice": 26.23236,
+      "salePrice": 38080,
       "libelle": "High Glossy",
       "reference": "Rustic Wood"
     },
     {
       "barcode": "8057017690689",
       "stock": 14,
+      "purchasePrice": 26.23236,
+      "salePrice": 38080,
       "libelle": "High Glossy",
       "reference": "Wild Cherry"
     },
     {
       "barcode": "8057017690696",
       "stock": 4,
+      "purchasePrice": 17.74409,
+      "salePrice": 29750,
       "libelle": "Lip Shine Stick SPF 15",
       "reference": "Kir Royal"
     },
     {
       "barcode": "8057017690719",
       "stock": 11,
+      "purchasePrice": 17.74409,
+      "salePrice": 29750,
       "libelle": "Lip Shine Stick SPF 15",
       "reference": "Cherry Brandy"
     },
     {
       "barcode": "8057017690733",
       "stock": 11,
+      "purchasePrice": 17.74409,
+      "salePrice": 29750,
       "libelle": "Lip Shine Stick SPF 15",
       "reference": "Moradita"
     },
     {
       "barcode": "8057017690757",
       "stock": 13,
+      "purchasePrice": 17.74409,
+      "salePrice": 29750,
       "libelle": "Lip Shine Stick SPF 15",
       "reference": "Gold Rush"
     },
     {
       "barcode": "8057017690887",
       "stock": 33,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 36890,
       "libelle": "Immediate Plumping",
       "reference": "Maera"
     },
     {
       "barcode": "8057017690894",
       "stock": 33,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 36890,
       "libelle": "Immediate Plumping",
       "reference": "Melite"
     },
     {
       "barcode": "8057017690900",
       "stock": 34,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 36890,
       "libelle": "Immediate Plumping",
       "reference": "Moira"
     },
     {
       "barcode": "8057017690917",
       "stock": 40,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 36890,
       "libelle": "Immediate Plumping",
       "reference": "Alia 04"
     },
     {
       "barcode": "8057017690924",
       "stock": 26,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 36890,
       "libelle": "Immediate Plumping",
       "reference": "Aura"
     },
     {
       "barcode": "8057017690931",
       "stock": 84,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 36890,
       "libelle": "Immediate Plumping",
       "reference": "Aiva 06"
     },
     {
       "barcode": "8057017690948",
       "stock": 46,
+      "purchasePrice": 21.8603,
+      "salePrice": 32130,
       "libelle": "Lip Kiss Long Stay",
       "reference": "Aroa"
     },
     {
       "barcode": "8057017690955",
       "stock": 93,
+      "purchasePrice": 21.8603,
+      "salePrice": 32130,
       "libelle": "Lip Kiss Long Stay",
       "reference": "Maya"
     },
     {
       "barcode": "8057017690962",
       "stock": 82,
+      "purchasePrice": 21.8603,
+      "salePrice": 32130,
       "libelle": "Lip Kiss Long Stay",
       "reference": "waikiki"
     },
     {
       "barcode": "8057017690979",
       "stock": 56,
+      "purchasePrice": 21.8603,
+      "salePrice": 32130,
       "libelle": "Lip Kiss Long Stay",
       "reference": "Natadola"
     },
     {
       "barcode": "8057017690986",
       "stock": 88,
+      "purchasePrice": 21.8603,
+      "salePrice": 32130,
       "libelle": "Lip Kiss Long Stay",
       "reference": "Cherai"
     },
     {
       "barcode": "8057017690993",
       "stock": 95,
+      "purchasePrice": 21.8603,
+      "salePrice": 32130,
       "libelle": "Lip Kiss Long Stay",
       "reference": "Bonaire"
     },
     {
       "barcode": "8057017691105",
       "stock": 48,
+      "purchasePrice": 18.94599,
+      "salePrice": 30940,
       "libelle": "Fluid Concealer",
       "reference": "C1"
     },
     {
       "barcode": "8057017691112",
       "stock": 23,
+      "purchasePrice": 18.94599,
+      "salePrice": 30940,
       "libelle": "Fluid Concealer",
       "reference": "C2"
     },
     {
       "barcode": "8057017691129",
       "stock": 15,
+      "purchasePrice": 18.94599,
+      "salePrice": 30940,
       "libelle": "Fluid Concealer",
       "reference": "C3"
     },
     {
       "barcode": "8057017691143",
       "stock": 32,
+      "purchasePrice": 18.94599,
+      "salePrice": 30940,
       "libelle": "Fluid Concealer",
       "reference": "W1"
     },
     {
       "barcode": "8057017691242",
       "stock": 0,
+      "purchasePrice": 27.701653,
+      "salePrice": 49980,
       "libelle": "MAGIC SPF 15",
       "reference": "1"
     },
     {
       "barcode": "8057017691259",
       "stock": 1,
+      "purchasePrice": 27.701653,
+      "salePrice": 49980,
       "libelle": "MAGIC SPF 15",
       "reference": "2"
     },
     {
       "barcode": "8057017691266",
       "stock": 10,
+      "purchasePrice": 27.701653,
+      "salePrice": 49980,
       "libelle": "MAGIC SPF 15",
       "reference": "3"
     },
     {
       "barcode": "8057017691976",
       "stock": 0,
+      "purchasePrice": 37.84081,
+      "salePrice": 67830,
       "libelle": "Mosaic Terracotta",
       "reference": "1"
     },
     {
       "barcode": "8057017691983",
       "stock": 2,
+      "purchasePrice": 37.84081,
+      "salePrice": 67830,
       "libelle": "Mosaic Terracotta",
       "reference": "2"
     },
     {
       "barcode": "8057017691990",
       "stock": 0,
+      "purchasePrice": 37.84081,
+      "salePrice": 67830,
       "libelle": "Mosaic Terracotta",
       "reference": "3"
     },
     {
       "barcode": "8057017692003",
       "stock": 56,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Maya 01"
     },
     {
       "barcode": "8057017692010",
       "stock": 69,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Lynx 02"
     },
     {
       "barcode": "8057017692065",
       "stock": 76,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Phoenix 07"
     },
     {
       "barcode": "8057017692072",
       "stock": 82,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Vela 08"
     },
     {
       "barcode": "8057017692102",
       "stock": 69,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Lahu 11"
     },
     {
       "barcode": "8057017692157",
       "stock": 69,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Lira 16"
     },
     {
       "barcode": "8057017692201",
       "stock": 56,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Leo 21"
     },
     {
       "barcode": "8057017692218",
       "stock": 31,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Addigi"
     },
     {
       "barcode": "8057017692232",
       "stock": 38,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Pisces"
     },
     {
       "barcode": "8057017692270",
       "stock": 35,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Birch"
     },
     {
       "barcode": "8057017692287",
       "stock": 3,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Mair"
     },
     {
       "barcode": "8057017692348",
       "stock": 22,
+      "purchasePrice": 21.8603,
+      "salePrice": 33320,
       "libelle": "Mono Eyeshadow",
       "reference": "Druze"
     },
     {
       "barcode": "8057017692584",
       "stock": 0,
+      "purchasePrice": 27.88289,
+      "salePrice": 49980,
       "libelle": "blush",
       "reference": "Peach Star"
     },
     {
       "barcode": "8057017692621",
       "stock": 1,
+      "purchasePrice": 27.88289,
+      "salePrice": 49980,
       "libelle": "blush",
       "reference": "Pink Bubbles 05"
     },
     {
       "barcode": "8057017692676",
       "stock": 0,
+      "purchasePrice": 27.88289,
+      "salePrice": 49980,
       "libelle": "blush",
       "reference": "Charleston Matte 10"
     },
     {
       "barcode": "8057017692812",
       "stock": 15,
+      "purchasePrice": 20.27833648995601,
+      "salePrice": 40460,
       "libelle": "Instant facial smoother facial scrub",
       "reference": "Instant facial smoother facial scrub"
     },
     {
       "barcode": "8057017692836",
       "stock": 6,
+      "purchasePrice": 50.69584122489009,
+      "salePrice": 101150,
       "libelle": "Day Cream",
       "reference": "Vitamin infusion"
     },
     {
       "barcode": "8057017692843",
       "stock": 6,
+      "purchasePrice": 55.76542534737912,
+      "salePrice": 111860,
       "libelle": "Night cream",
       "reference": "Nourishing and restoring"
     },
     {
       "barcode": "8057017692850",
       "stock": 18,
+      "purchasePrice": 47.979992587842425,
+      "salePrice": 96390,
       "libelle": "Sensitive Cream",
       "reference": "Soothing calm skin"
     },
     {
       "barcode": "8057017692867",
       "stock": 8,
+      "purchasePrice": 45.626257102401055,
+      "salePrice": 77350,
       "libelle": "Eye cream",
       "reference": "Fill In Microspheres Eye Cream"
     },
     {
       "barcode": "8057017692874",
       "stock": 6,
+      "purchasePrice": 60.65395289406496,
+      "salePrice": 121380,
       "libelle": "Skin Serum",
       "reference": "Instant effect"
     },
     {
       "barcode": "8057017692881",
       "stock": 2,
+      "purchasePrice": 29.177843199576888,
+      "salePrice": 58310,
       "libelle": "Face cleanser",
       "reference": "Revitalizing Cleansing Mousse"
     },
     {
       "barcode": "8057017692898",
       "stock": 48,
+      "purchasePrice": 22.813128551200588,
+      "salePrice": 45220,
       "libelle": "Brush cleanser brush",
       "reference": "Brush cleanser"
     },
     {
       "barcode": "8057017692904",
       "stock": 25,
+      "purchasePrice": 38.02188091866757,
+      "salePrice": 76160,
       "libelle": "Body Hydrator Milk Mist",
       "reference": "Hydrating Milk Mist"
     },
     {
       "barcode": "8057017692911",
       "stock": 0,
+      "purchasePrice": 25.16731,
+      "salePrice": 49980,
       "libelle": "Micellar Water",
       "reference": "Micellar Water"
     },
     {
       "barcode": "8057017692935",
       "stock": 98,
+      "purchasePrice": 35.30611,
+      "salePrice": 60690,
       "libelle": "Diamonds And Pearls !",
       "reference": "Diamond highlighter"
     },
     {
       "barcode": "8057017692942",
       "stock": 31,
+      "purchasePrice": 17.74409,
+      "salePrice": 30940,
       "libelle": "Soft My Lips !",
       "reference": "Soft my lips Pink"
     },
     {
       "barcode": "8057017692959",
       "stock": 24,
+      "purchasePrice": 30.417589999999997,
+      "salePrice": 52360,
       "libelle": "Beads Stars",
       "reference": "Highlighting beads stars"
     },
     {
       "barcode": "8057017692966",
       "stock": 4,
+      "purchasePrice": 32.77124022037533,
+      "salePrice": 55930,
       "libelle": "Love Is In the Hair",
       "reference": "Hair Hydrator"
     },
     {
       "barcode": "8057017692973",
       "stock": 41,
+      "purchasePrice": 58.30021740862358,
+      "salePrice": 98770,
       "libelle": "Magical Toning Body Potion",
       "reference": "Body skincare"
     },
     {
       "barcode": "8057017692980",
       "stock": 5,
+      "purchasePrice": 42.9104084653534,
+      "salePrice": 73780,
       "libelle": "Face and Body Hydrator",
       "reference": "Face and body"
     },
     {
       "barcode": "8057017693109",
       "stock": 37,
+      "purchasePrice": 43.51235,
+      "salePrice": 67830,
       "libelle": "Flashlight",
       "reference": "Neutral Beige 01"
     },
     {
       "barcode": "8057017693116",
       "stock": 39,
+      "purchasePrice": 43.51235,
+      "salePrice": 67830,
       "libelle": "Flashlight",
       "reference": "Vibrant Beige 02"
     },
     {
       "barcode": "8057017693123",
       "stock": 93,
+      "purchasePrice": 43.51235,
+      "salePrice": 67830,
       "libelle": "Flashlight",
       "reference": "Light Bronze 03"
     },
     {
       "barcode": "8057017693130",
       "stock": 101,
+      "purchasePrice": 43.51235,
+      "salePrice": 67830,
       "libelle": "Flashlight",
       "reference": "Dark Bronze 04"
     },
     {
       "barcode": "8057017693147",
       "stock": 43,
+      "purchasePrice": 20.402549999999998,
+      "salePrice": 33320,
       "libelle": "Eyebrow Mascara",
       "reference": "01 Dark brown"
     },
     {
       "barcode": "8057017693154",
       "stock": 71,
+      "purchasePrice": 20.402549999999998,
+      "salePrice": 33320,
       "libelle": "Eyebrow Mascara",
       "reference": "02 Pure Brown"
     },
     {
       "barcode": "8057017693161",
       "stock": 57,
+      "purchasePrice": 20.402549999999998,
+      "salePrice": 33320,
       "libelle": "Eyebrow Mascara",
       "reference": "03 Chocolate Brown"
     },
     {
       "barcode": "8057017693178",
       "stock": 88,
+      "purchasePrice": 20.402549999999998,
+      "salePrice": 33320,
       "libelle": "Eyebrow Mascara",
       "reference": "04 Beige Brown"
     },
     {
       "barcode": "8057017693338",
       "stock": 41,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "01 Yam"
     },
     {
       "barcode": "8057017693345",
       "stock": 27,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "02 Beige Brown"
     },
     {
       "barcode": "8057017693352",
       "stock": 56,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "03 Bordeaux"
     },
     {
       "barcode": "8057017693369",
       "stock": 66,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "04 Deep Rose"
     },
     {
       "barcode": "8057017693376",
       "stock": 46,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "05 Brownish"
     },
     {
       "barcode": "8057017693383",
       "stock": 74,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "06 Chic Red"
     },
     {
       "barcode": "8057017693390",
       "stock": 49,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "07 Red Maroon"
     },
     {
       "barcode": "8057017693406",
       "stock": 60,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "08 Pop Orange"
     },
     {
       "barcode": "8057017693413",
       "stock": 34,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Flowing Line",
       "reference": "09 Cool Beige"
     },
     {
       "barcode": "8057017693468",
       "stock": 57,
+      "purchasePrice": 46.42666,
+      "salePrice": 70210,
       "libelle": "Volcano",
       "reference": "Bronzed 01"
     },
     {
       "barcode": "8057017693475",
       "stock": 179,
+      "purchasePrice": 23.1098,
+      "salePrice": 34510,
       "libelle": "Color Vibe",
       "reference": "01 Mars"
     },
     {
       "barcode": "8057017693482",
       "stock": 152,
+      "purchasePrice": 23.1098,
+      "salePrice": 34510,
       "libelle": "Color Vibe",
       "reference": "02 Boysenberry"
     },
     {
       "barcode": "8057017693499",
       "stock": 182,
+      "purchasePrice": 23.1098,
+      "salePrice": 34510,
       "libelle": "Color Vibe",
       "reference": "03 Umber"
     },
     {
       "barcode": "8057017693505",
       "stock": 60,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Lavish",
       "reference": "01 Elegant touch"
     },
     {
       "barcode": "8057017693512",
       "stock": 61,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Lavish",
       "reference": "02 Ready Red"
     },
     {
       "barcode": "8057017693529",
       "stock": 59,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Lavish",
       "reference": "03 Lip Lip"
     },
     {
       "barcode": "8057017693536",
       "stock": 68,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Lavish",
       "reference": "04 Season"
     },
     {
       "barcode": "8057017693543",
       "stock": 18,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Veil",
       "reference": "01 Hurry up matte lipstick"
     },
     {
       "barcode": "8057017693550",
       "stock": 50,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Veil",
       "reference": "02 Only me"
     },
     {
       "barcode": "8057017693567",
       "stock": 38,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Veil",
       "reference": "03 Selfie Red"
     },
     {
       "barcode": "8057017693574",
       "stock": 49,
+      "purchasePrice": 28.93842,
+      "salePrice": 42840,
       "libelle": "Color Veil",
       "reference": "04 On Time"
     },
     {
       "barcode": "8057017693611",
       "stock": 6,
+      "purchasePrice": 43.7206,
+      "salePrice": 67830,
       "libelle": "Sweet Radiance Moisturising",
       "reference": "Beige Dor茅 04"
     },
     {
       "barcode": "8057017693628",
       "stock": 62,
+      "purchasePrice": 43.7206,
+      "salePrice": 67830,
       "libelle": "Sweet Radiance Moisturising",
       "reference": "Tan 08"
     },
     {
       "barcode": "8057017693635",
       "stock": 36,
+      "purchasePrice": 43.7206,
+      "salePrice": 67830,
       "libelle": "Sweet Radiance Moisturising",
       "reference": "Peach Rose 03"
     },
     {
       "barcode": "8057017693666",
       "stock": 29,
+      "purchasePrice": 43.7206,
+      "salePrice": 67830,
       "libelle": "Sweet Radiance Moisturising",
       "reference": "Natural rose 02"
     },
     {
       "barcode": "8057017693697",
       "stock": 22,
+      "purchasePrice": 43.7206,
+      "salePrice": 67830,
       "libelle": "Sweet Radiance Moisturising",
       "reference": "Honey 07"
     },
     {
       "barcode": "8057017693703",
       "stock": 0,
+      "purchasePrice": 29.150239999999997,
+      "salePrice": 51170,
       "libelle": "Volume Up",
       "reference": "01 Black"
     },
     {
       "barcode": "8057017693727",
       "stock": 18,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "01 Nude Peach"
     },
     {
       "barcode": "8057017693741",
       "stock": 11,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "02 Blushing Rose"
     },
     {
       "barcode": "8057017693765",
       "stock": 8,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "03 Soft Rosewood"
     },
     {
       "barcode": "8057017693789",
       "stock": 48,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "04 Sunny Coral"
     },
     {
       "barcode": "8057017693802",
       "stock": 51,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "05 Royal Red"
     },
     {
       "barcode": "8057017693826",
       "stock": 73,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "06 Cherry Red"
     },
     {
       "barcode": "8057017693840",
       "stock": 74,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "07 Elegant Mauve"
     },
     {
       "barcode": "8057017693864",
       "stock": 80,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "08 Berry Red"
     },
     {
       "barcode": "8057017693888",
       "stock": 71,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "09 Misty beige"
     },
     {
       "barcode": "8057017693901",
       "stock": 86,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 54740,
       "libelle": "Petal Veil Liquid Matte",
       "reference": "10 Warm Chocolate"
     },
     {
       "barcode": "8057017694045",
       "stock": 57,
+      "purchasePrice": 26.02411,
+      "salePrice": 40460,
       "libelle": "Sparkle Dust",
       "reference": "01 Party gold"
     },
     {
       "barcode": "8057017694052",
       "stock": 69,
+      "purchasePrice": 26.02411,
+      "salePrice": 40460,
       "libelle": "Sparkle Dust",
       "reference": "02 Platinum bronze"
     },
     {
       "barcode": "8057017694069",
       "stock": 68,
+      "purchasePrice": 26.02411,
+      "salePrice": 40460,
       "libelle": "Sparkle Dust",
       "reference": "03 Extravagant Rose"
     },
     {
       "barcode": "8057017694076",
       "stock": 69,
+      "purchasePrice": 26.02411,
+      "salePrice": 40460,
       "libelle": "Sparkle Dust",
       "reference": "04 Catwalk Copper"
     },
     {
       "barcode": "8057017694083",
       "stock": 68,
+      "purchasePrice": 26.02411,
+      "salePrice": 40460,
       "libelle": "Sparkle Dust",
       "reference": "05 Frozen Lilac"
     },
     {
       "barcode": "8057017694212",
       "stock": 38,
+      "purchasePrice": 34.768229999999996,
+      "salePrice": 53550,
       "libelle": "Eyeconic Liner Waterproof",
       "reference": "01 Black"
     },
     {
       "barcode": "8057017694236",
       "stock": 47,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Shape and Fill",
       "reference": "01 Taupe"
     },
     {
       "barcode": "8057017694250",
       "stock": 52,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Shape and Fill",
       "reference": "02 Ash Brown"
     },
     {
       "barcode": "8057017694274",
       "stock": 44,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Shape and Fill",
       "reference": "03 Auburn"
     },
     {
       "barcode": "8057017694298",
       "stock": 34,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Shape and Fill",
       "reference": "04 Neutral Brown"
     },
     {
       "barcode": "8057017694311",
       "stock": 58,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Shape and Fill",
       "reference": "05 Chocolate"
     },
     {
       "barcode": "8057017694335",
       "stock": 74,
+      "purchasePrice": 23.1098,
+      "salePrice": 35700,
       "libelle": "Shape and Fill",
       "reference": "06 Graphite"
     },
     {
       "barcode": "8057017694359",
       "stock": 15,
+      "purchasePrice": 28.18753,
+      "salePrice": 42840,
       "libelle": "Brow Definer",
       "reference": "01 Taupe"
     },
     {
       "barcode": "8057017694397",
       "stock": 4,
+      "purchasePrice": 28.18753,
+      "salePrice": 42840,
       "libelle": "Brow Definer",
       "reference": "03 Auburn"
     },
     {
       "barcode": "8057017694410",
       "stock": 4,
+      "purchasePrice": 28.18753,
+      "salePrice": 42840,
       "libelle": "Brow Definer",
       "reference": "04 Neutral Brown"
     },
     {
       "barcode": "8057017694458",
       "stock": 16,
+      "purchasePrice": 28.18753,
+      "salePrice": 42840,
       "libelle": "Brow Definer",
       "reference": "06 Graphite"
     },
     {
       "barcode": "8057017694489",
       "stock": 26,
+      "purchasePrice": 63.914899999999996,
+      "salePrice": 96390,
       "libelle": "Eye Feel Palette",
       "reference": "Nude 01"
     },
     {
       "barcode": "8057017694502",
       "stock": 0,
+      "purchasePrice": 32.77141,
+      "salePrice": 58310,
       "libelle": "Shout Out",
       "reference": "01 Black"
     },
     {
       "barcode": "8057017694526",
       "stock": 25,
+      "purchasePrice": 22.632609999999996,
+      "salePrice": 40460,
       "libelle": "Fix and Care",
       "reference": "01 Clear"
     },
     {
       "barcode": "8057017694540",
       "stock": 2,
+      "purchasePrice": 35.30611,
+      "salePrice": 64260,
       "libelle": "Light Up Drops",
       "reference": "Rose Quartz 01"
     },
     {
       "barcode": "8057017694564",
       "stock": 4,
+      "purchasePrice": 35.30611,
+      "salePrice": 64260,
       "libelle": "Light Up Drops",
       "reference": "Gold Champagne"
     },
     {
       "barcode": "8057017694588",
       "stock": 39,
+      "purchasePrice": 63.914899999999996,
+      "salePrice": 96390,
       "libelle": "Eye Feel Palette",
       "reference": "Spicy 02"
     },
     {
       "barcode": "8057017694700",
       "stock": 4,
+      "purchasePrice": 42.91020999999999,
+      "salePrice": 76160,
       "libelle": "Mirror Glaze",
       "reference": "Candy Butter 01"
     },
     {
       "barcode": "8057017694724",
       "stock": 4,
+      "purchasePrice": 42.91020999999999,
+      "salePrice": 76160,
       "libelle": "Mirror Glaze",
       "reference": "Melted Honey 02"
     },
     {
       "barcode": "8057017694748",
       "stock": 43,
+      "purchasePrice": 31.85392,
+      "salePrice": 49980,
       "libelle": "Everyday Hero",
       "reference": "01 Iconic Cashemere"
     },
     {
       "barcode": "8057017694755",
       "stock": 30,
+      "purchasePrice": 31.85392,
+      "salePrice": 49980,
       "libelle": "Everyday Hero",
       "reference": "02 Eseential Rose"
     },
     {
       "barcode": "8057017694762",
       "stock": 44,
+      "purchasePrice": 31.85392,
+      "salePrice": 49980,
       "libelle": "Everyday Hero",
       "reference": "03 Timeless Nude"
     },
     {
       "barcode": "8057017694779",
       "stock": 48,
+      "purchasePrice": 31.85392,
+      "salePrice": 49980,
       "libelle": "Everyday Hero",
       "reference": "04 Classic Mauve"
     },
     {
       "barcode": "8057017694786",
       "stock": 51,
+      "purchasePrice": 31.85392,
+      "salePrice": 49980,
       "libelle": "Everyday Hero",
       "reference": "05 Glam Rosewood"
     },
     {
       "barcode": "8057017694793",
       "stock": 70,
+      "purchasePrice": 31.85392,
+      "salePrice": 49980,
       "libelle": "Everyday Hero",
       "reference": "06 Perfect Ruby"
     },
     {
       "barcode": "8057017694809",
       "stock": 87,
+      "purchasePrice": 31.85392,
+      "salePrice": 49980,
       "libelle": "Everyday Hero",
       "reference": "07 Chic Magenta"
     },
     {
       "barcode": "8057017694816",
       "stock": 93,
+      "purchasePrice": 31.85392,
+      "salePrice": 49980,
       "libelle": "Everyday Hero",
       "reference": "08 Burgundy Star"
     },
     {
       "barcode": "8057017699217",
       "stock": 79,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Creamy Lipliner",
       "reference": "Ruby"
     },
     {
       "barcode": "8057017699224",
       "stock": 73,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Creamy Lipliner",
       "reference": "Mandarin Granat"
     },
     {
       "barcode": "8057017699262",
       "stock": 55,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Creamy Lipliner",
       "reference": "Amber 07"
     },
     {
       "barcode": "8057017699316",
       "stock": 82,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Long Lasting",
       "reference": "Amande"
     },
     {
       "barcode": "8057017699347",
       "stock": 80,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Long Lasting",
       "reference": "Fuetes Rouge"
     },
     {
       "barcode": "8057017699385",
       "stock": 184,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "True Colour",
       "reference": "Topaz 03"
     },
     {
       "barcode": "8057017699408",
       "stock": 179,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "True Colour",
       "reference": "Emerald 05"
     },
     {
       "barcode": "8057017699415",
       "stock": 164,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "True Colour",
       "reference": "Sapphire 06"
     },
     {
       "barcode": "8057017699422",
       "stock": 148,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "True Colour",
       "reference": "Turquoise 07"
     },
     {
       "barcode": "8057017699439",
       "stock": 145,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "True Colour",
       "reference": "Black diamond 08"
     },
     {
       "barcode": "8057017699446",
       "stock": 114,
+      "purchasePrice": 22.65165,
+      "salePrice": 35700,
       "libelle": "Creamy Eyeliner",
       "reference": "Coffee 01"
     },
     {
       "barcode": "8057017699453",
       "stock": 85,
+      "purchasePrice": 22.65165,
+      "salePrice": 35700,
       "libelle": "Creamy Eyeliner",
       "reference": "Onyx 02"
     },
     {
       "barcode": "8057017699477",
       "stock": 155,
+      "purchasePrice": 22.65165,
+      "salePrice": 35700,
       "libelle": "Creamy Eyeliner",
       "reference": "Peridot 04"
     },
     {
       "barcode": "8057017699484",
       "stock": 143,
+      "purchasePrice": 22.65165,
+      "salePrice": 35700,
       "libelle": "Creamy Eyeliner",
       "reference": "Amy 05"
     },
     {
       "barcode": "8057017699491",
       "stock": 138,
+      "purchasePrice": 24.77461,
+      "salePrice": 36890,
       "libelle": "Iridescent two-tone",
       "reference": "Blue topaz 01"
     },
     {
       "barcode": "8057017699507",
       "stock": 116,
+      "purchasePrice": 24.77461,
+      "salePrice": 36890,
       "libelle": "Iridescent two-tone",
       "reference": "White topaz 02"
     },
     {
       "barcode": "8057017699514",
       "stock": 194,
+      "purchasePrice": 24.77461,
+      "salePrice": 36890,
       "libelle": "Iridescent two-tone",
       "reference": "Tiger Eye 03"
     },
     {
       "barcode": "8057017699521",
       "stock": 176,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Long Lasting",
       "reference": "Thunder 01"
     },
     {
       "barcode": "8057017699545",
       "stock": 157,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Long Lasting",
       "reference": "Poseidon 03"
     },
     {
       "barcode": "8057017699569",
       "stock": 158,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Long Lasting",
       "reference": "Titan 05"
     },
     {
       "barcode": "8057017699613",
       "stock": 161,
+      "purchasePrice": 23.318049999999996,
+      "salePrice": 35700,
       "libelle": "Long Lasting",
       "reference": "Snow 10"
     },
     {
       "barcode": "8057017699736",
       "stock": 43,
+      "purchasePrice": 29.65601358325197,
+      "salePrice": 51170,
       "libelle": "Round Tapered Blending 101",
       "reference": "Round Tapered Blending 101"
     },
     {
       "barcode": "8057017699743",
       "stock": 37,
+      "purchasePrice": 24.095511036392256,
+      "salePrice": 41650,
       "libelle": "Classic Flat Eyeshadow 102",
       "reference": "Classic Flat Eyeshadow 102"
     },
     {
       "barcode": "8057017699750",
       "stock": 36,
+      "purchasePrice": 27.802512734298812,
+      "salePrice": 47600,
       "libelle": "Concealer brush 103",
       "reference": "Concealer brush 103"
     },
     {
       "barcode": "8057017699767",
       "stock": 39,
+      "purchasePrice": 22.24201018743898,
+      "salePrice": 38080,
       "libelle": "Flat eyeliner and retouch brush 104",
       "reference": "Flat eyeliner and retouch brush 104"
     },
     {
       "barcode": "8057017699774",
       "stock": 44,
+      "purchasePrice": 22.24201018743898,
+      "salePrice": 38080,
       "libelle": "Cats tongue synthetic Lip Brush",
       "reference": "Cats tongue synthetic Lip Brush"
     },
     {
       "barcode": "8057017699781",
       "stock": 30,
+      "purchasePrice": 30.58276400772861,
+      "salePrice": 52360,
       "libelle": "Eyeshadow double brush 106",
       "reference": "Eyeshadow double brush 106"
     },
     {
       "barcode": "8057017699804",
       "stock": 44,
+      "purchasePrice": 26.875762309822175,
+      "salePrice": 46410,
       "libelle": "Pencil blending brush 108",
       "reference": "Pencil blending brush 108"
     },
     {
       "barcode": "8057017699811",
       "stock": 32,
+      "purchasePrice": 24.095511036392256,
+      "salePrice": 41650,
       "libelle": "Angeled eyeshadow 109",
       "reference": "Angeled eyeshadow 109"
     },
     {
       "barcode": "8057017699873",
       "stock": 41,
+      "purchasePrice": 25.949011885345534,
+      "salePrice": 45220,
       "libelle": "Retractable Lip Brush",
       "reference": "Retractable Lip Brush"
     },
     {
       "barcode": "8057017699880",
       "stock": 26,
+      "purchasePrice": 33.363015281158525,
+      "salePrice": 57120,
       "libelle": "Flat Powder Brush 116",
       "reference": "Flat Powder Brush 116"
     },
     {
       "barcode": "8057017699903",
       "stock": 34,
+      "purchasePrice": 31.50951443220525,
+      "salePrice": 54740,
       "libelle": "Liquid Foundation Brush 118",
       "reference": "Liquid Foundation Brush 118"
     },
     {
       "barcode": "8057017699941",
       "stock": 41,
+      "purchasePrice": 32.43626485668189,
+      "salePrice": 55930,
       "libelle": "Triangular Foundation 122",
       "reference": "Triangular Foundation 122"
     },
     {
       "barcode": "8057017699996",
       "stock": 35,
+      "purchasePrice": 37.07001697906497,
+      "salePrice": 63070,
       "libelle": "Tip and blend make up brushes foundation 201",
       "reference": "Tip and blend make up brushes foundation 201"
     }
