@@ -310,11 +310,16 @@ const DetailOrder = () => {
       cursorY += 10;
       doc.setFont("helvetica", "bold");
       doc.setTextColor('#B8860B');
-      doc.text(
-        `Code CNRPS: ${order.cnrpsCode}  (Remise ${order.discountPercentApplied}% = -${Number(order.discountAmount || 0).toFixed(2)} TND)`,
-        10,
-        cursorY
-      );
+      const purchaseLabel =
+        order.cnrpsPurchaseType === "direct_comptant"
+          ? "Achat direct au comptant"
+          : order.cnrpsPurchaseType === "compte_amicale"
+          ? "Achat sur le compte de l'Amicale"
+          : "";
+      const cnrpsLine = purchaseLabel
+        ? `Code CNRPS: ${order.cnrpsCode}  [${purchaseLabel}]  (Remise ${order.discountPercentApplied}% = -${Number(order.discountAmount || 0).toFixed(2)} TND)`
+        : `Code CNRPS: ${order.cnrpsCode}  (Remise ${order.discountPercentApplied}% = -${Number(order.discountAmount || 0).toFixed(2)} TND)`;
+      doc.text(cnrpsLine, 10, cursorY);
       doc.setTextColor('#000000');
       doc.setFont("helvetica", "normal");
     }
@@ -521,6 +526,12 @@ const DetailOrder = () => {
             )}
             {order?.cnrpsDiscountApplied && (
               <Tag color="gold">CNRPS -{order.discountPercentApplied}%</Tag>
+            )}
+            {order?.cnrpsDiscountApplied && order?.cnrpsPurchaseType === "direct_comptant" && (
+              <Tag color="green">Direct au comptant</Tag>
+            )}
+            {order?.cnrpsDiscountApplied && order?.cnrpsPurchaseType === "compte_amicale" && (
+              <Tag color="blue">Compte Amicale</Tag>
             )}
           </Space>
         }
@@ -729,6 +740,15 @@ const DetailOrder = () => {
                   </Descriptions.Item>
                   <Descriptions.Item label="Pourcentage">
                     {order.discountPercentApplied}%
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Type d'achat">
+                    {order.cnrpsPurchaseType === "direct_comptant" ? (
+                      <Tag color="green">Achat direct au comptant</Tag>
+                    ) : order.cnrpsPurchaseType === "compte_amicale" ? (
+                      <Tag color="blue">Achat sur le compte de l'Amicale</Tag>
+                    ) : (
+                      <Tag>—</Tag>
+                    )}
                   </Descriptions.Item>
                   <Descriptions.Item label="Montant remise">
                     <Text type="danger">

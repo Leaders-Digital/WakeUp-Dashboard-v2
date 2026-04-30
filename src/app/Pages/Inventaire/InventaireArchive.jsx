@@ -322,6 +322,32 @@ const InventaireArchive = () => {
     run();
   };
 
+  const applySessionQuantities = (session) => {
+    const run = async () => {
+      try {
+        const response = await axios.patch(
+          `${process.env.REACT_APP_API_URL_PRODUCTION}api/inventaire/session/${session.id}/apply-quantities`,
+          {},
+          {
+            headers: { "x-api-key": process.env.REACT_APP_API_KEY }
+          }
+        );
+
+        const data = response.data || {};
+        message.success(
+          `Quantites variants maj: ${data.updatedCount || 0} modifie(s), ${data.unchangedCount || 0} inchange(s).`
+        );
+        if (Number(data.missingCount) > 0) {
+          message.warning(`${data.missingCount} code(s)-barres introuvable(s) cote variants.`);
+        }
+      } catch (error) {
+        message.error("Echec de mise a jour des quantites variants.");
+      }
+    };
+
+    run();
+  };
+
   const clearArchive = () => {
     const run = async () => {
       try {
@@ -620,6 +646,15 @@ const InventaireArchive = () => {
                           }}
                         >
                           Print All BOXES
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            applySessionQuantities(session);
+                          }}
+                        >
+                          Update Variants Qty
                         </Button>
                         <Button
                           type="primary"

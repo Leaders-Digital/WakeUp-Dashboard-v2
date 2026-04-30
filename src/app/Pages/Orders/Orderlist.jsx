@@ -52,7 +52,8 @@ const Orderlist = () => {
         discountType: order.discountType || "none",
         discountPercentApplied: order.discountPercentApplied || 0,
         discountAmount: order.discountAmount || 0,
-        cnrpsDiscountApplied: !!order.cnrpsDiscountApplied
+        cnrpsDiscountApplied: !!order.cnrpsDiscountApplied,
+        cnrpsPurchaseType: order.cnrpsPurchaseType || null
       }));
       setOrders(formattedOrders);
       setFilteredOrders(formattedOrders);
@@ -191,6 +192,38 @@ const Orderlist = () => {
           </Tooltip>
         );
       }
+    },
+    {
+      title: "Type d'achat",
+      key: "cnrpsPurchaseType",
+      render: (_, record) => {
+        if (!record.cnrpsDiscountApplied || !record.cnrpsPurchaseType) {
+          return <Tag>—</Tag>;
+        }
+        if (record.cnrpsPurchaseType === "direct_comptant") {
+          return (
+            <Tag color="green">
+              Direct au comptant ({record.discountPercentApplied}%)
+            </Tag>
+          );
+        }
+        if (record.cnrpsPurchaseType === "compte_amicale") {
+          return (
+            <Tag color="blue">
+              Compte Amicale ({record.discountPercentApplied}%)
+            </Tag>
+          );
+        }
+        return <Tag>{record.cnrpsPurchaseType}</Tag>;
+      }
+    },
+    {
+      title: "Remise %",
+      key: "discountPercent",
+      render: (_, record) =>
+        record.cnrpsDiscountApplied
+          ? <Tag color="gold">{record.discountPercentApplied}%</Tag>
+          : <Tag>—</Tag>
     },
     {
       title: "Détails",
