@@ -80,6 +80,9 @@ const DetailOrder = () => {
         name: prodInfo?.nom || "—",
         reference: item?.variant?.reference || "—",
         barcode: item?.variant?.codeAbarre || null,
+        inventoryBoxes: Array.isArray(item?.variant?.inventoryBoxes)
+          ? item.variant.inventoryBoxes
+          : [],
         color: item?.variant?.color || null,
         quantity: qty,
         unitPrice: unit,
@@ -99,6 +102,7 @@ const DetailOrder = () => {
         name: p?.pack?.nom || "—",
         reference: "—",
         barcode: null,
+        inventoryBoxes: [],
         color: null,
         quantity: qty,
         unitPrice: unit,
@@ -195,6 +199,27 @@ const DetailOrder = () => {
         ) : (
           <Text type="secondary">—</Text>
         ),
+    },
+    {
+      title: "BOX",
+      dataIndex: "inventoryBoxes",
+      key: "inventoryBoxes",
+      width: 170,
+      render: (boxes) => {
+        const values = Array.isArray(boxes) ? boxes : [];
+        if (!values.length) {
+          return <Text type="secondary">—</Text>;
+        }
+        return (
+          <Space size={[4, 4]} wrap>
+            {values.map((box) => (
+              <Tag key={box} color="cyan">
+                {box}
+              </Tag>
+            ))}
+          </Space>
+        );
+      },
     },
     {
       title: "Couleur",
@@ -800,7 +825,7 @@ const DetailOrder = () => {
             return (
               <>
                 <Table.Summary.Row style={{ background: "#fafafa" }}>
-                  <Table.Summary.Cell index={0} colSpan={6} align="right">
+                  <Table.Summary.Cell index={0} colSpan={7} align="right">
                     <Text strong>Total quantité</Text>
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={1} align="center">
@@ -815,7 +840,7 @@ const DetailOrder = () => {
                 </Table.Summary.Row>
 
                 <Table.Summary.Row>
-                  <Table.Summary.Cell index={4} colSpan={8} align="right">
+                  <Table.Summary.Cell index={4} colSpan={9} align="right">
                     <Text type="secondary">Sous-total articles</Text>
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={5} align="right">
@@ -825,7 +850,7 @@ const DetailOrder = () => {
 
                 {hasTableDiscount && (
                   <Table.Summary.Row>
-                    <Table.Summary.Cell index={6} colSpan={8} align="right">
+                    <Table.Summary.Cell index={6} colSpan={9} align="right">
                       <Text type="secondary">Remise</Text>
                     </Table.Summary.Cell>
                     <Table.Summary.Cell index={7} align="right">
@@ -838,7 +863,7 @@ const DetailOrder = () => {
                 )}
 
                 <Table.Summary.Row style={{ background: "#f6ffed" }}>
-                  <Table.Summary.Cell index={8} colSpan={8} align="right">
+                  <Table.Summary.Cell index={8} colSpan={9} align="right">
                     <Text strong>Prix total</Text>
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={9} align="right">
@@ -849,7 +874,7 @@ const DetailOrder = () => {
                 </Table.Summary.Row>
 
                 <Table.Summary.Row>
-                  <Table.Summary.Cell index={10} colSpan={8} align="right">
+                  <Table.Summary.Cell index={10} colSpan={9} align="right">
                     <Text type="secondary">Statut paiement</Text>
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={11} align="right">
