@@ -68,6 +68,7 @@ const subCategoryOptions = {
     { value: "BRUSH CLEANSER", label: "Brush Cleaner" }
   ],
   PACK: [
+    { value: "PACK", label: "Pack" },
     { value: "PACK BASIC", label: "Pack Basic" },
     { value: "PACK PREMIUM", label: "Pack Premium" }
     // Add more PACK subcategories as needed
@@ -101,6 +102,13 @@ const AddProduct = () => {
       formData.append("soldePourcentage", values.soldePourcentage || 0);
     } else {
       formData.append("soldePourcentage", 0); // or omit it if backend can handle missing value
+    }
+
+    if (values.categorie === "PACK") {
+      formData.append(
+        "quantite",
+        values.quantite != null ? values.quantite : 0
+      );
     }
 
     // Handle image upload
@@ -264,6 +272,30 @@ const AddProduct = () => {
                 </Option>
               ))}
             </Select>
+          </Form.Item>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prev, cur) => prev.categorie !== cur.categorie}
+          >
+            {() =>
+              form.getFieldValue("categorie") === "PACK" ? (
+                <Form.Item
+                  label="Quantité en stock (pack)"
+                  name="quantite"
+                  rules={[
+                    { required: true, message: "La quantité est requise pour un pack." },
+                    {
+                      type: "number",
+                      min: 0,
+                      message: "Quantité minimale : 0",
+                    },
+                  ]}
+                >
+                  <InputNumber min={0} precision={0} style={{ width: "100%" }} />
+                </Form.Item>
+              ) : null
+            }
           </Form.Item>
 
           <Form.Item name="solde" valuePropName="checked" wrapperCol={{ offset: 0 }}>

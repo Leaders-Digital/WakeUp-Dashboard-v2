@@ -77,6 +77,7 @@ const UpdateProduct = () => {
       { value: "BRUSH CLEANSER", label: "Brush Cleaner" }
     ],
     PACK: [
+      { value: "PACK", label: "Pack" },
       { value: "PACK BASIC", label: "Pack Basic" },
       { value: "PACK PREMIUM", label: "Pack Premium" }
       // Add more PACK subcategories as needed
@@ -109,6 +110,7 @@ const UpdateProduct = () => {
         metaFields: response.data.metaFields,
         prixAchat: response.data.prixAchat,
         prixGros: response.data.prixGros,
+        quantite: response.data.quantite ?? 0,
         mainPicture: response.data.mainPicture
           ? [
             {
@@ -162,7 +164,12 @@ const UpdateProduct = () => {
     formData.append("metaFields", values.metaFields);
     formData.append("prixAchat", values.prixAchat);
     formData.append("prixGros", values.prixGros);
-
+    if (values.categorie === "PACK") {
+      formData.append(
+        "quantite",
+        values.quantite != null ? values.quantite : 0
+      );
+    }
 
     // Handle image upload
     if (values.mainPicture && values.mainPicture.length > 0) {
@@ -303,6 +310,30 @@ const UpdateProduct = () => {
                 </Option>
               ))}
             </Select>
+          </Form.Item>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prev, cur) => prev.categorie !== cur.categorie}
+          >
+            {() =>
+              form.getFieldValue("categorie") === "PACK" ? (
+                <Form.Item
+                  label="Quantité en stock (pack)"
+                  name="quantite"
+                  rules={[
+                    { required: true, message: "La quantité est requise pour un pack." },
+                    {
+                      type: "number",
+                      min: 0,
+                      message: "Quantité minimale : 0",
+                    },
+                  ]}
+                >
+                  <InputNumber min={0} precision={0} style={{ width: "100%" }} />
+                </Form.Item>
+              ) : null
+            }
           </Form.Item>
 
           <Form.Item name="solde" valuePropName="checked" wrapperCol={{ offset: 0 }}>
