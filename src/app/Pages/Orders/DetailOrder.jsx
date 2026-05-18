@@ -331,7 +331,7 @@ const DetailOrder = () => {
       doc.setFont("helvetica", "normal");
       cursorY = 130;
     }
-    if (order.cnrpsDiscountApplied && order.cnrpsCode) {
+    if (order.cnrpsCode) {
       cursorY += 10;
       doc.setFont("helvetica", "bold");
       doc.setTextColor('#B8860B');
@@ -341,9 +341,13 @@ const DetailOrder = () => {
           : order.cnrpsPurchaseType === "compte_amicale"
           ? "Achat sur le compte de l'Amicale"
           : "";
+      const remisePart =
+        Number(order.discountPercentApplied) > 0
+          ? `(Remise ${order.discountPercentApplied}% = -${Number(order.discountAmount || 0).toFixed(2)} TND)`
+          : "(Aucune remise)";
       const cnrpsLine = purchaseLabel
-        ? `Code CNRPS: ${order.cnrpsCode}  [${purchaseLabel}]  (Remise ${order.discountPercentApplied}% = -${Number(order.discountAmount || 0).toFixed(2)} TND)`
-        : `Code CNRPS: ${order.cnrpsCode}  (Remise ${order.discountPercentApplied}% = -${Number(order.discountAmount || 0).toFixed(2)} TND)`;
+        ? `Code CNRPS: ${order.cnrpsCode}  [${purchaseLabel}]  ${remisePart}`
+        : `Code CNRPS: ${order.cnrpsCode}  ${remisePart}`;
       doc.text(cnrpsLine, 10, cursorY);
       doc.setTextColor('#000000');
       doc.setFont("helvetica", "normal");
@@ -555,7 +559,7 @@ const DetailOrder = () => {
             {order?.cnrpsDiscountApplied && order?.cnrpsPurchaseType === "direct_comptant" && (
               <Tag color="green">Direct au comptant</Tag>
             )}
-            {order?.cnrpsDiscountApplied && order?.cnrpsPurchaseType === "compte_amicale" && (
+            {order?.cnrpsPurchaseType === "compte_amicale" && (
               <Tag color="blue">Compte Amicale</Tag>
             )}
           </Space>
@@ -735,7 +739,7 @@ const DetailOrder = () => {
             </Col>
           ) : null}
 
-          {order?.cnrpsDiscountApplied && order?.cnrpsCode ? (
+          {order?.cnrpsCode ? (
             <Col span={24}>
               <Card
                 size="small"
@@ -744,8 +748,14 @@ const DetailOrder = () => {
                 title={
                   <Space>
                     <GiftOutlined style={{ color: "#B8860B" }} />
-                    <span style={{ fontWeight: 700 }}>Remise CNRPS appliquée</span>
-                    <Tag color="gold">-{order.discountPercentApplied}%</Tag>
+                    <span style={{ fontWeight: 700 }}>
+                      {order.cnrpsDiscountApplied
+                        ? "Remise CNRPS appliquée"
+                        : "CNRPS (sans remise)"}
+                    </span>
+                    {order.cnrpsDiscountApplied ? (
+                      <Tag color="gold">-{order.discountPercentApplied}%</Tag>
+                    ) : null}
                   </Space>
                 }
               >
@@ -764,7 +774,9 @@ const DetailOrder = () => {
                     </Text>
                   </Descriptions.Item>
                   <Descriptions.Item label="Pourcentage">
-                    {order.discountPercentApplied}%
+                    {order.discountPercentApplied > 0
+                      ? `${order.discountPercentApplied}%`
+                      : "Aucune"}
                   </Descriptions.Item>
                   <Descriptions.Item label="Type d'achat">
                     {order.cnrpsPurchaseType === "direct_comptant" ? (
