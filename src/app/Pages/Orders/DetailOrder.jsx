@@ -748,12 +748,8 @@ const DetailOrder = () => {
                 title={
                   <Space>
                     <GiftOutlined style={{ color: "#B8860B" }} />
-                    <span style={{ fontWeight: 700 }}>
-                      {order.cnrpsDiscountApplied
-                        ? "Remise CNRPS appliquée"
-                        : "CNRPS (sans remise)"}
-                    </span>
-                    {order.cnrpsDiscountApplied ? (
+                    <span style={{ fontWeight: 700 }}>Remise CNRPS appliquée</span>
+                    {order.cnrpsDiscountApplied && order.discountPercentApplied > 0 ? (
                       <Tag color="gold">-{order.discountPercentApplied}%</Tag>
                     ) : null}
                   </Space>

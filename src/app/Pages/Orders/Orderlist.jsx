@@ -209,7 +209,9 @@ const Orderlist = () => {
         }
         if (record.cnrpsPurchaseType === "compte_amicale") {
           return (
-            <Tag color="blue">Compte Amicale (sans remise)</Tag>
+            <Tag color="blue">
+              Compte Amicale ({record.discountPercentApplied || 10}%)
+            </Tag>
           );
         }
         return <Tag>{record.cnrpsPurchaseType}</Tag>;
@@ -219,11 +221,9 @@ const Orderlist = () => {
       title: "Remise %",
       key: "discountPercent",
       render: (_, record) =>
-        record.cnrpsPurchaseType === "direct_comptant" && record.discountPercentApplied > 0
+        record.cnrpsDiscountApplied && record.discountPercentApplied > 0
           ? <Tag color="gold">{record.discountPercentApplied}%</Tag>
-          : record.cnrpsPurchaseType === "compte_amicale"
-            ? <Tag>Aucune</Tag>
-            : <Tag>—</Tag>
+          : <Tag>—</Tag>
     },
     {
       title: "Détails",
