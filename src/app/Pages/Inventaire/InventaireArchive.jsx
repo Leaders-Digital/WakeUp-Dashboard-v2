@@ -190,8 +190,6 @@ const InventaireArchive = () => {
       .map((row) => {
         const barcode = String(row.barcode || "").trim();
         const reference = referenceByBarcodeMap.get(barcode);
-        const purchasePrice = Number(reference?.purchasePrice) || 0;
-        const salePrice = Number(reference?.salePrice) || 0;
         const quantity = Number(row.quantity) || 0;
         const omarQty = Number(reference?.quantity) || 0;
         return {
@@ -200,11 +198,7 @@ const InventaireArchive = () => {
           variantName: row.displayVariant || "--",
           box: String(row.box || "--"),
           quantity,
-          omarQty,
-          purchasePrice,
-          salePrice,
-          totalPurchase: quantity * purchasePrice,
-          totalSale: quantity * salePrice
+          omarQty
         };
       })
       .sort((a, b) => {
@@ -228,43 +222,25 @@ const InventaireArchive = () => {
     doc.setFontSize(11);
     doc.text(`Session: ${createdAt}`, 14, 23);
     doc.text(`Total lignes: ${rows.length}`, 120, 23);
-    const totalPurchaseAll = rows.reduce((sum, row) => sum + row.totalPurchase, 0);
-    const totalSaleAll = rows.reduce((sum, row) => sum + row.totalSale, 0);
 
     autoTable(doc, {
       startY: 28,
       margin: { left: 10, right: 10 },
       tableWidth: "auto",
-      head: [
-        [
-          "Product",
-          "Variant",
-          "Quantity",
-          "Difference",
-          "Prix Unitaire",
-          "Prix Achat",
-          "Prix Vente"
-        ]
-      ],
+      head: [["Product", "Variant", "Quantity", "Difference"]],
       body: rows.map((row) => [
         row.productName,
         row.variantName,
         String(row.quantity),
-        String(row.quantity - row.omarQty),
-        formatMoney(row.salePrice),
-        formatMoney(row.totalPurchase),
-        formatMoney(row.totalSale)
+        String(row.quantity - row.omarQty)
       ]),
       styles: { fontSize: 9, cellPadding: 3, valign: "middle", minCellHeight: 22 },
       headStyles: { fillColor: [22, 119, 255] },
       columnStyles: {
-        0: { cellWidth: 46, halign: "left" },
-        1: { cellWidth: 28, halign: "left" },
-        2: { cellWidth: 12, halign: "center" },
-        3: { cellWidth: 12, halign: "center" },
-        4: { cellWidth: 30, halign: "right" },
-        5: { cellWidth: 30, halign: "right" },
-        6: { cellWidth: 30, halign: "right" }
+        0: { cellWidth: 70, halign: "left" },
+        1: { cellWidth: 40, halign: "left" },
+        2: { cellWidth: 20, halign: "center" },
+        3: { cellWidth: 20, halign: "center" }
       },
       didParseCell: (data) => {
         if (data.section === "body" && data.column.index === 1) {
@@ -286,11 +262,6 @@ const InventaireArchive = () => {
         if (data.section !== "body") return;
       }
     });
-    const finalY = doc.lastAutoTable?.finalY || 28;
-    doc.setFontSize(11);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`Total prix achat: ${formatMoney(totalPurchaseAll)}`, 14, finalY + 10);
-    doc.text(`Total prix vente: ${formatMoney(totalSaleAll)}`, 14, finalY + 17);
 
     doc.save(`inventaire-session-${new Date(session?.createdAt || Date.now()).toISOString().slice(0, 10)}.pdf`);
   };
